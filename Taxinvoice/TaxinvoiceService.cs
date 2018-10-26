@@ -1,0 +1,621 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Runtime.Serialization;
+
+
+namespace Popbill.Taxinvoice
+{
+    public class TaxinvoiceService : BaseService
+    {
+        public TaxinvoiceService(string LinkID, string SecretKey) : base(LinkID, SecretKey)
+        {
+            this.AddScope("110");
+        }
+
+        public enum MgtKeyType
+        {
+            SELL,
+            BUY,
+            TRUSTEE
+        }
+
+        #region Issue API
+
+        //관리번호 확인
+        public bool CheckMgtKeyInUse(string CorpNum, MgtKeyType KeyType, string MgtKey, string UserID = null)
+        {
+            if (string.IsNullOrEmpty(MgtKey)) throw new PopbillException(-99999999, "관리번호가 입력되지 않았습니다.");
+
+            try
+            {
+                TaxinvoiceInfo response =
+                    httpget<TaxinvoiceInfo>("/Taxinvoice/" + KeyType.ToString() + "/" + MgtKey, CorpNum, UserID);
+
+                return string.IsNullOrEmpty(response.itemKey) == false;
+            }
+            catch (PopbillException pe)
+            {
+                if (pe.code == -11000005) return false;
+
+                throw pe;
+            }
+        }
+
+        //즉시 발행
+        public Response RegistIssue(string CorpNum, Taxinvoice taxinvoice, bool WriteSpecification = false,
+            bool ForceIssue = false, string DealinvoiceMgtKey = null, string Memo = null, string EmailSubject = null,
+            string UserID = null)
+        {
+            if (taxinvoice == null) throw new PopbillException(-99999999, "세금계산서 정보가 입력되지 않았습니다.");
+
+            taxinvoice.writeSpecification = WriteSpecification;
+            taxinvoice.forceIssue = ForceIssue;
+            taxinvoice.dealInvoiceMgtKey = DealinvoiceMgtKey;
+            taxinvoice.memo = Memo;
+            taxinvoice.emailSubject = EmailSubject;
+
+            string PostData = toJsonString(taxinvoice);
+
+            return httppost<Response>("/Taxinvoice", CorpNum, PostData, "ISSUE", null, UserID);
+        }
+
+        //임시저장
+        public Response Register(string CorpNum, Taxinvoice taxinvoice, bool WriteSpecification = false,
+            string DealinvoiceMgtKey = null, string UserID = null)
+        {
+            if (taxinvoice == null) throw new PopbillException(-99999999, "세금계산서 정보가 입력되지 않았습니다.");
+
+            string PostData = toJsonString(taxinvoice);
+
+            if (WriteSpecification)
+            {
+                PostData = "{\"writeSpecification\":true," + PostData.Substring(1);
+            }
+
+            return httppost<Response>("/Taxinvoice", CorpNum, PostData, null, null, UserID);
+        }
+
+        //수정
+        public Response Update(string CorpNum, MgtKeyType KeyType, string MgtKey, Taxinvoice taxinvoice,
+            string UserID = null)
+        {
+            if (string.IsNullOrEmpty(MgtKey)) throw new PopbillException(-99999999, "관리번호가 입력되지 않았습니다.");
+            if (taxinvoice == null) throw new PopbillException(-99999999, "세금계산서 정보가 입력되지 않았습니다.");
+
+            string PostData = toJsonString(taxinvoice);
+
+            return httppost<Response>("/Taxinvoice/" + KeyType.ToString() + "/" + MgtKey, CorpNum, PostData, "PATCH",
+                null, UserID);
+        }
+
+        //발행
+        public Response Issue(string CorpNum, MgtKeyType KeyType, string MgtKey, bool ForceIssue = false,
+            string Memo = null, string EmailSubject = null, string UserID = null)
+        {
+            if (string.IsNullOrEmpty(MgtKey)) throw new PopbillException(-99999999, "관리번호가 입력되지 않았습니다.");
+
+            IssueRequest request = new IssueRequest {memo = Memo, emailSubject = EmailSubject, forceIssue = ForceIssue};
+
+            string PostData = toJsonString(request);
+
+            return httppost<Response>("/Taxinvoice/" + KeyType.ToString() + "/" + MgtKey, CorpNum, PostData, "ISSUE",
+                null, UserID);
+        }
+
+        //발행취소
+        public Response CancelIssue(string CorpNum, MgtKeyType KeyType, string MgtKey, string Memo = null,
+            string UserID = null)
+        {
+            if (string.IsNullOrEmpty(MgtKey)) throw new PopbillException(-99999999, "관리번호가 입력되지 않았습니다.");
+
+            MemoRequest request = new MemoRequest {memo = Memo};
+
+            string PostData = toJsonString(request);
+
+            return httppost<Response>("/Taxinvoice/" + KeyType.ToString() + "/" + MgtKey, CorpNum, PostData,
+                "CANCELISSUE", null, UserID);
+        }
+
+        //발행예정
+        public Response Send(string CorpNum, MgtKeyType KeyType, string MgtKey, string Memo = null,
+            string EmailSubject = null, string UserID = null)
+        {
+            if (string.IsNullOrEmpty(MgtKey)) throw new PopbillException(-99999999, "관리번호가 입력되지 않았습니다.");
+
+            MemoRequest request = new MemoRequest {memo = Memo, emailSubject = EmailSubject};
+
+            string PostData = toJsonString(request);
+
+            return httppost<Response>("/Taxinvoice/" + KeyType.ToString() + "/" + MgtKey, CorpNum, PostData, "SEND",
+                null, UserID);
+        }
+
+        //발행예정 취소
+        public Response CancelSend(string CorpNum, MgtKeyType KeyType, string MgtKey, string Memo = null,
+            string UserID = null)
+        {
+            if (string.IsNullOrEmpty(MgtKey)) throw new PopbillException(-99999999, "관리번호가 입력되지 않았습니다.");
+
+            MemoRequest request = new MemoRequest {memo = Memo};
+
+            string PostData = toJsonString(request);
+
+            return httppost<Response>("/Taxinvoice/" + KeyType.ToString() + "/" + MgtKey, CorpNum, PostData,
+                "CANCELSEND", null, UserID);
+        }
+
+        //발행예정 승인
+        public Response Accept(string CorpNum, MgtKeyType KeyType, string MgtKey, string Memo = null,
+            string UserID = null)
+        {
+            if (string.IsNullOrEmpty(MgtKey)) throw new PopbillException(-99999999, "관리번호가 입력되지 않았습니다.");
+
+            MemoRequest request = new MemoRequest {memo = Memo};
+
+            string PostData = toJsonString(request);
+
+            return httppost<Response>("/Taxinvoice/" + KeyType.ToString() + "/" + MgtKey, CorpNum, PostData, "ACCEPT",
+                null, UserID);
+        }
+
+        //발행예정 거부
+        public Response Deny(string CorpNum, MgtKeyType KeyType, string MgtKey, string Memo = null,
+            string UserID = null)
+        {
+            if (string.IsNullOrEmpty(MgtKey)) throw new PopbillException(-99999999, "관리번호가 입력되지 않았습니다.");
+
+            MemoRequest request = new MemoRequest {memo = Memo};
+
+            string PostData = toJsonString(request);
+
+            return httppost<Response>("/Taxinvoice/" + KeyType.ToString() + "/" + MgtKey, CorpNum, PostData, "DENY",
+                null, UserID);
+        }
+
+        //삭제
+        public Response Delete(string CorpNum, MgtKeyType KeyType, string MgtKey, string UserID = null)
+        {
+            if (string.IsNullOrEmpty(MgtKey)) throw new PopbillException(-99999999, "관리번호가 입력되지 않았습니다.");
+
+            return httppost<Response>("/Taxinvoice/" + KeyType.ToString() + "/" + MgtKey, CorpNum, null, "DELETE", null,
+                UserID);
+        }
+
+        //역발행요청
+        public Response Request(string CorpNum, MgtKeyType KeyType, string MgtKey, string Memo = null,
+            string UserID = null)
+        {
+            if (string.IsNullOrEmpty(MgtKey)) throw new PopbillException(-99999999, "관리번호가 입력되지 않았습니다.");
+
+            MemoRequest request = new MemoRequest {memo = Memo};
+
+            string PostData = toJsonString(request);
+
+            return httppost<Response>("/Taxinvoice/" + KeyType.ToString() + "/" + MgtKey, CorpNum, PostData, "REQUEST",
+                null, UserID);
+        }
+
+        //역발행요청 취소
+        public Response CancelRequest(string CorpNum, MgtKeyType KeyType, string MgtKey, string Memo = null,
+            string UserID = null)
+        {
+            if (string.IsNullOrEmpty(MgtKey)) throw new PopbillException(-99999999, "관리번호가 입력되지 않았습니다.");
+
+            MemoRequest request = new MemoRequest {memo = Memo};
+
+            string PostData = toJsonString(request);
+
+            return httppost<Response>("/Taxinvoice/" + KeyType.ToString() + "/" + MgtKey, CorpNum, PostData,
+                "CANCELREQUEST", null, UserID);
+        }
+
+        //역발행요청 거부
+        public Response Refuse(string CorpNum, MgtKeyType KeyType, string MgtKey, string Memo = null,
+            string UserID = null)
+        {
+            if (string.IsNullOrEmpty(MgtKey)) throw new PopbillException(-99999999, "관리번호가 입력되지 않았습니다.");
+
+            MemoRequest request = new MemoRequest {memo = Memo};
+
+            string PostData = toJsonString(request);
+
+            return httppost<Response>("/Taxinvoice/" + KeyType.ToString() + "/" + MgtKey, CorpNum, PostData, "REFUSE",
+                null, UserID);
+        }
+
+        //국세청 즉시 전송
+        public Response SendToNTS(string CorpNum, MgtKeyType KeyType, string MgtKey, string UserID = null)
+        {
+            if (string.IsNullOrEmpty(MgtKey)) throw new PopbillException(-99999999, "관리번호가 입력되지 않았습니다.");
+
+            return httppost<Response>("/Taxinvoice/" + KeyType.ToString() + "/" + MgtKey, CorpNum, null, "NTS", null,
+                UserID);
+        }
+
+        #endregion
+
+        #region Info API
+
+        //상태 확인
+        public TaxinvoiceInfo GetInfo(string CorpNum, MgtKeyType KeyType, string MgtKey, string UserID = null)
+        {
+            if (string.IsNullOrEmpty(MgtKey)) throw new PopbillException(-99999999, "관리번호가 입력되지 않았습니다.");
+
+            return httpget<TaxinvoiceInfo>("/Taxinvoice/" + KeyType.ToString() + "/" + MgtKey, CorpNum, UserID);
+        }
+
+        //상태 대량 확인
+        public List<TaxinvoiceInfo> GetInfos(string CorpNum, MgtKeyType KeyType, List<string> MgtKeyList,
+            string UserID = null)
+        {
+            if (MgtKeyList == null || MgtKeyList.Count == 0)
+                throw new PopbillException(-99999999, "관리번호 목록이 입력되지 않았습니다.");
+
+            string PostData = toJsonString(MgtKeyList);
+
+            return httppost<List<TaxinvoiceInfo>>("/Taxinvoice/" + KeyType.ToString(), CorpNum, PostData, null, null,
+                UserID);
+        }
+
+        //상세정보 확인
+        public Taxinvoice GetDetailInfo(string CorpNum, MgtKeyType KeyType, string MgtKey, string UserID = null)
+        {
+            if (string.IsNullOrEmpty(MgtKey)) throw new PopbillException(-99999999, "관리번호가 입력되지 않았습니다.");
+
+            return httpget<Taxinvoice>("/Taxinvoice/" + KeyType.ToString() + "/" + MgtKey + "?Detail", CorpNum, UserID);
+        }
+
+        //목록 조회
+        public TISearchResult Search(string CorpNum, MgtKeyType KeyType, string DType, string SDate, string EDate,
+            string[] State, string[] Type, string[] TaxType, string[] IssueType, bool? LateOnly, string TaxRegIDYN,
+            string TaxRegIDType, string TaxRegID, int Page, int PerPage, string Order, string QString, string InterOPYN,
+            string UserID = null)
+        {
+            if (string.IsNullOrEmpty(DType)) throw new PopbillException(-99999999, "검색일자 유형이 입력되지 않았습니다.");
+            if (string.IsNullOrEmpty(SDate)) throw new PopbillException(-99999999, "시작일자가 입력되지 않았습니다.");
+            if (string.IsNullOrEmpty(EDate)) throw new PopbillException(-99999999, "종료일자가 입력되지 않았습니다.");
+
+            string uri = "/Taxinvoice/" + KeyType;
+            uri += "?DType=" + DType;
+            uri += "&SDate=" + SDate;
+            uri += "&EDate=" + EDate;
+            uri += "&State=" + string.Join(",", State);
+            uri += "&Type=" + string.Join(",", Type);
+            uri += "&TaxType=" + string.Join(",", TaxType);
+            if (IssueType != null) uri += "&IssueType=" + string.Join(",", IssueType);
+
+            if (LateOnly != null)
+            {
+                if ((bool) LateOnly)
+                {
+                    uri += "&LateOnly=1";
+                }
+                else
+                {
+                    uri += "&LateOnly=0";
+                }
+            }
+
+            if (TaxRegIDYN != "") uri += "&TaxRegIDYN=" + TaxRegIDYN;
+            uri += "&InterOPYN=" + InterOPYN;
+            uri += "&TaxRegIDType=" + TaxRegIDType;
+            uri += "&TaxRegID=" + TaxRegID;
+            uri += "&QString=" + QString;
+            uri += "&Order=" + Order;
+            uri += "&Page=" + Page.ToString();
+            uri += "&PerPage=" + PerPage.ToString();
+
+            return httpget<TISearchResult>(uri, CorpNum, UserID);
+        }
+
+        //상태 변경이력 확인
+        public List<TaxinvoiceLog> GetLogs(string CorpNum, MgtKeyType KeyType, string MgtKey, string UserID = null)
+        {
+            if (string.IsNullOrEmpty(MgtKey)) throw new PopbillException(-99999999, "관리번호가 입력되지 않았습니다.");
+
+            return httpget<List<TaxinvoiceLog>>("/Taxinvoice/" + KeyType.ToString() + "/" + MgtKey + "/Logs", CorpNum,
+                UserID);
+        }
+
+        //세금계산서 문서함 관련 URL
+        public string GetURL(string CorpNum, string TOGO, string UserID = null)
+        {
+            URLResponse response = httpget<URLResponse>("/Taxinvoice?TG=" + TOGO, CorpNum, UserID);
+
+            return response.url;
+        }
+
+        #endregion
+
+        #region PopUp/Print API
+
+        //세금계산서 보기 URL
+        public string GetPopUpURL(string CorpNum, MgtKeyType KeyType, string MgtKey, string UserID = null)
+        {
+            if (string.IsNullOrEmpty(MgtKey)) throw new PopbillException(-99999999, "관리번호가 입력되지 않았습니다.");
+
+            URLResponse response =
+                httpget<URLResponse>("/Taxinvoice/" + KeyType.ToString() + "/" + MgtKey + "?TG=POPUP", CorpNum, UserID);
+
+            return response.url;
+        }
+
+        //세금계산서 인쇄 URL (공급자/공급받는자용 인쇄 팝업 뷰)
+        public string GetPrintURL(string CorpNum, MgtKeyType KeyType, string MgtKey, string UserID = null)
+        {
+            if (string.IsNullOrEmpty(MgtKey)) throw new PopbillException(-99999999, "관리번호가 입력되지 않았습니다.");
+
+            URLResponse response =
+                httpget<URLResponse>("/Taxinvoice/" + KeyType.ToString() + "/" + MgtKey + "?TG=PRINT", CorpNum, UserID);
+
+            return response.url;
+        }
+
+        //세금계산서 인쇄 URL (공급받는자용 인쇄 팝업 뷰)
+        public string GetEPrintURL(string CorpNum, MgtKeyType KeyType, string MgtKey, string UserID = null)
+        {
+            if (string.IsNullOrEmpty(MgtKey)) throw new PopbillException(-99999999, "관리번호가 입력되지 않았습니다.");
+
+            URLResponse response =
+                httpget<URLResponse>("/Taxinvoice/" + KeyType.ToString() + "/" + MgtKey + "?TG=EPRINT", CorpNum,
+                    UserID);
+
+            return response.url;
+        }
+
+
+        //세금계산서 대량 인쇄 URL
+        public string GetMassPrintURL(string CorpNum, MgtKeyType KeyType, List<string> MgtKeyList, string UserID = null)
+        {
+            if (MgtKeyList == null || MgtKeyList.Count == 0)
+                throw new PopbillException(-99999999, "관리번호 목록이 입력되지 않았습니다.");
+
+            string PostData = toJsonString(MgtKeyList);
+
+            URLResponse response = httppost<URLResponse>("/Taxinvoice/" + KeyType.ToString() + "?Print", CorpNum,
+                PostData, null, null, UserID);
+
+            return response.url;
+        }
+
+        //세금계산서 메일링크 URL
+        public string GetMailURL(string CorpNum, MgtKeyType KeyType, string MgtKey, string UserID = null)
+        {
+            if (string.IsNullOrEmpty(MgtKey)) throw new PopbillException(-99999999, "관리번호가 입력되지 않았습니다.");
+
+            URLResponse response = httpget<URLResponse>("/Taxinvoice/" + KeyType.ToString() + "/" + MgtKey + "?TG=MAIL",
+                CorpNum, UserID);
+
+            return response.url;
+        }
+
+        #endregion
+
+        #region Add Ons API
+
+        //첨부파일 추가
+        public Response AttachFile(string CorpNum, MgtKeyType KeyType, string MgtKey, string FilePath,
+            string UserID = null)
+        {
+            if (string.IsNullOrEmpty(value: MgtKey))
+                throw new PopbillException(code: -99999999, Message: "관리번호가 입력되지 않았습니다.");
+            if (string.IsNullOrEmpty(value: FilePath))
+                throw new PopbillException(code: -99999999, Message: "파일경로가 입력되지 않았습니다.");
+
+            List<UploadFile> files = new List<UploadFile>();
+
+            UploadFile file = new UploadFile
+            {
+                FieldName = "Filedata",
+                FileName = System.IO.Path.GetFileName(path: FilePath),
+                FileData = new FileStream(path: FilePath, mode: FileMode.Open, access: FileAccess.Read)
+            };
+
+
+            files.Add(item: file);
+
+            return httppostFile<Response>(url: "/Taxinvoice/" + KeyType.ToString() + "/" + MgtKey + "/Files",
+                CorpNum: CorpNum, form: null,
+                UploadFiles: files, httpMethod: null, UserID: UserID);
+        }
+
+        //첨부파일 삭제
+        public Response DeleteFile(string CorpNum, MgtKeyType KeyType, string MgtKey, string FileID,
+            string UserID = null)
+        {
+            if (string.IsNullOrEmpty(MgtKey)) throw new PopbillException(-99999999, "관리번호가 입력되지 않았습니다.");
+            if (string.IsNullOrEmpty(FileID)) throw new PopbillException(-99999999, "파일 아이디가 입력되지 않았습니다.");
+
+            return httppost<Response>("/Taxinvoice/" + KeyType.ToString() + "/" + MgtKey + "/Files/" + FileID, CorpNum,
+                null, "DELETE", null, UserID);
+        }
+
+        //첨부파일 목록 확인
+        public List<AttachedFile> GetFiles(string CorpNum, MgtKeyType KeyType, string MgtKey, string UserID = null)
+        {
+            if (string.IsNullOrEmpty(MgtKey)) throw new PopbillException(-99999999, "관리번호가 입력되지 않았습니다.");
+
+            return httpget<List<AttachedFile>>("/Taxinvoice/" + KeyType.ToString() + "/" + MgtKey + "/Files", CorpNum,
+                UserID);
+        }
+
+        //메일 전송
+        public Response SendEmail(string CorpNum, MgtKeyType KeyType, string MgtKey, string Receiver,
+            string UserID = null)
+        {
+            if (string.IsNullOrEmpty(MgtKey)) throw new PopbillException(-99999999, "관리번호가 입력되지 않았습니다.");
+
+            ResendRequest request = new ResendRequest {receiver = Receiver};
+
+            string PostData = toJsonString(request);
+
+            return httppost<Response>("/Taxinvoice/" + KeyType.ToString() + "/" + MgtKey, CorpNum, PostData, "EMAIL",
+                null, UserID);
+        }
+
+        //문자 전송
+        public Response SendSMS(string CorpNum, MgtKeyType KeyType, string MgtKey, string Sender, string Receiver,
+            string Contents, string UserID = null)
+        {
+            if (string.IsNullOrEmpty(MgtKey)) throw new PopbillException(-99999999, "관리번호가 입력되지 않았습니다.");
+
+            ResendRequest request = new ResendRequest {sender = Sender, receiver = Receiver, contents = Contents};
+
+            string PostData = toJsonString(request);
+
+            return httppost<Response>("/Taxinvoice/" + KeyType.ToString() + "/" + MgtKey, CorpNum, PostData,
+                "SMS", null, UserID);
+        }
+
+        //팩스 전송
+        public Response SendFAX(string CorpNum, MgtKeyType KeyType, string MgtKey, string Sender, string Receiver,
+            string UserID = null)
+        {
+            if (string.IsNullOrEmpty(MgtKey)) throw new PopbillException(-99999999, "관리번호가 입력되지 않았습니다.");
+
+            ResendRequest request = new ResendRequest {sender = Sender, receiver = Receiver};
+
+            string PostData = toJsonString(request);
+
+            return httppost<Response>("/Taxinvoice/" + KeyType.ToString() + "/" + MgtKey, CorpNum, PostData,
+                "FAX", null, UserID);
+        }
+
+        //전자명세서 첨부
+        public Response AttachStatement(string CorpNum, MgtKeyType KeyType, string MgtKey, int DocItemCode,
+            string DocMgtKey, string UserID = null)
+        {
+            string uri = "/Taxinvoice/" + KeyType + "/" + MgtKey + "/AttachStmt";
+
+            DocRequest request = new DocRequest {ItemCode = DocItemCode, MgtKey = DocMgtKey};
+
+            string PostData = toJsonString(request);
+
+            return httppost<Response>(uri, CorpNum, PostData, null, null, UserID);
+        }
+
+        //전자명세서 첨부해제
+        public Response DetachStatement(string CorpNum, MgtKeyType KeyType, string MgtKey, int DocItemCode,
+            string DocMgtKey, string UserID = null)
+        {
+            string uri = "/Taxinvoice/" + KeyType + "/" + MgtKey + "/DetachStmt";
+
+            DocRequest request = new DocRequest {ItemCode = DocItemCode, MgtKey = DocMgtKey};
+
+            string PostData = toJsonString(request);
+
+            return httppost<Response>(uri, CorpNum, PostData, null, null, UserID);
+        }
+
+        //유통사업자 메일 목록 확인
+        public List<EmailPublicKey> GetEmailPublicKeys(string CorpNum, string UserID = null)
+        {
+            return httpget<List<EmailPublicKey>>("/Taxinvoice/EmailPublicKeys", CorpNum, UserID);
+        }
+
+        //관리번호 할당
+        public Response AssignMgtKey(string CorpNum, MgtKeyType KeyType, string ItemKey, string MgtKey,
+            string UserID = null)
+        {
+            if (string.IsNullOrEmpty(MgtKey)) throw new PopbillException(-99999999, "할당할 문서관리번호가 입력되지 않았습니다.");
+
+            string PostData = "MgtKey=" + MgtKey;
+
+            return httppost<Response>("/Taxinvoice/" + ItemKey + "/" + KeyType, CorpNum, PostData, null,
+                "application/x-www-form-urlencoded; charset=utf-8", UserID);
+        }
+
+        //알림메일 전송목록 조회
+        public List<EmailConfig> ListEmailConfig(string CorpNum, string UserID = null)
+        {
+            return httpget<List<EmailConfig>>("/Taxinvoice/EmailSendConfig", CorpNum, UserID);
+        }
+
+        //알림메일 전송설정 수정
+        public Response UpdateEmailConfig(string CorpNum, string EmailType, bool SendYN, string UserID = null)
+        {
+            if (string.IsNullOrEmpty(EmailType)) throw new PopbillException(-99999999, "메일전송 타입이 입력되지 않았습니다.");
+
+            string uri = "/Taxinvoice/EmailSendConfig?EmailType=" + EmailType + "&SendYN=" + SendYN;
+
+            return httppost<Response>(uri, CorpNum, null, null, null, UserID);
+        }
+
+        #endregion
+
+        #region Certificate API
+
+        //공인인증서 만료일 확인
+        public DateTime GetCertificateExpireDate(string CorpNum, string UserID = null)
+        {
+            CertResponse response = httpget<CertResponse>("/Taxinvoice?cfg=CERT", CorpNum, UserID);
+
+            return DateTime.ParseExact(response.certificateExpiration, "yyyyMMddHHmmss", null);
+        }
+
+        //공인인증서 유효성 확인
+        public Response CheckCertValidation(string CorpNum, string UserID = null)
+        {
+            return httpget<Response>("/Taxinvoice/CertCheck", CorpNum, UserID);
+        }
+
+        #endregion
+
+        #region Point API
+
+        //발행단가 확인
+        public Single GetUnitCost(String CorpNum, string UserID = null)
+        {
+            UnitCostResponse response = httpget<UnitCostResponse>("/Taxinvoice?cfg=UNITCOST", CorpNum, UserID);
+
+            return response.unitCost;
+        }
+
+        //과금정보 확인
+        public ChargeInfo GetChargeInfo(string CorpNum, string UserID = null)
+        {
+            ChargeInfo response = httpget<ChargeInfo>("/Taxinvoice/ChargeInfo", CorpNum, UserID);
+
+            return response;
+        }
+
+        #endregion
+
+        [DataContract]
+        private class IssueRequest
+        {
+            [DataMember] public string memo;
+            [DataMember] public string emailSubject;
+            [DataMember] public bool forceIssue = false;
+        }
+
+        [DataContract]
+        private class MemoRequest
+        {
+            [DataMember] public string memo;
+            [DataMember] public string emailSubject;
+        }
+
+        [DataContract]
+        private class ResendRequest
+        {
+            [DataMember] public string receiver;
+            [DataMember] public string sender = null;
+            [DataMember] public string contents = null;
+        }
+
+        [DataContract]
+        private class DocRequest
+        {
+            [DataMember] public int ItemCode;
+            [DataMember] public string MgtKey;
+        }
+
+        [DataContract]
+        public class CertResponse
+        {
+            [DataMember] public string certificateExpiration;
+        }
+    }
+}
