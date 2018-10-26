@@ -1,16 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
     <PropertyGroup>
         <PackageId>Popbill</PackageId>
-        <Version>1.0.1</Version>
-        <Authors>kimhyunjin</Authors>
-        <Company>Linkhub</Company>
-        
+        <Version>1.0.2</Version>
+        <Authors>Linkhub</Authors>
+        <Company>Linkhub</Company>        
         <TargetFramework>netcoreapp2.0</TargetFramework>
     </PropertyGroup>
-
     <ItemGroup>
-      <PackageReference Include="Linkhub" Version="1.0.1" />
+      <PackageReference Include="Linkhub" Version="1.0.3" />
     </ItemGroup>
-
 </Project>
