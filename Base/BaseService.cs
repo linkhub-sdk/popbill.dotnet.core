@@ -422,7 +422,7 @@ namespace Popbill
 
             try
             {
-                return httppost<Response>("/Join", "", "", postData);
+                return httppost<Response>("/Join", "", postData);
             }
             catch (LinkhubException le)
             {
@@ -431,7 +431,7 @@ namespace Popbill
         }
 
         //회사정보 확인
-        public CorpInfo GetCorpInfo(string CorpNum, string UserID)
+        public CorpInfo GetCorpInfo(string CorpNum, string UserID = null)
         {
             try
             {
@@ -444,7 +444,7 @@ namespace Popbill
         }
 
         //회사정보 수정
-        public Response UpdateCorpInfo(string CorpNum, CorpInfo corpInfo, string UserID)
+        public Response UpdateCorpInfo(string CorpNum, CorpInfo corpInfo, string UserID = null)
         {
             if (corpInfo == null) throw new PopbillException(-99999999, "No CorpInfo data");
 
@@ -452,7 +452,7 @@ namespace Popbill
 
             try
             {
-                return httppost<Response>("/CorpInfo", CorpNum, UserID, PostData, null);
+                return httppost<Response>("/CorpInfo", CorpNum, PostData, "", "", UserID);
             }
             catch (LinkhubException le)
             {
@@ -461,7 +461,7 @@ namespace Popbill
         }
 
         //담당자 등록
-        public Response RegistContact(string CorpNum, Contact contactInfo, string UserID)
+        public Response RegistContact(string CorpNum, Contact contactInfo, string UserID = null)
         {
             if (contactInfo == null) throw new PopbillException(-99999999, "No ContactInfo form");
 
@@ -469,7 +469,7 @@ namespace Popbill
 
             try
             {
-                return httppost<Response>("/IDs/New", CorpNum, UserID, postData, null);
+                return httppost<Response>("/IDs/New", CorpNum, postData, "", "", UserID);
             }
             catch (LinkhubException le)
             {
@@ -478,7 +478,7 @@ namespace Popbill
         }
 
         //담당자 목록 확인
-        public List<Contact> ListContact(string CorpNum, string UserID)
+        public List<Contact> ListContact(string CorpNum, string UserID = null)
         {
             try
             {
@@ -491,7 +491,7 @@ namespace Popbill
         }
 
         //담당자 정보 수정
-        public Response UpdateContact(string CorpNum, Contact contactInfo, string UserID)
+        public Response UpdateContact(string CorpNum, Contact contactInfo, string UserID = null)
         {
             if (contactInfo == null) throw new PopbillException(-99999999, "No ContactInfo form");
 
@@ -499,7 +499,7 @@ namespace Popbill
 
             try
             {
-                return httppost<Response>("/IDs", CorpNum, UserID, PostData);
+                return httppost<Response>("/IDs", CorpNum, PostData, "", "", UserID);
             }
             catch (LinkhubException le)
             {
