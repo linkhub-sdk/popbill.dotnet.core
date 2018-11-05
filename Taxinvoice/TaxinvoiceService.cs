@@ -6,18 +6,18 @@ using System.Runtime.Serialization;
 
 namespace Popbill.Taxinvoice
 {
+    public enum MgtKeyType
+    {
+        SELL,
+        BUY,
+        TRUSTEE
+    }
+
     public class TaxinvoiceService : BaseService
     {
         public TaxinvoiceService(string LinkID, string SecretKey) : base(LinkID, SecretKey)
         {
             this.AddScope("110");
-        }
-
-        public enum MgtKeyType
-        {
-            SELL,
-            BUY,
-            TRUSTEE
         }
 
         #region Issue API
@@ -415,9 +415,8 @@ namespace Popbill.Taxinvoice
 
             files.Add(item: file);
 
-            return httppostFile<Response>(url: "/Taxinvoice/" + KeyType.ToString() + "/" + MgtKey + "/Files",
-                CorpNum: CorpNum, form: null,
-                UploadFiles: files, httpMethod: null, UserID: UserID);
+            return httppostFile<Response>("/Taxinvoice/" + KeyType.ToString() + "/" + MgtKey + "/Files", CorpNum, null,
+                files, null, UserID);
         }
 
         //첨부파일 삭제
@@ -565,7 +564,7 @@ namespace Popbill.Taxinvoice
         #region Point API
 
         //발행단가 확인
-        public Single GetUnitCost(String CorpNum, string UserID = null)
+        public Single GetUnitCost(string CorpNum, string UserID = null)
         {
             UnitCostResponse response = httpget<UnitCostResponse>("/Taxinvoice?cfg=UNITCOST", CorpNum, UserID);
 
