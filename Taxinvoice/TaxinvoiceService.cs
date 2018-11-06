@@ -268,8 +268,9 @@ namespace Popbill.Taxinvoice
 
         //목록 조회
         public TISearchResult Search(string CorpNum, MgtKeyType KeyType, string DType, string SDate, string EDate,
-            string[] State, string[] Type, string[] TaxType, string[] IssueType, bool? LateOnly, string TaxRegIDYN,
-            string TaxRegIDType, string TaxRegID, int Page, int PerPage, string Order, string QString, string InterOPYN,
+            string[] State = null, string[] Type = null, string[] TaxType = null, string[] IssueType = null,
+            bool? LateOnly = null, string TaxRegIDYN = null, string TaxRegIDType = null, string TaxRegID = null,
+            int? Page = null, int? PerPage = null, string Order = null, string QString = null, string InterOPYN = null,
             string UserID = null)
         {
             if (string.IsNullOrEmpty(DType)) throw new PopbillException(-99999999, "검색일자 유형이 입력되지 않았습니다.");
@@ -280,11 +281,11 @@ namespace Popbill.Taxinvoice
             uri += "?DType=" + DType;
             uri += "&SDate=" + SDate;
             uri += "&EDate=" + EDate;
-            uri += "&State=" + string.Join(",", State);
-            uri += "&Type=" + string.Join(",", Type);
-            uri += "&TaxType=" + string.Join(",", TaxType);
+            
+            if (State != null) uri += "&State=" + string.Join(",", State);
+            if (Type != null) uri += "&Type=" + string.Join(",", Type);
+            if (TaxType != null) uri += "&TaxType=" + string.Join(",", TaxType);
             if (IssueType != null) uri += "&IssueType=" + string.Join(",", IssueType);
-
             if (LateOnly != null)
             {
                 if ((bool) LateOnly)
@@ -296,15 +297,14 @@ namespace Popbill.Taxinvoice
                     uri += "&LateOnly=0";
                 }
             }
-
-            if (TaxRegIDYN != "") uri += "&TaxRegIDYN=" + TaxRegIDYN;
-            uri += "&InterOPYN=" + InterOPYN;
-            uri += "&TaxRegIDType=" + TaxRegIDType;
-            uri += "&TaxRegID=" + TaxRegID;
-            uri += "&QString=" + QString;
-            uri += "&Order=" + Order;
-            uri += "&Page=" + Page.ToString();
-            uri += "&PerPage=" + PerPage.ToString();
+            if (TaxRegIDYN != null) uri += "&TaxRegIDYN=" + TaxRegIDYN;
+            if (TaxRegIDType != null) uri += "&TaxRegIDType=" + TaxRegIDType;
+            if (TaxRegID != null)  uri += "&TaxRegID=" + TaxRegID;
+            if (Page != null) uri += "&Page=" + Page.ToString();
+            if (PerPage != null)  uri += "&PerPage=" + PerPage.ToString();
+            if (Order != null) uri += "&Order=" + Order;
+            if (QString != null) uri += "&QString=" + QString;
+            if (InterOPYN != null) uri += "&InterOPYN=" + InterOPYN;
 
             return httpget<TISearchResult>(uri, CorpNum, UserID);
         }

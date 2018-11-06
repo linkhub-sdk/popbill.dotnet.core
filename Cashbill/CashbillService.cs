@@ -180,8 +180,8 @@ namespace Popbill.Cashbill
         }
 
         //목록 조회
-        public CBSearchResult Search(string CorpNum, string DType, string SDate = null, string EDate = null,
-            string[] State = null, string[] TradeType = null, string[] TradeUsage = null, string[] TradeOpt = null,
+        public CBSearchResult Search(string CorpNum, string DType, string SDate, string EDate, string[] State = null,
+            string[] TradeType = null, string[] TradeUsage = null, string[] TradeOpt = null,
             string[] TaxationType = null, int? Page = null, int? PerPage = null, string Order = null,
             string QString = null, string UserID = null)
         {
@@ -193,15 +193,15 @@ namespace Popbill.Cashbill
             uri += "?DType=" + DType;
             uri += "&SDate=" + SDate;
             uri += "&EDate=" + EDate;
-            uri += "&State=" + string.Join(",", State);
-            uri += "&TradeType=" + string.Join(",", TradeType);
-            uri += "&TradeUsage=" + string.Join(",", TradeUsage);
-            uri += "&TradeOpt=" + string.Join(",", TradeOpt);
-            uri += "&TaxationType=" + string.Join(",", TaxationType);
-            uri += "&Order=" + Order;
-            uri += "&Page=" + Page.ToString();
-            uri += "&PerPage=" + PerPage.ToString();
-            uri += "&QString=" + QString;
+            if (State != null) uri += "&State=" + string.Join(",", State);
+            if (TradeType != null) uri += "&TradeType=" + string.Join(",", TradeType);
+            if (TradeUsage != null) uri += "&TradeUsage=" + string.Join(",", TradeUsage);
+            if (TradeOpt != null) uri += "&TradeOpt=" + string.Join(",", TradeOpt);
+            if (TaxationType != null) uri += "&TaxationType=" + string.Join(",", TaxationType);
+            if (Page != null) uri += "&Page=" + Page.ToString();
+            if (PerPage != null) uri += "&PerPage=" + PerPage.ToString();
+            if (Order != null) uri += "&Order=" + Order;
+            if (QString != null) uri += "&QString=" + QString;
 
             return httpget<CBSearchResult>(uri, CorpNum, UserID);
         }
@@ -347,6 +347,7 @@ namespace Popbill.Cashbill
         #endregion
 
         #region Point API
+
         //발행단가 확인
         public Single GetUnitCost(string CorpNum, string UserID = null)
         {

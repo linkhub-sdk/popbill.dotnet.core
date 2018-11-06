@@ -159,10 +159,10 @@ namespace Popbill.Kakao
             request.altContent = altContent;
             request.altSendType = altSendType;
             request.adsYN = adsYN;
-            request.requestNum = requestNum;
             request.sndDT = sndDT == null ? null : sndDT.Value.ToString("yyyyMMddHHmmss");
             request.msgs = receivers;
             request.btns = buttons;
+            request.requestNum = requestNum;
 
             string PostDate = toJsonString(request);
 
@@ -220,12 +220,12 @@ namespace Popbill.Kakao
             request.content = content;
             request.altContent = altContent;
             request.altSendType = altSendType;
-            request.adsYN = adsYN;
-            request.requestNum = requestNum;
             request.sndDT = sndDT == null ? null : sndDT.Value.ToString(format: "yyyyMMddHHmmss");
+            request.adsYN = adsYN;
+            request.imageURL = imageURL;
             request.msgs = receivers;
             request.btns = buttons;
-            request.imageURL = imageURL;
+            request.requestNum = requestNum;
 
             string PostDate = toJsonString(request);
 
@@ -293,26 +293,23 @@ namespace Popbill.Kakao
 
         //전송내역 목록 조회
         public KakaoSearchResult Search(string CorpNum, string SDate, string EDate, string[] State = null,
-            string[] Item = null, string ReserveYN = null, bool? SenderYN = false, string Order = null,
-            int? Page = null, int? PerPage = null, string Qstring = null, string UserID = null)
+            string[] Item = null, string ReserveYN = null, bool? SenderYN = false, int? Page = null,
+            int? PerPage = null, string Order = null, string Qstring = null, string UserID = null)
         {
             if (string.IsNullOrEmpty(SDate)) throw new PopbillException(-99999999, "시작일자가 입력되지 않았습니다.");
             if (string.IsNullOrEmpty(EDate)) throw new PopbillException(-99999999, "종료일자가 입력되지 않았습니다.");
 
-
             string uri = "/KakaoTalk/Search";
             uri += "?SDate=" + SDate;
             uri += "&EDate=" + EDate;
-            uri += "&State=" + string.Join(",", State);
-            uri += "&Item=" + string.Join(",", Item);
-
-            uri += "&ReserveYN=" + ReserveYN;
-            if ((bool) SenderYN) uri += "&SenderYN=1";
+            if (State != null) uri += "&State=" + string.Join(",", State);
+            if (Item != null) uri += "&Item=" + string.Join(",", Item);
+            if (ReserveYN != null) uri += "&ReserveYN=" + ReserveYN;
+            if (SenderYN != null && (bool) SenderYN) uri += "&SenderYN=1";
+            if (Page != null) uri += "&Page=" + Page.ToString();
+            if (PerPage != null) uri += "&PerPage=" + PerPage.ToString();
+            if (Order != null) uri += "&Order=" + Order;
             if (Qstring != null) uri += "&Qstring=" + Qstring;
-
-            uri += "&Order=" + Order;
-            uri += "&Page=" + Page.ToString();
-            uri += "&PerPage=" + PerPage.ToString();
 
             return httpget<KakaoSearchResult>(uri, CorpNum, UserID);
         }
@@ -325,7 +322,7 @@ namespace Popbill.Kakao
         public Single GetUnitCost(string CorpNum, KakaoType msgType, string UserID = null)
         {
             UnitCostResponse response =
-                httpget<UnitCostResponse>("/KakaoTalk/UnitCost?Type=" + msgType.ToString(), CorpNum, null);
+                httpget<UnitCostResponse>("/KakaoTalk/UnitCost?Type=" + msgType.ToString(), CorpNum, UserID);
 
             return response.unitCost;
         }
