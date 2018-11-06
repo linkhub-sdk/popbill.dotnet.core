@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using System.Runtime.Serialization;
 
 namespace Popbill.Statement
@@ -7,23 +5,14 @@ namespace Popbill.Statement
     [DataContract]
     public class StatementLog
     {
-        [DataMember]
-        public int docLogType;
-        [DataMember]
-        public String log;
-        [DataMember]
-        public String procType;
-        [DataMember]
-        public String procName;
-        [DataMember]
-        public String procCorpName;
-        [DataMember]
-        public String procContactName;
-        [DataMember]
-        public String procMemo;
-        [DataMember]
-        public String regDT;
-        [DataMember]
-        public String ip;
+        [DataMember] public int docLogType;
+        [DataMember] public string log;
+        [DataMember] public string procType;
+        [DataMember] public string procName;
+        [DataMember] public string procCorpName;
+        [DataMember] public string procContactName;
+        [DataMember] public string procMemo;
+        [DataMember] public string regDT;
+        [DataMember] public string ip;
     }
 }

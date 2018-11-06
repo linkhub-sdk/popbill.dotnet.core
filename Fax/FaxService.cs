@@ -17,7 +17,7 @@ namespace Popbill.Fax
         #region 발신번호 API
 
         //발신번호 관리 팝업 URL, 팩스 전송내역 팝업 URL
-        public string GetURL(string CorpNum, string UserID, string TOGO)
+        public string GetURL(string CorpNum, string TOGO, string UserID = null)
         {
             URLResponse response = httpget<URLResponse>("/FAX/?TG=" + TOGO, CorpNum, UserID);
 
@@ -25,7 +25,7 @@ namespace Popbill.Fax
         }
 
         //발신번호 목록 확인
-        public List<SenderNumber> GetSenderNumberList(string CorpNum, string UserID)
+        public List<SenderNumber> GetSenderNumberList(string CorpNum, string UserID = null)
         {
             return httpget<List<SenderNumber>>("/FAX/SenderNumber", CorpNum, UserID);
         }
@@ -78,7 +78,7 @@ namespace Popbill.Fax
             request.title = title;
             request.fCnt = filePaths.Count;
             request.sndDT = reserveDT == null ? null : reserveDT.Value.ToString("yyyyMMddHHmmss");
-            if (adsYN) request.adsYN = adsYN;
+            request.adsYN = adsYN;
             request.requestNum = requestNum;
             request.rcvs = receivers;
 
@@ -105,7 +105,7 @@ namespace Popbill.Fax
                 receivers.Add(receiver);
             }
 
-            return ResendFAX(CorpNum, receiptNum, snd, sndnm, receivers, title, reserveDT, receiptNum, UserID);
+            return ResendFAX(CorpNum, receiptNum, snd, sndnm, receivers, title, reserveDT, requestNum, UserID);
         }
 
         //팩스 동보 재전송
@@ -119,14 +119,15 @@ namespace Popbill.Fax
 
             if (snd != "") request.snd = snd;
             if (sndnm != "") request.sndnm = sndnm;
+            if (receivers != null) request.rcvs = receivers;
             if (title != null) request.title = title;
             if (reserveDT != null) reserveDT.Value.ToString("yyyyMMddHHmmss");
-            if (receivers != null) request.rcvs = receivers;
+            if (requestNum != null) request.requestNum = requestNum;
 
             string PostData = toJsonString(request);
 
             ReceiptResponse response;
-            response = httppost<ReceiptResponse>("/FAX/" + receiptNum, CorpNum, UserID, PostData, "");
+            response = httppost<ReceiptResponse>("/FAX/" + receiptNum, CorpNum, PostData, null, null, UserID);
 
             return response.receiptNum;
         }
@@ -162,22 +163,22 @@ namespace Popbill.Fax
 
             if (snd != "") request.snd = snd;
             if (sndnm != "") request.sndnm = sndnm;
+            if (receivers != null) request.rcvs = receivers;
             if (assignRequestNum != "") request.requestNum = assignRequestNum;
             if (title != null) request.title = title;
             if (reserveDT != null) reserveDT.Value.ToString("yyyyMMddHHmmss");
-            if (receivers != null) request.rcvs = receivers;
 
 
-            String PostData = toJsonString(request);
+            string PostData = toJsonString(request);
 
             ReceiptResponse response;
-            response = httppost<ReceiptResponse>("/FAX/Resend/" + orgRequestNum, CorpNum, UserID, PostData, "");
+            response = httppost<ReceiptResponse>("/FAX/Resend/" + orgRequestNum, CorpNum, PostData, null, null, UserID);
 
             return response.receiptNum;
         }
 
         //예약전송 취소
-        public Response CancelReserve(string CorpNum, string receiptNum, string UserID)
+        public Response CancelReserve(string CorpNum, string receiptNum, string UserID = null)
         {
             if (string.IsNullOrEmpty(receiptNum)) throw new PopbillException(-99999999, "접수번호가 입력되지 않았습니다.");
 
@@ -185,7 +186,7 @@ namespace Popbill.Fax
         }
 
         //예약전송 취소 - 요청번호 할당
-        public Response CancelReserveRN(string CorpNum, string requestNum, string UserID)
+        public Response CancelReserveRN(string CorpNum, string requestNum, string UserID = null)
         {
             if (string.IsNullOrEmpty(requestNum))
                 throw new PopbillException(-99999999, "요청번호(requestNum)가 입력되지 않았습니다.");
@@ -198,13 +199,16 @@ namespace Popbill.Fax
         #region Info API
 
         //전송내역 및 전송상태 확인
-        public List<FaxResult> GetFaxResultRN(string CorpNum, string requestNum)
+        public List<FaxResult> GetFaxResult(string CorpNum, string receiptNum, string UserID = null)
         {
-            return GetFaxResultRN(CorpNum, requestNum, null);
+            if (string.IsNullOrEmpty(receiptNum))
+                throw new PopbillException(-99999999, "접수번호가 입력되지 않았습니다.");
+
+            return httpget<List<FaxResult>>("/FAX/" + receiptNum, CorpNum, UserID);
         }
-        
+
         //전송내역 및 전송상태 확인 - 요청번호 할당
-        public List<FaxResult> GetFaxResultRN(string CorpNum, string requestNum, string UserID)
+        public List<FaxResult> GetFaxResultRN(string CorpNum, string requestNum, string UserID = null)
         {
             if (string.IsNullOrEmpty(requestNum))
                 throw new PopbillException(-99999999, "요청번호(requestNum)가 입력되지 않았습니다.");
@@ -213,8 +217,9 @@ namespace Popbill.Fax
         }
 
         //전송내역 목록 조회
-        public FAXSearchResult Search(string CorpNum, string SDate, string EDate, string[] State, bool? ReserveYN,
-            bool? SenderOnly, string Order, int Page, int PerPage, string Qstring)
+        public FAXSearchResult Search(string CorpNum, string SDate, string EDate, string[] State = null,
+            bool? ReserveYN = null, bool? SenderOnly = null, int? Page = null, int? PerPage = null, string Order = null,
+            string Qstring = null, string UserID = null)
         {
             if (string.IsNullOrEmpty(SDate)) throw new PopbillException(-99999999, "시작일자가 입력되지 않았습니다.");
             if (string.IsNullOrEmpty(EDate)) throw new PopbillException(-99999999, "종료일자가 입력되지 않았습니다.");
@@ -222,22 +227,19 @@ namespace Popbill.Fax
             string uri = "/FAX/Search";
             uri += "?SDate=" + SDate;
             uri += "&EDate=" + EDate;
-            uri += "&State=" + string.Join(",", State);
-
-            if ((bool) ReserveYN) uri += "&ReserveYN=1";
-            if ((bool) SenderOnly) uri += "&SenderOnly=1";
-
+            if (State != null) uri += "&State=" + string.Join(",", State);
+            if (ReserveYN != null && (bool) ReserveYN) uri += "&ReserveYN=1";
+            if (SenderOnly != null && (bool) SenderOnly) uri += "&SenderOnly=1";
+            if (Page != null) uri += "&Page=" + Page.ToString();
+            if (PerPage != null) uri += "&PerPage=" + PerPage.ToString();
+            if (Order != null) uri += "&Order=" + Order;
             if (Qstring != null) uri += "&Qstring=" + Qstring;
 
-            uri += "&Order=" + Order;
-            uri += "&Page=" + Page.ToString();
-            uri += "&PerPage=" + PerPage.ToString();
-
-            return httpget<FAXSearchResult>(uri, CorpNum, null);
+            return httpget<FAXSearchResult>(uri, CorpNum, UserID);
         }
 
         //팩스 미리보기 팝업 URL
-        public string GetPreviewURL(string corpNum, string receiptNum, string userID)
+        public string GetPreviewURL(string corpNum, string receiptNum, string userID = null)
         {
             if (string.IsNullOrEmpty(receiptNum)) throw new PopbillException(-99999999, "접수번호가 입력되지 않았습니다.");
 
@@ -251,7 +253,7 @@ namespace Popbill.Fax
         #region Point API
 
         //전송단가 확인
-        public Single GetUnitCost(string CorpNum, string UserID)
+        public Single GetUnitCost(string CorpNum, string UserID = null)
         {
             UnitCostResponse response = httpget<UnitCostResponse>("/FAX/UnitCost", CorpNum, UserID);
 
@@ -259,7 +261,7 @@ namespace Popbill.Fax
         }
 
         //과금정보 확인
-        public ChargeInfo GetChargeInfo(string CorpNum, string UserID)
+        public ChargeInfo GetChargeInfo(string CorpNum, string UserID = null)
         {
             ChargeInfo response = httpget<ChargeInfo>("/FAX/ChargeInfo", CorpNum, UserID);
 
