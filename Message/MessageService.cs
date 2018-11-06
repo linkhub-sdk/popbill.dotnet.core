@@ -42,8 +42,152 @@ namespace Popbill.Message
 
         #endregion
 
-
         #region Send API
+
+        //단문 단건 전송
+        public string SendSMS(string CorpNum, string snd, string sndnm, string rcv, string rcvnm, string content,
+            DateTime? sndDT = null, bool adsYN = false, string requestNum = null, string UserID = null)
+        {
+            List<Message> messages = new List<Message>();
+            Message msg = new Message();
+            msg.receiveNum = rcv;
+            msg.receiveName = rcvnm;
+            messages.Add(msg);
+
+            return sendMessage(MessageType.SMS, CorpNum, snd, sndnm, null, content, messages, sndDT, adsYN, requestNum,
+                UserID);
+        }
+
+        //단문 대량 전송
+        public string SendSMS(string CorpNum, string snd, string content, List<Message> messages,
+            DateTime? sndDT = null, bool adsYN = false, string requestNum = null, string UserID = null)
+        {
+            return sendMessage(MessageType.SMS, CorpNum, snd, null, null, content, messages, sndDT, adsYN, requestNum,
+                UserID);
+        }
+
+        //장문 단건 전송
+        public string SendLMS(string CorpNum, string snd, string sndnm, string rcv, string rcvnm, string subject,
+            string content, DateTime? sndDT = null, bool adsYN = false, string requestNum = null, string UserID = null)
+        {
+            List<Message> messages = new List<Message>();
+            Message msg = new Message();
+            msg.receiveNum = rcv;
+            msg.receiveName = rcvnm;
+            messages.Add(msg);
+
+            return sendMessage(MessageType.LMS, CorpNum, snd, sndnm, subject, content, messages, sndDT, adsYN,
+                requestNum, UserID);
+        }
+
+        //장문 대량 전송
+        public string SendLMS(string CorpNum, string snd, string subject, string content, List<Message> messages,
+            DateTime? sndDT = null, bool adsYN = false, string requestNum = null, string UserID = null)
+        {
+            return sendMessage(MessageType.LMS, CorpNum, snd, null, subject, content, messages, sndDT, adsYN,
+                requestNum, UserID);
+        }
+
+        //단문/장문 자동인식 단건 전송
+        public string SendXMS(string CorpNum, string snd, string sndnm, string rcv, string rcvnm, string subject,
+            string content, DateTime? sndDT = null, bool adsYN = false, string requestNum = null, string UserID = null)
+        {
+            List<Message> messages = new List<Message>();
+            Message msg = new Message();
+            msg.receiveNum = rcv;
+            msg.receiveName = rcvnm;
+            messages.Add(msg);
+
+            return sendMessage(MessageType.XMS, CorpNum, snd, sndnm, subject, content, messages, sndDT, adsYN,
+                requestNum, UserID);
+        }
+
+        //단문/장문 자동인식 대량 전송
+        public string SendXMS(string CorpNum, string snd, string subject, string content, List<Message> messages,
+            DateTime? sndDT = null, bool adsYN = false, string requestNum = null, string UserID = null)
+        {
+            return sendMessage(MessageType.XMS, CorpNum, snd, null, subject, content, messages, sndDT, adsYN,
+                requestNum, UserID);
+        }
+
+        //sendMessage (SMS / LMS / XMS)
+        private string sendMessage(MessageType msgType, string CorpNum, string snd, string sndnm,
+            string subject, string content, List<Message> messages, DateTime? sndDT, bool adsYN,
+            string requestNum, string UserID)
+        {
+            if (messages == null || messages.Count == 0)
+                throw new PopbillException(-99999999, "전송할 메시지가 입력되지 않았습니다.");
+
+            sendRequest request = new sendRequest();
+
+            request.snd = snd;
+            request.sndnm = sndnm;
+            request.subject = subject;
+            request.content = content;
+            request.msgs = messages;
+            request.sndDT = sndDT == null ? null : sndDT.Value.ToString("yyyyMMddHHmmss");
+            request.adsYN = adsYN;
+            request.requestNum = requestNum;
+
+            string PostData = toJsonString(request);
+
+            ReceiptResponse response =
+                httppost<ReceiptResponse>("/" + msgType.ToString(), CorpNum, PostData, null, null, UserID);
+
+            return response.receiptNum;
+        }
+
+        //포토 단건 전송
+        public string SendMMS(string CorpNum, string snd, string sndnm, string rcv, string rcvnm,
+            string subject, string content, string mmsfilepath, DateTime? sndDT = null, bool adsYN = false,
+            string requestNum = null, string UserID = null)
+        {
+            List<Message> messages = new List<Message>();
+            Message msg = new Message();
+            msg.receiveNum = rcv;
+            msg.receiveName = rcvnm;
+            messages.Add(msg);
+
+            return SendMMS(CorpNum, snd, sndnm, subject, content, messages, mmsfilepath, sndDT, adsYN, requestNum,
+                UserID);
+        }
+
+        //포토 대량 전송
+        public string SendMMS(string CorpNum, string snd, string sndnm, string subject, string content,
+            List<Message> messages, string mmsfilepath, DateTime? sndDT = null, bool adsYN = false,
+            string requestNum = null, string UserID = null)
+        {
+            if (messages == null || messages.Count == 0)
+                throw new PopbillException(-99999999, "전송할 메시지가 입력되지 않았습니다.");
+
+            sendRequest request = new sendRequest();
+
+            request.snd = snd;
+            request.sndnm = sndnm;
+            request.subject = subject;
+            request.content = content;
+            request.msgs = messages;
+            request.sndDT = sndDT == null ? null : sndDT.Value.ToString("yyyyMMddHHmmss");
+            request.adsYN = adsYN;
+            request.requestNum = requestNum;
+
+            string PostData = toJsonString(request);
+
+            List<UploadFile> UploadFiles = new List<UploadFile>();
+
+            UploadFile uf = new UploadFile();
+
+            uf.FieldName = "file";
+            uf.FileName = System.IO.Path.GetFileName(mmsfilepath);
+            uf.FileData = new FileStream(mmsfilepath, FileMode.Open, FileAccess.Read);
+
+            UploadFiles.Add(uf);
+
+            ReceiptResponse response =
+                httppostFile<ReceiptResponse>("/MMS", CorpNum, PostData, UploadFiles, null, UserID);
+
+            return response.receiptNum;
+        }
 
         //예약전송 취소
         public Response CancelReserve(string CorpNum, string receiptNum, string UserID = null)
@@ -64,7 +208,6 @@ namespace Popbill.Message
         }
 
         #endregion
-
 
         #region Info API
 
@@ -127,7 +270,6 @@ namespace Popbill.Message
 
         #endregion
 
-
         #region Point API
 
         //전송단가 확인
@@ -159,7 +301,7 @@ namespace Popbill.Message
             [DataMember] public string sndDT = null;
             [DataMember] public string requestNum = null;
             [DataMember] public List<Message> msgs;
-            [DataMember] public Boolean adsYN = false;
+            [DataMember] public bool adsYN = false;
         }
 
         [DataContract]
