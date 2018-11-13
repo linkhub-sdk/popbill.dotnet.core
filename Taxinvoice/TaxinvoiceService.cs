@@ -182,6 +182,18 @@ namespace Popbill.Taxinvoice
                 UserID);
         }
 
+        //즉시 요청
+        public Response RegistRequest(string CorpNum, Taxinvoice taxinvoice, string Memo = null, string UserID = null)
+        {
+            if (taxinvoice == null) throw new PopbillException(-99999999, "세금계산서 정보가 입력되지 않았습니다.");
+
+            taxinvoice.memo = Memo;
+
+            string PostData = toJsonString(taxinvoice);
+
+            return httppost<Response>("/Taxinvoice", CorpNum, PostData, "REQUEST", null, UserID);
+        }
+
         //역발행요청
         public Response Request(string CorpNum, MgtKeyType KeyType, string MgtKey, string Memo = null,
             string UserID = null)
@@ -281,7 +293,7 @@ namespace Popbill.Taxinvoice
             uri += "?DType=" + DType;
             uri += "&SDate=" + SDate;
             uri += "&EDate=" + EDate;
-            
+
             if (State != null) uri += "&State=" + string.Join(",", State);
             if (Type != null) uri += "&Type=" + string.Join(",", Type);
             if (TaxType != null) uri += "&TaxType=" + string.Join(",", TaxType);
@@ -297,11 +309,12 @@ namespace Popbill.Taxinvoice
                     uri += "&LateOnly=0";
                 }
             }
+
             if (TaxRegIDYN != null) uri += "&TaxRegIDYN=" + TaxRegIDYN;
             if (TaxRegIDType != null) uri += "&TaxRegIDType=" + TaxRegIDType;
-            if (TaxRegID != null)  uri += "&TaxRegID=" + TaxRegID;
+            if (TaxRegID != null) uri += "&TaxRegID=" + TaxRegID;
             if (Page != null) uri += "&Page=" + Page.ToString();
-            if (PerPage != null)  uri += "&PerPage=" + PerPage.ToString();
+            if (PerPage != null) uri += "&PerPage=" + PerPage.ToString();
             if (Order != null) uri += "&Order=" + Order;
             if (QString != null) uri += "&QString=" + QString;
             if (InterOPYN != null) uri += "&InterOPYN=" + InterOPYN;
@@ -393,6 +406,14 @@ namespace Popbill.Taxinvoice
         #endregion
 
         #region Add Ons API
+
+        //팝빌 인감 및 첨부문서 등록 URL
+        public string GetSealURL(string CorpNum, string UserID = null)
+        {
+            URLResponse response = httpget<URLResponse>("/?TG=SEAL", CorpNum, UserID);
+
+            return response.url;
+        }
 
         //첨부파일 추가
         public Response AttachFile(string CorpNum, MgtKeyType KeyType, string MgtKey, string FilePath,
@@ -544,6 +565,14 @@ namespace Popbill.Taxinvoice
         #endregion
 
         #region Certificate API
+
+        //공인인증서 등록 URL
+        public string GetTaxCertURL(string CorpNum, string UserID = null)
+        {
+            URLResponse response = httpget<URLResponse>("/?TG=CERT", CorpNum, UserID);
+
+            return response.url;
+        }
 
         //공인인증서 만료일 확인
         public DateTime GetCertificateExpireDate(string CorpNum, string UserID = null)

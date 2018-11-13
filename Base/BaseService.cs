@@ -332,12 +332,12 @@ namespace Popbill
 
         #region Popbill API        
 
-        //팝빌 로그인 / 인감 및 첨부문서 등록 /공인인증서 등록 / 연동회원 포인트충전 팝업 URL
-        public string GetPopbillURL(string CorpNum, string TOGO, string UserID = null)
+        //팝빌 로그인
+        public string GetAccessURL(string CorpNum, string UserID = null)
         {
             try
             {
-                URLResponse response = httpget<URLResponse>("/?TG=" + TOGO, CorpNum, UserID);
+                URLResponse response = httpget<URLResponse>("/?TG=LOGIN", CorpNum, UserID);
 
                 return response.url;
             }
@@ -347,7 +347,22 @@ namespace Popbill
             }
         }
 
+        //연동회원 포인트충전 팝업 URL
+        public string GetChargeURL(string CorpNum, string UserID = null)
+        {
+            try
+            {
+                URLResponse response = httpget<URLResponse>("/?TG=CHRG", CorpNum, UserID);
 
+                return response.url;
+            }
+            catch (LinkhubException le)
+            {
+                throw new PopbillException(le);
+            }
+        }
+        
+        
         //연동회원 잔여포인트 확인
         public double GetBalance(string CorpNum)
         {
