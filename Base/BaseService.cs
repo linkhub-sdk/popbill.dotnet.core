@@ -333,7 +333,7 @@ namespace Popbill
         #region Popbill API        
 
         //팝빌 로그인
-        public string GetAccessURL(string CorpNum, string UserID = null)
+        public string GetAccessURL(string CorpNum, string UserID)
         {
             try
             {
@@ -348,7 +348,7 @@ namespace Popbill
         }
 
         //연동회원 포인트충전 팝업 URL
-        public string GetChargeURL(string CorpNum, string UserID = null)
+        public string GetChargeURL(string CorpNum, string UserID)
         {
             try
             {

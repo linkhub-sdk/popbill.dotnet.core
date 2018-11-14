@@ -332,7 +332,7 @@ namespace Popbill.Taxinvoice
         }
 
         //세금계산서 문서함 관련 URL
-        public string GetURL(string CorpNum, string TOGO, string UserID = null)
+        public string GetURL(string CorpNum, string TOGO, string UserID)
         {
             URLResponse response = httpget<URLResponse>("/Taxinvoice?TG=" + TOGO, CorpNum, UserID);
 
@@ -344,7 +344,7 @@ namespace Popbill.Taxinvoice
         #region PopUp/Print API
 
         //세금계산서 보기 URL
-        public string GetPopUpURL(string CorpNum, MgtKeyType KeyType, string MgtKey, string UserID = null)
+        public string GetPopUpURL(string CorpNum, MgtKeyType KeyType, string MgtKey, string UserID)
         {
             if (string.IsNullOrEmpty(MgtKey)) throw new PopbillException(-99999999, "관리번호가 입력되지 않았습니다.");
 
@@ -355,7 +355,7 @@ namespace Popbill.Taxinvoice
         }
 
         //세금계산서 인쇄 URL (공급자/공급받는자용 인쇄 팝업 뷰)
-        public string GetPrintURL(string CorpNum, MgtKeyType KeyType, string MgtKey, string UserID = null)
+        public string GetPrintURL(string CorpNum, MgtKeyType KeyType, string MgtKey, string UserID)
         {
             if (string.IsNullOrEmpty(MgtKey)) throw new PopbillException(-99999999, "관리번호가 입력되지 않았습니다.");
 
@@ -366,7 +366,7 @@ namespace Popbill.Taxinvoice
         }
 
         //세금계산서 인쇄 URL (공급받는자용 인쇄 팝업 뷰)
-        public string GetEPrintURL(string CorpNum, MgtKeyType KeyType, string MgtKey, string UserID = null)
+        public string GetEPrintURL(string CorpNum, MgtKeyType KeyType, string MgtKey, string UserID)
         {
             if (string.IsNullOrEmpty(MgtKey)) throw new PopbillException(-99999999, "관리번호가 입력되지 않았습니다.");
 
@@ -379,7 +379,7 @@ namespace Popbill.Taxinvoice
 
 
         //세금계산서 대량 인쇄 URL
-        public string GetMassPrintURL(string CorpNum, MgtKeyType KeyType, List<string> MgtKeyList, string UserID = null)
+        public string GetMassPrintURL(string CorpNum, MgtKeyType KeyType, List<string> MgtKeyList, string UserID)
         {
             if (MgtKeyList == null || MgtKeyList.Count == 0)
                 throw new PopbillException(-99999999, "관리번호 목록이 입력되지 않았습니다.");
@@ -393,7 +393,7 @@ namespace Popbill.Taxinvoice
         }
 
         //세금계산서 메일링크 URL
-        public string GetMailURL(string CorpNum, MgtKeyType KeyType, string MgtKey, string UserID = null)
+        public string GetMailURL(string CorpNum, MgtKeyType KeyType, string MgtKey, string UserID)
         {
             if (string.IsNullOrEmpty(MgtKey)) throw new PopbillException(-99999999, "관리번호가 입력되지 않았습니다.");
 
@@ -408,7 +408,7 @@ namespace Popbill.Taxinvoice
         #region Add Ons API
 
         //팝빌 인감 및 첨부문서 등록 URL
-        public string GetSealURL(string CorpNum, string UserID = null)
+        public string GetSealURL(string CorpNum, string UserID)
         {
             URLResponse response = httpget<URLResponse>("/?TG=SEAL", CorpNum, UserID);
 
@@ -567,7 +567,7 @@ namespace Popbill.Taxinvoice
         #region Certificate API
 
         //공인인증서 등록 URL
-        public string GetTaxCertURL(string CorpNum, string UserID = null)
+        public string GetTaxCertURL(string CorpNum, string UserID)
         {
             URLResponse response = httpget<URLResponse>("/?TG=CERT", CorpNum, UserID);
 
