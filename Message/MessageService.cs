@@ -24,10 +24,10 @@ namespace Popbill.Message
 
         #region 발신번호 API
 
-        //발신번호 관리 팝업, 문자저송 내역 팝업 URL
-        public string GetURL(string CorpNum, string TOGO, string UserID = null)
+        //발신번호 관리 팝업 URL
+        public string GetSenderNumberMgtURL(string CorpNum, string UserID)
         {
-            URLResponse response = httpget<URLResponse>("/Message/?TG=" + TOGO, CorpNum, UserID);
+            URLResponse response = httpget<URLResponse>("/Message/?TG=SENDER", CorpNum, UserID);
 
             return response.url;
         }
@@ -258,6 +258,14 @@ namespace Popbill.Message
             if (QString != null) uri += "&QString=" + QString;
 
             return httpget<MSGSearchResult>(uri, CorpNum, UserID);
+        }
+        
+        //문자 전송내역 팝업
+        public string GetSentListURL(string CorpNum, string UserID)
+        {
+            URLResponse response = httpget<URLResponse>("/Message/?TG=BOX", CorpNum, UserID);
+
+            return response.url;
         }
 
         //080 수신거부 목록 확인

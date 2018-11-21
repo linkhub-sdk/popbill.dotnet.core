@@ -15,15 +15,15 @@ namespace Popbill.Fax
         }
 
         #region 발신번호 API
-
-        //발신번호 관리 팝업 URL, 팩스 전송내역 팝업 URL
-        public string GetURL(string CorpNum, string TOGO, string UserID = null)
+  
+        //발신번호 관리 팝업 URL
+        public string GetSenderNumberMgtURL(string CorpNum, string UserID)
         {
-            URLResponse response = httpget<URLResponse>("/FAX/?TG=" + TOGO, CorpNum, UserID);
+            URLResponse response = httpget<URLResponse>("/FAX/?TG=SENDER", CorpNum, UserID);
 
             return response.url;
         }
-
+        
         //발신번호 목록 확인
         public List<SenderNumber> GetSenderNumberList(string CorpNum, string UserID = null)
         {
@@ -238,12 +238,20 @@ namespace Popbill.Fax
             return httpget<FAXSearchResult>(uri, CorpNum, UserID);
         }
 
+        //팩스 전송내역 팝업 URL
+        public string GetSentListURL(string CorpNum, string UserID)
+        {
+            URLResponse response = httpget<URLResponse>("/FAX/?TG=BOX", CorpNum, UserID);
+
+            return response.url;
+        }
+        
         //팩스 미리보기 팝업 URL
-        public string GetPreviewURL(string corpNum, string receiptNum, string userID = null)
+        public string GetPreviewURL(string corpNum, string receiptNum, string UserID = null)
         {
             if (string.IsNullOrEmpty(receiptNum)) throw new PopbillException(-99999999, "접수번호가 입력되지 않았습니다.");
 
-            URLResponse response = httpget<URLResponse>("/FAX/Preview/" + receiptNum, corpNum, userID);
+            URLResponse response = httpget<URLResponse>("/FAX/Preview/" + receiptNum, corpNum, UserID);
 
             return response.url;
         }

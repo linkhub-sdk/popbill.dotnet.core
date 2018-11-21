@@ -24,31 +24,43 @@ namespace Popbill.Kakao
         }
 
         #region Manage API
-
-        //플러스친구계정관리, 발신번호관리, 알림톡템플릿관리, 카카오톡전송내역 팝업 URL
-        public string GetURL(string CorpNum, string TOGO, string UserID = null)
+        
+        //플러스친구 계정관리 팝업 URL
+        public string GetPlusFriendMgtURL(string CorpNum, string UserID)
         {
-            string uri = "/KakaoTalk/?TG=";
-
-            if (TOGO == "SENDER") uri = "/Message/?TG=";
-
-            URLResponse response = httpget<URLResponse>(uri + TOGO, CorpNum, UserID);
+            URLResponse response = httpget<URLResponse>("/KakaoTalk/?TG=SENDER", CorpNum, UserID);
 
             return response.url;
         }
-
+        
         //플러스친구 목록 확인
         public List<PlusFriend> ListPlusFriendID(string CorpNum, string UserID = null)
         {
             return httpget<List<PlusFriend>>("/KakaoTalk/ListPlusFriendID", CorpNum, UserID);
         }
+        
+        //발신번호 관리 팝업 URL
+        public string GetSenderNumberMgtURL(string CorpNum, string UserID)
+        {
+            URLResponse response = httpget<URLResponse>("/Message/?TG=SENDER", CorpNum, UserID);
 
+            return response.url;
+        }
+        
         //발신번호 목록 확인
         public List<SenderNumber> GetSenderNumberList(string CorpNum, string UserID = null)
         {
             return httpget<List<SenderNumber>>("/Message/SenderNumber", CorpNum, UserID);
         }
 
+        //알림톡 템플릿관리 팝업 URL
+        public string GetATSTemplateMgtURL(string CorpNum, string UserID)
+        {
+            URLResponse response = httpget<URLResponse>("/KakaoTalk/?TG=SENDER", CorpNum, UserID);
+
+            return response.url;
+        }
+        
         //알림톡 템플릿 목록 확인
         public List<ATSTemplate> ListATSTemplate(string CorpNum, string UserID = null)
         {
@@ -314,6 +326,14 @@ namespace Popbill.Kakao
             return httpget<KakaoSearchResult>(uri, CorpNum, UserID);
         }
 
+        //카카오톡 전송내역 팝업
+        public string GetSentListURL(string CorpNum, string UserID)
+        {
+            URLResponse response = httpget<URLResponse>("/KakaoTalk/?TG=BOX", CorpNum, UserID);
+
+            return response.url;
+        }
+        
         #endregion
 
         #region Point API
