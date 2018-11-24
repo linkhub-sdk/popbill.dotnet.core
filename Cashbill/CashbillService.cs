@@ -128,8 +128,8 @@ namespace Popbill.Cashbill
 
         //취소현금영수증 임시저장
         public Response RevokeRegister(string CorpNum, string mgtKey, string orgConfirmNum, string orgTradeDate,
-            bool smssendYN = false, bool isPartCancel = false, int? cancelType = null, string supplyCost = null,
-            string totalAmount = null, string tax = null, string serviceFee = null, string UserID = null)
+            bool smssendYN = false, bool isPartCancel = false, int? cancelType = null, string totalAmount = null,
+            string supplyCost = null, string tax = null, string serviceFee = null, string UserID = null)
         {
             RevokeRequest request = new RevokeRequest();
             request.mgtKey = mgtKey;
