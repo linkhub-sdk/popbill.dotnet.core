@@ -95,7 +95,7 @@ namespace Popbill.Statement
         }
 
         //발행취소
-        public Response CancelIssue(string CorpNum, int itemCode, string mgtKey, string Memo = null, string UserID = null)
+        public Response Cancel(string CorpNum, int itemCode, string mgtKey, string Memo = null, string UserID = null)
         {
             if (string.IsNullOrEmpty(mgtKey)) throw new PopbillException(-99999999, "관리번호가 입력되지 않았습니다.");
 
