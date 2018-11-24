@@ -9,7 +9,6 @@ namespace Popbill.Statement
         [DataMember] public string purchaseDT;
         [DataMember] public string itemName;
         [DataMember] public string spec;
-        [DataMember] public string unit;
         [DataMember] public string qty;
         [DataMember] public string unitCost;
         [DataMember] public string supplyCost;
@@ -20,5 +19,6 @@ namespace Popbill.Statement
         [DataMember] public string spare3;
         [DataMember] public string spare4;
         [DataMember] public string spare5;
+        [DataMember] public string unit;
     }
 }
