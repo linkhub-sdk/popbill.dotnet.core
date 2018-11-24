@@ -21,7 +21,7 @@ namespace Popbill.Statement
         #region Issue API
 
         //관리번호 확인
-        public bool CheckMgtKeyInuse(string CorpNum, int itemCode, string mgtKey, string UserID = null)
+        public bool CheckMgtKeyInUse(string CorpNum, int itemCode, string mgtKey, string UserID = null)
         {
             if (string.IsNullOrEmpty(mgtKey)) throw new PopbillException(-99999999, "관리번호가 입력되지 않았습니다.");
 
