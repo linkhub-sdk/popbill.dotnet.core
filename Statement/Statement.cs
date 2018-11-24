@@ -20,6 +20,7 @@ namespace Popbill.Statement
         [DataMember] public string remark1;
         [DataMember] public string remark2;
         [DataMember] public string remark3;
+        
         [DataMember] public string senderCorpNum;
         [DataMember] public string senderTaxRegID;
         [DataMember] public string senderCorpName;
@@ -33,6 +34,7 @@ namespace Popbill.Statement
         [DataMember] public string senderHP;
         [DataMember] public string senderEmail;
         [DataMember] public string senderFAX;
+        
         [DataMember] public string receiverCorpNum;
         [DataMember] public string receiverTaxRegID;
         [DataMember] public string receiverCorpName;
@@ -46,13 +48,16 @@ namespace Popbill.Statement
         [DataMember] public string receiverHP;
         [DataMember] public string receiverEmail;
         [DataMember] public string receiverFAX;
+        
         [DataMember] public List<StatementDetail> detailList;
         [DataMember] public propertyBag propertyBag;
+        
         [DataMember] public bool? businessLicenseYN;
         [DataMember] public bool? bankBookYN;
         [DataMember] public bool? smssendYN;
+        [DataMember] public bool? autoAcceptYN;
+        
         [DataMember] public bool? faxsendYN;
-        [DataMember] public bool? autoacceptYN;
         [DataMember] public string memo;
         [DataMember] public string sendNum;
         [DataMember] public string receiveNum;
