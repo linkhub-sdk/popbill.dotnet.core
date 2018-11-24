@@ -91,7 +91,7 @@ namespace Popbill.Statement
             string PostData = toJsonString(request);
 
             return httppost<Response>("/Statement/" + itemCode.ToString() + "/" + mgtKey, CorpNum, PostData, "ISSUE",
-                UserID);
+                null, UserID);
         }
 
         //발행취소
@@ -106,7 +106,7 @@ namespace Popbill.Statement
             string PostData = toJsonString(request);
 
             return httppost<Response>("/Statement/" + itemCode.ToString() + "/" + mgtKey, CorpNum, PostData, "CANCEL",
-                UserID);
+                null, UserID);
         }
 
         //삭제
@@ -114,8 +114,8 @@ namespace Popbill.Statement
         {
             if (string.IsNullOrEmpty(mgtKey)) throw new PopbillException(-99999999, "관리번호가 입력되지 않았습니다.");
 
-            return httppost<Response>("/Statement/" + itemCode.ToString() + "/" + mgtKey, CorpNum, UserID, null,
-                "DELETE");
+            return httppost<Response>("/Statement/" + itemCode.ToString() + "/" + mgtKey, CorpNum, "", "DELETE", null,
+                UserID);
         }
 
         #endregion
@@ -192,7 +192,6 @@ namespace Popbill.Statement
 
         #endregion
 
-
         #region PopUp/Print API
 
         //전자명세서 보기 URL
@@ -253,7 +252,6 @@ namespace Popbill.Statement
         }
 
         #endregion
-
 
         #region Add Ons API
 
@@ -432,7 +430,6 @@ namespace Popbill.Statement
         }
 
         #endregion
-
 
         [DataContract]
         private class MemoRequest
