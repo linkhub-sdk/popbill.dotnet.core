@@ -42,7 +42,7 @@ namespace Popbill.Statement
         }
 
         //즉시 발행
-        public Response RegistIssue(string CorpNum, Statement statement, string Memo, string UserID = null)
+        public Response RegistIssue(string CorpNum, Statement statement, string Memo = null, string UserID = null)
         {
             if (statement == null) throw new PopbillException(-99999999, "명세서 정보가 입력되지 않았습니다.");
 
@@ -80,13 +80,13 @@ namespace Popbill.Statement
         }
 
         //발행
-        public Response Issue(string CorpNum, int itemCode, string mgtKey, string memo, string UserID = null)
+        public Response Issue(string CorpNum, int itemCode, string mgtKey, string Memo = null, string UserID = null)
         {
             if (string.IsNullOrEmpty(mgtKey)) throw new PopbillException(-99999999, "관리번호가 입력되지 않았습니다.");
 
             MemoRequest request = new MemoRequest();
 
-            request.memo = memo;
+            request.memo = Memo;
 
             string PostData = toJsonString(request);
 
@@ -95,13 +95,13 @@ namespace Popbill.Statement
         }
 
         //발행취소
-        public Response CancelIssue(string CorpNum, int itemCode, string mgtKey, string memo, string UserID = null)
+        public Response CancelIssue(string CorpNum, int itemCode, string mgtKey, string Memo = null, string UserID = null)
         {
             if (string.IsNullOrEmpty(mgtKey)) throw new PopbillException(-99999999, "관리번호가 입력되지 않았습니다.");
 
             MemoRequest request = new MemoRequest();
 
-            request.memo = memo;
+            request.memo = Memo;
 
             string PostData = toJsonString(request);
 
