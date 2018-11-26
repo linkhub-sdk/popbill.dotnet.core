@@ -250,7 +250,7 @@ namespace Popbill.Message
         #region Info API
 
         //전송내역 확인
-        public List<MessageResult> GetMessage(string CorpNum, string receiptNum, string UserID = null)
+        public List<MessageResult> GetMessages(string CorpNum, string receiptNum, string UserID = null)
         {
             if (string.IsNullOrEmpty(receiptNum))
                 throw new PopbillException(-99999999, "접수번호가 입력되지 않았습니다.");
@@ -259,7 +259,7 @@ namespace Popbill.Message
         }
 
         //전송내역 확인 - 요청번호 할당
-        public List<MessageResult> GetMessageRN(string CorpNum, string requestNum, string UserID = null)
+        public List<MessageResult> GetMessagesRN(string CorpNum, string requestNum, string UserID = null)
         {
             if (string.IsNullOrEmpty(requestNum))
                 throw new PopbillException(-99999999, "요청번호(requestNum)가 입력되지 않았습니다.");
