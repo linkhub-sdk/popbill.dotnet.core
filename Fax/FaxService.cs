@@ -15,7 +15,7 @@ namespace Popbill.Fax
         }
 
         #region 발신번호 API
-  
+
         //발신번호 관리 팝업 URL
         public string GetSenderNumberMgtURL(string CorpNum, string UserID)
         {
@@ -23,7 +23,7 @@ namespace Popbill.Fax
 
             return response.url;
         }
-        
+
         //발신번호 목록 확인
         public List<SenderNumber> GetSenderNumberList(string CorpNum, string UserID = null)
         {
@@ -134,7 +134,7 @@ namespace Popbill.Fax
 
         //팩스 단건 재전송 - 요청번호 할당
         public string ResendFAXRN(string CorpNum, string orgRequestNum, string snd, string sndnm, string rcv,
-            string rcvnm, string assignRequestNum = null, string title = null, DateTime? reserveDT = null,
+            string rcvnm, string title = null, DateTime? reserveDT = null, string assignRequestNum = null,
             string UserID = null)
         {
             List<FaxReceiver> receivers = null;
@@ -148,14 +148,14 @@ namespace Popbill.Fax
                 receivers.Add(receiver);
             }
 
-            return ResendFAXRN(CorpNum, orgRequestNum, snd, sndnm, receivers, assignRequestNum, title, reserveDT,
+            return ResendFAXRN(CorpNum, orgRequestNum, snd, sndnm, receivers, title, reserveDT, assignRequestNum,
                 UserID);
         }
 
         //팩스 동보 재전송 - 요청번호 할당
         public string ResendFAXRN(string CorpNum, string orgRequestNum, string snd, string sndnm,
-            List<FaxReceiver> receivers, string assignRequestNum = null, string title = null,
-            DateTime? reserveDT = null, string UserID = null)
+            List<FaxReceiver> receivers, string title = null, DateTime? reserveDT = null,
+            string assignRequestNum = null, string UserID = null)
         {
             if (orgRequestNum == "") throw new PopbillException(-99999999, "원본 팩스요청번호(requestNum)가 입력되지 않았습니다.");
 
@@ -245,7 +245,7 @@ namespace Popbill.Fax
 
             return response.url;
         }
-        
+
         //팩스 미리보기 팝업 URL
         public string GetPreviewURL(string corpNum, string receiptNum, string UserID = null)
         {
