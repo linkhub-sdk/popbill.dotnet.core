@@ -199,7 +199,7 @@ namespace Popbill.Fax
         #region Info API
 
         //전송내역 및 전송상태 확인
-        public List<FaxResult> GetFaxResult(string CorpNum, string receiptNum, string UserID = null)
+        public List<FaxResult> GetFaxDetail(string CorpNum, string receiptNum, string UserID = null)
         {
             if (string.IsNullOrEmpty(receiptNum))
                 throw new PopbillException(-99999999, "접수번호가 입력되지 않았습니다.");
@@ -208,7 +208,7 @@ namespace Popbill.Fax
         }
 
         //전송내역 및 전송상태 확인 - 요청번호 할당
-        public List<FaxResult> GetFaxResultRN(string CorpNum, string requestNum, string UserID = null)
+        public List<FaxResult> GetFaxDetailRN(string CorpNum, string requestNum, string UserID = null)
         {
             if (string.IsNullOrEmpty(requestNum))
                 throw new PopbillException(-99999999, "요청번호(requestNum)가 입력되지 않았습니다.");
