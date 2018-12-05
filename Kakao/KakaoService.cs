@@ -28,7 +28,7 @@ namespace Popbill.Kakao
         //플러스친구 계정관리 팝업 URL
         public string GetPlusFriendMgtURL(string CorpNum, string UserID)
         {
-            URLResponse response = httpget<URLResponse>("/KakaoTalk/?TG=SENDER", CorpNum, UserID);
+            URLResponse response = httpget<URLResponse>("/KakaoTalk/?TG=PLUSFRIEND", CorpNum, UserID);
 
             return response.url;
         }
@@ -56,7 +56,7 @@ namespace Popbill.Kakao
         //알림톡 템플릿관리 팝업 URL
         public string GetATSTemplateMgtURL(string CorpNum, string UserID)
         {
-            URLResponse response = httpget<URLResponse>("/KakaoTalk/?TG=SENDER", CorpNum, UserID);
+            URLResponse response = httpget<URLResponse>("/KakaoTalk/?TG=TEMPLATE", CorpNum, UserID);
 
             return response.url;
         }
