@@ -74,7 +74,7 @@ namespace Popbill.Kakao
         //알림톡 단건전송
         public string SendATS(string CorpNum, string templateCode, string snd, string receiveNum, string receiveName,
             string msg, string altmsg, string altSendType, DateTime? sndDT, string requestNum = null,
-            string UserID = null)
+            string UserID = null, List<KakaoButton> buttons = null)
         {
             if (string.IsNullOrEmpty(receiveNum)) throw new PopbillException(-99999999, "수신번호가 입력되지 않았습니다.");
 
@@ -88,20 +88,20 @@ namespace Popbill.Kakao
 
             receivers.Add(receiver);
 
-            return SendATS(CorpNum, templateCode, snd, msg, altmsg, receivers, altSendType, sndDT, requestNum, UserID);
+            return SendATS(CorpNum, templateCode, snd, msg, altmsg, receivers, altSendType, sndDT, requestNum, UserID, buttons);
         }
 
         //알림톡 대량전송
         public string SendATS(string CorpNum, string templateCode, string snd, List<KakaoReceiver> receivers,
-            string altSendType, DateTime? sndDT, string requestNum = null, string UserID = null)
+            string altSendType, DateTime? sndDT, string requestNum = null, string UserID = null, List<KakaoButton> buttons = null)
         {
-            return SendATS(CorpNum, templateCode, snd, null, null, receivers, altSendType, sndDT, requestNum, UserID);
+            return SendATS(CorpNum, templateCode, snd, null, null, receivers, altSendType, sndDT, requestNum, UserID, buttons);
         }
 
         //알림톡 동보전송
         public string SendATS(string CorpNum, string templateCode, string snd, string content, string altContent,
             List<KakaoReceiver> receivers, string altSendType, DateTime? sndDT, string requestNum = null,
-            string UserID = null)
+            string UserID = null, List<KakaoButton> buttons = null)
         {
             if (string.IsNullOrEmpty(templateCode)) throw new PopbillException(-99999999, "알림톡 템플릿 코드가 입력되지 않았습니다.");
             if (string.IsNullOrEmpty(snd)) throw new PopbillException(-99999999, "발신번호가 입력되지 않았습니다.");
@@ -114,6 +114,7 @@ namespace Popbill.Kakao
             request.altContent = altContent;
             request.altSendType = altSendType;
             request.sndDT = sndDT == null ? null : sndDT.Value.ToString("yyyyMMddHHmmss");
+            request.btns = buttons == null ? null : buttons;
             request.msgs = receivers;
             request.requestNum = requestNum;
 
@@ -385,6 +386,7 @@ namespace Popbill.Kakao
             [DataMember] public string altSendType = null;
             [DataMember] public string sndDT = null;
             [DataMember] public string requestNum = null;
+            [DataMember] public List<KakaoButton> btns = null;
             [DataMember] public List<KakaoReceiver> msgs;
         }
 

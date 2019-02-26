@@ -43,7 +43,7 @@ namespace Popbill.Taxinvoice
         }
 
         //즉시 발행
-        public Response RegistIssue(string CorpNum, Taxinvoice taxinvoice, bool WriteSpecification = false,
+        public IssueResponse RegistIssue(string CorpNum, Taxinvoice taxinvoice, bool WriteSpecification = false,
             bool ForceIssue = false, string DealinvoiceMgtKey = null, string Memo = null, string EmailSubject = null,
             string UserID = null)
         {
@@ -57,7 +57,7 @@ namespace Popbill.Taxinvoice
 
             string PostData = toJsonString(taxinvoice);
 
-            return httppost<Response>("/Taxinvoice", CorpNum, PostData, "ISSUE", null, UserID);
+            return httppost<IssueResponse>("/Taxinvoice", CorpNum, PostData, "ISSUE", null, UserID);
         }
 
         //임시저장
@@ -90,7 +90,7 @@ namespace Popbill.Taxinvoice
         }
 
         //발행
-        public Response Issue(string CorpNum, MgtKeyType KeyType, string MgtKey, bool ForceIssue = false,
+        public IssueResponse Issue(string CorpNum, MgtKeyType KeyType, string MgtKey, bool ForceIssue = false,
             string Memo = null, string EmailSubject = null, string UserID = null)
         {
             if (string.IsNullOrEmpty(MgtKey)) throw new PopbillException(-99999999, "관리번호가 입력되지 않았습니다.");
@@ -99,7 +99,7 @@ namespace Popbill.Taxinvoice
 
             string PostData = toJsonString(request);
 
-            return httppost<Response>("/Taxinvoice/" + KeyType.ToString() + "/" + MgtKey, CorpNum, PostData, "ISSUE",
+            return httppost<IssueResponse>("/Taxinvoice/" + KeyType.ToString() + "/" + MgtKey, CorpNum, PostData, "ISSUE",
                 null, UserID);
         }
 
@@ -350,6 +350,17 @@ namespace Popbill.Taxinvoice
 
             URLResponse response =
                 httpget<URLResponse>("/Taxinvoice/" + KeyType.ToString() + "/" + MgtKey + "?TG=POPUP", CorpNum, UserID);
+
+            return response.url;
+        }
+
+        //세금계산서 보기 URL
+        public string GetViewURL(string CorpNum, MgtKeyType KeyType, string MgtKey, string UserID)
+        {
+            if (string.IsNullOrEmpty(MgtKey)) throw new PopbillException(-99999999, "관리번호가 입력되지 않았습니다.");
+
+            URLResponse response =
+                httpget<URLResponse>("/Taxinvoice/" + KeyType.ToString() + "/" + MgtKey + "?TG=VIEW", CorpNum, UserID);
 
             return response.url;
         }
