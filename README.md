@@ -1,4 +1,4 @@
-# popbill.netcore
+# popbill DotnetCore
 
 1. Base - 팝빌 공통 API
 2. Taxinvoice - 전자세금계산서 API
