@@ -19,6 +19,21 @@ namespace Popbill.Statement
         [DataMember] public string spare3;
         [DataMember] public string spare4;
         [DataMember] public string spare5;
+        [DataMember] public string spare6;
+        [DataMember] public string spare7;
+        [DataMember] public string spare8;
+        [DataMember] public string spare9;
+        [DataMember] public string spare10;
+        [DataMember] public string spare11;
+        [DataMember] public string spare12;
+        [DataMember] public string spare13;
+        [DataMember] public string spare14;
+        [DataMember] public string spare15;
+        [DataMember] public string spare16;
+        [DataMember] public string spare17;
+        [DataMember] public string spare18;
+        [DataMember] public string spare19;
+        [DataMember] public string spare20;
         [DataMember] public string unit;
     }
 }

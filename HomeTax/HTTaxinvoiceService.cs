@@ -50,7 +50,7 @@ namespace Popbill.HomeTax
         //수집 결과 조회
         public HTTaxinvoiceSearch Search(string CorpNum, string JobID, string[] Type = null, string[] TaxType = null,
             string[] PurposeType = null, string TaxRegIDYN = null, string TaxRegIDType = null, string TaxRegID = null,
-            int? Page = null, int? PerPage = null, string Order = null, string UserID = null)
+            int? Page = null, int? PerPage = null, string Order = null, string UserID = null, string SearchString = null)
         {
             if (JobID.Length != 18) throw new PopbillException(code: -99999999, Message: "작업아이디(jobID)가 올바르지 않습니다.");
 
@@ -64,6 +64,7 @@ namespace Popbill.HomeTax
             if (Page != null) uri += "&Page=" + Page.ToString();
             if (PerPage != null) uri += "&PerPage=" + PerPage.ToString();
             if (Order != null) uri += "&Order=" + Order;
+            if(SearchString != null) uri += "&SearchString=" + SearchString;
 
             return httpget<HTTaxinvoiceSearch>(uri, CorpNum, UserID);
         }
@@ -71,7 +72,7 @@ namespace Popbill.HomeTax
         //수집 결과 요약정보 조회
         public HTTaxinvoiceSummary Summary(string CorpNum, string JobID, string[] Type = null, string[] TaxType = null,
             string[] PurposeType = null, string TaxRegIDYN = null, string TaxRegIDType = null, string TaxRegID = null,
-            string UserID = null)
+            string UserID = null, string SearchString = null)
         {
             if (JobID.Length != 18) throw new PopbillException(-99999999, "작업아이디(jobID)가 올바르지 않습니다.");
 
@@ -82,6 +83,8 @@ namespace Popbill.HomeTax
             if (TaxRegIDYN != "") uri += "&TaxRegIDYN=" + TaxRegIDYN;
             if (TaxRegIDType != null) uri += "&TaxRegIDType=" + TaxRegIDType;
             if (TaxRegID != null) uri += "&TaxRegID=" + TaxRegID;
+
+            if (SearchString != null) uri += "&SearchString=" + SearchString;
 
             return httpget<HTTaxinvoiceSummary>(uri, CorpNum, UserID);
         }
@@ -110,6 +113,16 @@ namespace Popbill.HomeTax
 
             URLResponse response =
                 httpget<URLResponse>("/HomeTax/Taxinvoice/" + ntsconfirmNum + "/PopUp", CorpNum, UserID);
+
+            return response.url;
+        }
+
+        public string GetPrintURL(string CorpNum, string ntsconfirmNum, string UserID = null)
+        {
+            if (ntsconfirmNum.Length != 24) throw new PopbillException(-99999999, "국세청승인번호가 올바르지 않습니다.");
+
+            URLResponse response =
+                httpget<URLResponse>("/HomeTax/Taxinvoice/" + ntsconfirmNum + "/Print", CorpNum, UserID);
 
             return response.url;
         }
