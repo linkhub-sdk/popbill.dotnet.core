@@ -42,11 +42,13 @@ namespace Popbill.Statement
         }
 
         //즉시 발행
-        public Response RegistIssue(string CorpNum, Statement statement, string Memo = null, string UserID = null)
+        public Response RegistIssue(string CorpNum, Statement statement, string Memo = null, string UserID = null, string EmailSubject = null)
         {
             if (statement == null) throw new PopbillException(-99999999, "명세서 정보가 입력되지 않았습니다.");
 
             statement.memo = Memo;
+
+            if (EmailSubject != null) statement.emailSubject = EmailSubject;
 
             string PostData = toJsonString(statement);
 

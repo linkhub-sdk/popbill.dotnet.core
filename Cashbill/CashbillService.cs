@@ -33,11 +33,13 @@ namespace Popbill.Cashbill
         }
 
         //즉시발행
-        public Response RegistIssue(string CorpNum, Cashbill cashbill, string Memo, string UserID = null)
+        public Response RegistIssue(string CorpNum, Cashbill cashbill, string Memo, string UserID = null, string EmailSubject = null)
         {
             if (cashbill == null) throw new PopbillException(-99999999, "현금영수증 정보가 입력되지 않았습니다.");
 
             cashbill.memo = Memo;
+
+            if (EmailSubject != null) cashbill.emailSubject = EmailSubject;
 
             string PostData = toJsonString(cashbill);
 

@@ -59,6 +59,7 @@ namespace Popbill.Statement
         
         [DataMember] public bool? faxsendYN;
         [DataMember] public string memo;
+        [DataMember] public string emailSubject;
         [DataMember] public string sendNum;
         [DataMember] public string receiveNum;
 

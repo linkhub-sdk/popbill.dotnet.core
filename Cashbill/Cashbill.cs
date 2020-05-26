@@ -34,5 +34,6 @@ namespace Popbill.Cashbill
         [DataMember] public bool? faxsendYN;
         [DataMember] public string memo;
         [DataMember] public int cancelType;
+        [DataMember] public string emailSubject;
     }
 }
