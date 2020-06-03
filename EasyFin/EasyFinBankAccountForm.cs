@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Text;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
 
 namespace Popbill.EasyFin
@@ -8,37 +8,37 @@ namespace Popbill.EasyFin
     public class EasyFinBankAccountForm
     {
         [DataMember]
-        public String BankCode;
+        public string BankCode;
 
         [DataMember]
-        public String AccountNumber;
+        public string AccountNumber;
 
         [DataMember]
-        public String AccountPWD;
+        public string AccountPWD;
 
         [DataMember]
-        public String AccountType;
+        public string AccountType;
 
         [DataMember]
-        public String IdentityNumber;
+        public string IdentityNumber;
 
         [DataMember]
-        public String AccountName;
+        public string AccountName;
 
         [DataMember]
-        public String BankID;
+        public string BankID;
 
         [DataMember]
-        public String FastID;
+        public string FastID;
 
         [DataMember]
-        public String FastPWD;
+        public string FastPWD;
 
         [DataMember]
-        public String Memo;
+        public string Memo;
 
         [DataMember]
-        public String UsePeriod;
+        public string UsePeriod;
     }
 
 
