@@ -9,5 +9,6 @@
 7. Kakao - 친구톡/알림톡 API
 8. HomeTax - 홈택스연동(전자세금계산서, 현금영수증) API
 9. Closedown - 휴폐업조회 API
+10. EasyFin - 간편조회 API
 
 <pre><code>Nuget Version 1.0.8</code></pre>

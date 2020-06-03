@@ -28,5 +28,29 @@ namespace Popbill.EasyFin
 
         [DataMember]
         public string memo;
+
+        [DataMember]
+        public string contractDT;
+
+        [DataMember]
+        public string useEndDate;
+
+        [DataMember]
+        public int? baseDate;
+
+        [DataMember]
+        public int? contractState;
+
+        [DataMember]
+        public bool? closeRequestYN;
+
+        [DataMember]
+        public bool? useRestrictYN;
+
+        [DataMember]
+        public bool? closeOnExpired;
+
+        [DataMember]
+        public bool? unPaidYN;
     }
 }
