@@ -46,7 +46,7 @@ namespace Popbill.EasyFin
 
             if (info.UsePeriod != null) uri += "?UsePeriod=" + info.UsePeriod;
 
-            return httppost<Response>(uri, CorpNum, UserID, PostData, null);
+            return httppost<Response>(uri, CorpNum, PostData, null, null, UserID);
             
         }
 
@@ -67,7 +67,7 @@ namespace Popbill.EasyFin
 
             string PostData = toJsonString(info);
 
-            return httppost<Response>(uri, CorpNum, UserID, PostData, null);
+            return httppost<Response>(uri, CorpNum, PostData, null, null, UserID);
         }
 
 
@@ -85,7 +85,7 @@ namespace Popbill.EasyFin
             uri += "?BankCode=" + BankCode;
             uri += "&AccountNumber=" + AccountNumber;
 
-            return httppost<Response>(uri, CorpNum, UserID, "", null);
+            return httppost<Response>(uri, CorpNum, null, null, null, UserID);
         }
 
         public Response CloseBankAccount(string CorpNum, string BankCode, string AccountNumber, string CloseType)
@@ -106,7 +106,7 @@ namespace Popbill.EasyFin
             uri += "&AccountNumber=" + AccountNumber;
             uri += "&CloseType=" + CloseType;
 
-            return httppost<Response>(uri, CorpNum, UserID, "", null);
+            return httppost<Response>(uri, CorpNum, null, null, null, UserID);
         }
         
         public EasyFinBankAccount GetBankAccountInfo(string CorpNum, string BankCode, string AccountNumber)
@@ -166,7 +166,7 @@ namespace Popbill.EasyFin
             uri += "&SDate=" + SDate;
             uri += "&EDate=" + EDate;
 
-            return httppost<JobIDResponse>(uri, CorpNum, UserID, null, null).jobID;
+            return httppost<JobIDResponse>(uri, CorpNum, null, null, null, UserID).jobID;
         }
 
         public EasyFinBankJobState GetJobState(string CorpNum, string JobID)
@@ -244,7 +244,7 @@ namespace Popbill.EasyFin
             uri += "?TID=" + TID;
             uri += "&Memo=" + Memo;
 
-            return httppost<Response>(uri, CorpNum, UserID, null, null);
+            return httppost<Response>(uri, CorpNum, null, null, null, UserID);
         }
 
         public string GetFlatRatePopUpURL(string CorpNum)
