@@ -11,4 +11,4 @@
 9. Closedown - 휴폐업조회 API
 10. EasyFin - 간편조회 API
 
-<pre><code>Nuget Version 1.0.8</code></pre>
+<pre><code>Nuget Version 1.7.0</code></pre>
