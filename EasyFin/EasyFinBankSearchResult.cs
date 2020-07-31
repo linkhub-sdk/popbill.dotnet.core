@@ -27,6 +27,9 @@ namespace Popbill.EasyFin
         public String message;
 
         [DataMember]
+        public string lastScrapDT;
+
+        [DataMember]
         public List<EasyFinBankSearchDetail> list;
     }
 }

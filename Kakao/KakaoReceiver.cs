@@ -9,5 +9,6 @@ namespace Popbill.Kakao
         [DataMember] public string rcvnm;
         [DataMember] public string msg;
         [DataMember] public string altmsg;
+        [DataMember] public string interOPRefKey;
     }
 }

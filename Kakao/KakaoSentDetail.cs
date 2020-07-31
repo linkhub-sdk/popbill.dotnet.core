@@ -21,5 +21,6 @@ namespace Popbill.Kakao
         [DataMember] public string altSendDT;
         [DataMember] public string receiptNum;
         [DataMember] public string requestNum;
+        [DataMember] public string interOPRefKey;
     }
 }

@@ -20,10 +20,10 @@ namespace Popbill.Statement
 
         #region Issue API
 
-        //관리번호 확인
+        //문서번호 확인
         public bool CheckMgtKeyInUse(string CorpNum, int itemCode, string mgtKey, string UserID = null)
         {
-            if (string.IsNullOrEmpty(mgtKey)) throw new PopbillException(-99999999, "관리번호가 입력되지 않았습니다.");
+            if (string.IsNullOrEmpty(mgtKey)) throw new PopbillException(-99999999, "문서번호가 입력되지 않았습니다.");
 
             try
             {
@@ -70,7 +70,7 @@ namespace Popbill.Statement
         //수정
         public Response Update(string CorpNum, int itemCode, string mgtKey, Statement statement, string UserID = null)
         {
-            if (string.IsNullOrEmpty(mgtKey)) throw new PopbillException(-99999999, "관리번호가 입력되지 않았습니다.");
+            if (string.IsNullOrEmpty(mgtKey)) throw new PopbillException(-99999999, "문서번호가 입력되지 않았습니다.");
 
             if (statement == null) throw new PopbillException(-99999999, "명세서 정보가 입력되지 않았습니다.");
 
@@ -84,7 +84,7 @@ namespace Popbill.Statement
         //발행
         public Response Issue(string CorpNum, int itemCode, string mgtKey, string Memo = null, string UserID = null)
         {
-            if (string.IsNullOrEmpty(mgtKey)) throw new PopbillException(-99999999, "관리번호가 입력되지 않았습니다.");
+            if (string.IsNullOrEmpty(mgtKey)) throw new PopbillException(-99999999, "문서번호가 입력되지 않았습니다.");
 
             MemoRequest request = new MemoRequest();
 
@@ -99,7 +99,7 @@ namespace Popbill.Statement
         //발행취소
         public Response Cancel(string CorpNum, int itemCode, string mgtKey, string Memo = null, string UserID = null)
         {
-            if (string.IsNullOrEmpty(mgtKey)) throw new PopbillException(-99999999, "관리번호가 입력되지 않았습니다.");
+            if (string.IsNullOrEmpty(mgtKey)) throw new PopbillException(-99999999, "문서번호가 입력되지 않았습니다.");
 
             MemoRequest request = new MemoRequest();
 
@@ -114,7 +114,7 @@ namespace Popbill.Statement
         //삭제
         public Response Delete(string CorpNum, int itemCode, string mgtKey, string UserID = null)
         {
-            if (string.IsNullOrEmpty(mgtKey)) throw new PopbillException(-99999999, "관리번호가 입력되지 않았습니다.");
+            if (string.IsNullOrEmpty(mgtKey)) throw new PopbillException(-99999999, "문서번호가 입력되지 않았습니다.");
 
             return httppost<Response>("/Statement/" + itemCode.ToString() + "/" + mgtKey, CorpNum, "", "DELETE", null,
                 UserID);
@@ -127,7 +127,7 @@ namespace Popbill.Statement
         //상태 확인
         public StatementInfo GetInfo(string CorpNum, int itemCode, string mgtKey, string UserID = null)
         {
-            if (string.IsNullOrEmpty(mgtKey)) throw new PopbillException(-99999999, "관리번호가 입력되지 않았습니다.");
+            if (string.IsNullOrEmpty(mgtKey)) throw new PopbillException(-99999999, "문서번호가 입력되지 않았습니다.");
 
             return httpget<StatementInfo>("/Statement/" + itemCode.ToString() + "/" + mgtKey, CorpNum, UserID);
         }
@@ -135,7 +135,7 @@ namespace Popbill.Statement
         //상태 대량 확인
         public List<StatementInfo> GetInfos(string CorpNum, int itemCode, List<string> mgtKeyList, string UserID = null)
         {
-            if (mgtKeyList == null || mgtKeyList.Count == 0) throw new PopbillException(-99999999, "관리번호가 입력되지 않았습니다.");
+            if (mgtKeyList == null || mgtKeyList.Count == 0) throw new PopbillException(-99999999, "문서번호가 입력되지 않았습니다.");
 
             string PostData = toJsonString(mgtKeyList);
 
@@ -146,7 +146,7 @@ namespace Popbill.Statement
         //상세정보 확인
         public Statement GetDetailInfo(string CorpNum, int itemCode, string mgtKey, string UserID = null)
         {
-            if (string.IsNullOrEmpty(mgtKey)) throw new PopbillException(-99999999, "관리번호가 입력되지 않았습니다.");
+            if (string.IsNullOrEmpty(mgtKey)) throw new PopbillException(-99999999, "문서번호가 입력되지 않았습니다.");
 
             return httpget<Statement>("/Statement/" + itemCode.ToString() + "/" + mgtKey + "?Detail", CorpNum, UserID);
         }
@@ -178,7 +178,7 @@ namespace Popbill.Statement
         //상태 변경이력 확인
         public List<StatementLog> GetLogs(string CorpNum, int itemCode, string mgtKey, string UserID = null)
         {
-            if (string.IsNullOrEmpty(mgtKey)) throw new PopbillException(-99999999, "관리번호가 입력되지 않았습니다.");
+            if (string.IsNullOrEmpty(mgtKey)) throw new PopbillException(-99999999, "문서번호가 입력되지 않았습니다.");
 
             return httpget<List<StatementLog>>("/Statement/" + itemCode.ToString() + "/" + mgtKey + "/Logs", CorpNum,
                 UserID);
@@ -199,7 +199,7 @@ namespace Popbill.Statement
         //전자명세서 보기 URL
         public string GetPopUpURL(string CorpNum, int itemCode, string mgtKey, string UserID = null)
         {
-            if (string.IsNullOrEmpty(mgtKey)) throw new PopbillException(-99999999, "관리번호가 입력되지 않았습니다.");
+            if (string.IsNullOrEmpty(mgtKey)) throw new PopbillException(-99999999, "문서번호가 입력되지 않았습니다.");
 
             URLResponse response =
                 httpget<URLResponse>("/Statement/" + itemCode.ToString() + "/" + mgtKey + "?TG=POPUP", CorpNum, UserID);
@@ -207,10 +207,20 @@ namespace Popbill.Statement
             return response.url;
         }
 
+        public string GetViewURL(string CorpNum, int itemCode, string mgtKey, string UserID = null)
+        {
+            if (string.IsNullOrEmpty(mgtKey)) throw new PopbillException(-99999999, "문서번호가 입력되지 않았습니다.");
+
+            URLResponse response =
+                httpget<URLResponse>("/Statement/" + itemCode.ToString() + "/" + mgtKey + "?TG=VIEW", CorpNum, UserID);
+
+            return response.url;
+        }
+
         //전자명세서 인쇄 URL
         public string GetPrintURL(string CorpNum, int itemCode, string mgtKey, string UserID = null)
         {
-            if (string.IsNullOrEmpty(mgtKey)) throw new PopbillException(-99999999, "관리번호가 입력되지 않았습니다.");
+            if (string.IsNullOrEmpty(mgtKey)) throw new PopbillException(-99999999, "문서번호가 입력되지 않았습니다.");
 
             URLResponse response =
                 httpget<URLResponse>("/Statement/" + itemCode.ToString() + "/" + mgtKey + "?TG=PRINT", CorpNum, UserID);
@@ -220,7 +230,7 @@ namespace Popbill.Statement
 
         public string GetEPrintURL(string CorpNum, int itemCode, string mgtKey, string UserID = null)
         {
-            if (string.IsNullOrEmpty(mgtKey)) throw new PopbillException(-99999999, "관리번호가 입력되지 않았습니다.");
+            if (string.IsNullOrEmpty(mgtKey)) throw new PopbillException(-99999999, "문서번호가 입력되지 않았습니다.");
 
             URLResponse response =
                 httpget<URLResponse>("/Statement/" + itemCode.ToString() + "/" + mgtKey + "?TG=EPRINT", CorpNum,
@@ -232,7 +242,7 @@ namespace Popbill.Statement
         //전자명세서 대량 인쇄 URL
         public string GetMassPrintURL(string CorpNum, int itemCode, List<string> mgtKeyList, string UserID = null)
         {
-            if (mgtKeyList == null || mgtKeyList.Count == 0) throw new PopbillException(-99999999, "관리번호가 입력되지 않았습니다.");
+            if (mgtKeyList == null || mgtKeyList.Count == 0) throw new PopbillException(-99999999, "문서번호가 입력되지 않았습니다.");
 
             string PostData = toJsonString(mgtKeyList);
 
@@ -245,7 +255,7 @@ namespace Popbill.Statement
         //전자명세서 메일링크 URL
         public string GetMailURL(string CorpNum, int itemCode, string mgtKey, string UserID = null)
         {
-            if (string.IsNullOrEmpty(mgtKey)) throw new PopbillException(-99999999, "관리번호가 입력되지 않았습니다.");
+            if (string.IsNullOrEmpty(mgtKey)) throw new PopbillException(-99999999, "문서번호가 입력되지 않았습니다.");
 
             URLResponse response = httpget<URLResponse>("/Statement/" + itemCode.ToString() + "/" + mgtKey + "?TG=MAIL",
                 CorpNum, UserID);
@@ -260,7 +270,7 @@ namespace Popbill.Statement
         //첨부파일 추가
         public Response AttachFile(string CorpNum, int itemCode, string mgtKey, string FilePath, string UserID = null)
         {
-            if (string.IsNullOrEmpty(mgtKey)) throw new PopbillException(-99999999, "관리번호가 입력되지 않았습니다.");
+            if (string.IsNullOrEmpty(mgtKey)) throw new PopbillException(-99999999, "문서번호가 입력되지 않았습니다.");
             if (string.IsNullOrEmpty(FilePath)) throw new PopbillException(-99999999, "파일경로가 입력되지 않았습니다.");
 
             List<UploadFile> files = new List<UploadFile>();
@@ -280,7 +290,7 @@ namespace Popbill.Statement
         //첨부파일 삭제
         public Response DeleteFile(string CorpNum, int itemCode, string MgtKey, string FileID, string UserID = null)
         {
-            if (string.IsNullOrEmpty(MgtKey)) throw new PopbillException(-99999999, "관리번호가 입력되지 않았습니다.");
+            if (string.IsNullOrEmpty(MgtKey)) throw new PopbillException(-99999999, "문서번호가 입력되지 않았습니다.");
             if (string.IsNullOrEmpty(FileID)) throw new PopbillException(-99999999, "파일 아이디가 입력되지 않았습니다.");
 
             return httppost<Response>("/Statement/" + itemCode.ToString() + "/" + MgtKey + "/Files/" + FileID, CorpNum,
@@ -290,7 +300,7 @@ namespace Popbill.Statement
         //첨부파일 목록 확인
         public List<AttachedFile> GetFiles(string CorpNum, int itemCode, string MgtKey, string UserID = null)
         {
-            if (string.IsNullOrEmpty(MgtKey)) throw new PopbillException(-99999999, "관리번호가 입력되지 않았습니다.");
+            if (string.IsNullOrEmpty(MgtKey)) throw new PopbillException(-99999999, "문서번호가 입력되지 않았습니다.");
 
             return httpget<List<AttachedFile>>("/Statement/" + itemCode.ToString() + "/" + MgtKey + "/Files", CorpNum,
                 UserID);
@@ -299,7 +309,7 @@ namespace Popbill.Statement
         //메일 전송
         public Response SendEmail(string CorpNum, int itemCode, string mgtKey, string Receiver, string UserID = null)
         {
-            if (string.IsNullOrEmpty(mgtKey)) throw new PopbillException(-99999999, "관리번호가 입력되지 않았습니다.");
+            if (string.IsNullOrEmpty(mgtKey)) throw new PopbillException(-99999999, "문서번호가 입력되지 않았습니다.");
 
             ResendRequest request = new ResendRequest();
 
@@ -315,7 +325,7 @@ namespace Popbill.Statement
         public Response SendSMS(string CorpNum, int ItemCode, string mgtKey, string Sender, string Receiver,
             string Contents, string UserID = null)
         {
-            if (string.IsNullOrEmpty(mgtKey)) throw new PopbillException(-99999999, "관리번호가 입력되지 않았습니다.");
+            if (string.IsNullOrEmpty(mgtKey)) throw new PopbillException(-99999999, "문서번호가 입력되지 않았습니다.");
 
             ResendRequest request = new ResendRequest();
 
@@ -333,7 +343,7 @@ namespace Popbill.Statement
         public Response SendFAX(string CorpNum, int itemCode, string mgtKey, string Sender, string Receiver,
             string UserID = null)
         {
-            if (string.IsNullOrEmpty(mgtKey)) throw new PopbillException(-99999999, "관리번호가 입력되지 않았습니다.");
+            if (string.IsNullOrEmpty(mgtKey)) throw new PopbillException(-99999999, "문서번호가 입력되지 않았습니다.");
 
             ResendRequest request = new ResendRequest();
 
