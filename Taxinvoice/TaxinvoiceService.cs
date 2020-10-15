@@ -20,6 +20,12 @@ namespace Popbill.Taxinvoice
             this.AddScope("110");
         }
 
+
+        public TaxinvoiceService(string LinkID, string SecretKey, bool ProxyYN, string ProxyAddress, string ProxyUserName, string ProxyPassword)
+            : base(LinkID, SecretKey, ProxyYN, ProxyAddress, ProxyUserName, ProxyPassword)
+        {
+            this.AddScope("110");
+        }
         #region Issue API
 
         //문서번호 확인

@@ -29,6 +29,11 @@ namespace Popbill
         private bool _UseStaticIP;
         private Authority _LinkhubAuth;
 
+        private bool _ProxyYN;
+        private String _ProxyAddress;
+        private String _ProxyUserName;
+        private String _ProxyPassword;
+
         public bool IsTest
         {
             set { _IsTest = value; }
@@ -51,6 +56,18 @@ namespace Popbill
             _LinkhubAuth = new Authority(LinkID, SecretKey);
             _Scopes.Add("member");
             _IPRestrictOnOff = true;
+            _ProxyYN = false;
+        }
+
+        public BaseService(string LinkID, string SecretKey, bool ProxyYN, string ProxyAddress, string ProxyUserName, string ProxyPassword)
+        {
+            _LinkhubAuth = new Authority(LinkID, SecretKey, ProxyYN, ProxyAddress, ProxyUserName, ProxyPassword);
+            _Scopes.Add("member");
+            _IPRestrictOnOff = true;
+            _ProxyYN = ProxyYN;
+            _ProxyAddress = ProxyAddress;
+            _ProxyUserName = ProxyUserName;
+            _ProxyPassword = ProxyPassword;
         }
 
         public void AddScope(string scope)
@@ -148,6 +165,16 @@ namespace Popbill
         {
             HttpWebRequest request = (HttpWebRequest) WebRequest.Create(ServiceURL + url);
 
+            if (this._ProxyYN == true)
+            {
+                WebProxy proxyRequest = new WebProxy();
+
+                Uri proxyURI = new Uri(this._ProxyAddress);
+                proxyRequest.Address = proxyURI;
+                proxyRequest.Credentials = new NetworkCredential(this._ProxyUserName, this._ProxyPassword);
+                request.Proxy = proxyRequest;
+            }
+
             if (string.IsNullOrEmpty(CorpNum) == false)
             {
                 string bearerToken = getSession_Token(CorpNum);
@@ -196,6 +223,16 @@ namespace Popbill
             string contentsType = null, string UserID = null)
         {
             HttpWebRequest request = (HttpWebRequest) WebRequest.Create(ServiceURL + url);
+
+            if (this._ProxyYN == true)
+            {
+                WebProxy proxyRequest = new WebProxy();
+
+                Uri proxyURI = new Uri(this._ProxyAddress);
+                proxyRequest.Address = proxyURI;
+                proxyRequest.Credentials = new NetworkCredential(this._ProxyUserName, this._ProxyPassword);
+                request.Proxy = proxyRequest;
+            }
 
             if (contentsType == null)
             {
@@ -268,6 +305,16 @@ namespace Popbill
             string httpMethod, string UserID = null)
         {
             HttpWebRequest request = (HttpWebRequest) WebRequest.Create(ServiceURL + url);
+
+            if (this._ProxyYN == true)
+            {
+                WebProxy proxyRequest = new WebProxy();
+
+                Uri proxyURI = new Uri(this._ProxyAddress);
+                proxyRequest.Address = proxyURI;
+                proxyRequest.Credentials = new NetworkCredential(this._ProxyUserName, this._ProxyPassword);
+                request.Proxy = proxyRequest;
+            }
 
             string boundary = "---------------------------" + DateTime.Now.Ticks.ToString("x");
 
