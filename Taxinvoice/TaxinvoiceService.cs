@@ -47,6 +47,13 @@ namespace Popbill.Taxinvoice
                 throw pe;
             }
         }
+        //즉시 발행 - JSON
+        public IssueResponse RegistIssue(string CorpNum, string taxinvoice, string UserID = null)
+        {
+            if (string.IsNullOrEmpty(taxinvoice)) throw new PopbillException(-99999999, "세금계산서 정보가 입력되지 않았습니다.");
+
+            return httppost<IssueResponse>("/Taxinvoice", CorpNum, taxinvoice, "ISSUE", null, UserID);
+        }
 
         //즉시 발행
         public IssueResponse RegistIssue(string CorpNum, Taxinvoice taxinvoice, bool WriteSpecification = false,
@@ -66,6 +73,15 @@ namespace Popbill.Taxinvoice
             return httppost<IssueResponse>("/Taxinvoice", CorpNum, PostData, "ISSUE", null, UserID);
         }
 
+        //임시저장 - JSON
+        public Response Register(string CorpNum, string taxinvoice, string UserID = null)
+        {
+            if (string.IsNullOrEmpty(taxinvoice)) throw new PopbillException(-99999999, "세금계산서 정보가 입력되지 않았습니다.");
+
+            return httppost<Response>("/Taxinvoice", CorpNum, taxinvoice, null, null, UserID);
+        }
+
+
         //임시저장
         public Response Register(string CorpNum, Taxinvoice taxinvoice, bool WriteSpecification = false,
             string DealinvoiceMgtKey = null, string UserID = null)
@@ -80,6 +96,17 @@ namespace Popbill.Taxinvoice
             }
 
             return httppost<Response>("/Taxinvoice", CorpNum, PostData, null, null, UserID);
+        }
+
+        //수정 - String JSON
+        public Response Update(string CorpNum, MgtKeyType KeyType, string MgtKey, string taxinvoice,
+            string UserID = null)
+        {
+            if (string.IsNullOrEmpty(MgtKey)) throw new PopbillException(-99999999, "문서번호가 입력되지 않았습니다.");
+            if (string.IsNullOrEmpty(taxinvoice)) throw new PopbillException(-99999999, "세금계산서 정보가 입력되지 않았습니다.");
+
+            return httppost<Response>("/Taxinvoice/" + KeyType.ToString() + "/" + MgtKey, CorpNum, taxinvoice, "PATCH",
+                null, UserID);
         }
 
         //수정
@@ -186,6 +213,14 @@ namespace Popbill.Taxinvoice
 
             return httppost<Response>("/Taxinvoice/" + KeyType.ToString() + "/" + MgtKey, CorpNum, null, "DELETE", null,
                 UserID);
+        }
+
+        //즉시 요청 - JSON
+        public Response RegistRequest(string CorpNum, string taxinvoice, string UserID = null)
+        {
+            if (string.IsNullOrEmpty(taxinvoice)) throw new PopbillException(-99999999, "세금계산서 정보가 입력되지 않았습니다.");
+
+            return httppost<Response>("/Taxinvoice", CorpNum, taxinvoice, "REQUEST", null, UserID);
         }
 
         //즉시 요청
