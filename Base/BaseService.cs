@@ -28,6 +28,7 @@ namespace Popbill
         private bool _IPRestrictOnOff;
         private bool _UseStaticIP;
         private Authority _LinkhubAuth;
+        private bool _UseLocalTimeYN;
 
         private bool _ProxyYN;
         private String _ProxyAddress;
@@ -49,6 +50,12 @@ namespace Popbill
         {
             set { _UseStaticIP = value; }
             get { return _UseStaticIP; }
+        }
+
+        public bool UseLocalTimeYN
+        {
+            set { _UseLocalTimeYN = value;  }
+            get { return _UseLocalTimeYN;  }
         }
 
         public BaseService(string LinkID, string SecretKey)
@@ -122,7 +129,7 @@ namespace Popbill
 
             if (_token != null)
             {
-                DateTime now = DateTime.Parse(_LinkhubAuth.getTime(UseStaticIP));
+                DateTime now = DateTime.Parse(_LinkhubAuth.getTime(UseStaticIP, UseLocalTimeYN));
 
                 DateTime expiration = DateTime.Parse(_token.expiration);
 
@@ -135,11 +142,11 @@ namespace Popbill
                 {
                     if (_IPRestrictOnOff)
                     {
-                        _token = _LinkhubAuth.getToken(ServiceID, CorpNum, _Scopes, null, UseStaticIP);
+                        _token = _LinkhubAuth.getToken(ServiceID, CorpNum, _Scopes, null, UseStaticIP, UseLocalTimeYN);
                     }
                     else
                     {
-                        _token = _LinkhubAuth.getToken(ServiceID, CorpNum, _Scopes,"*", UseStaticIP);
+                        _token = _LinkhubAuth.getToken(ServiceID, CorpNum, _Scopes,"*", UseStaticIP, UseLocalTimeYN);
                     }
                     
 
