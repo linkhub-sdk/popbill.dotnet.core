@@ -420,13 +420,25 @@ namespace Popbill.Taxinvoice
             return response.url;
         }
 
-        //세금계산서 인쇄 URL (공급자/공급받는자용 인쇄 팝업 뷰)
+        //tls) 세금계산서 인쇄 URL (공급자/공급받는자용 인쇄 팝업 뷰)
         public string GetPrintURL(string CorpNum, MgtKeyType KeyType, string MgtKey, string UserID)
         {
             if (string.IsNullOrEmpty(MgtKey)) throw new PopbillException(-99999999, "문서번호가 입력되지 않았습니다.");
 
             URLResponse response =
                 httpget<URLResponse>("/Taxinvoice/" + KeyType.ToString() + "/" + MgtKey + "?TG=PRINT", CorpNum, UserID);
+
+            return response.url;
+        }
+
+        // 구) 세금계산서 인쇄 URL 
+        public string GetOldPrintURL(string CorpNum, MgtKeyType KeyType, string MgtKey, string UserID)
+        {
+            if (string.IsNullOrEmpty(MgtKey)) throw new PopbillException(-99999999, "문서번호가 입력되지 않았습니다.");
+
+            URLResponse response =
+                httpget<URLResponse>("/Taxinvoice/" + KeyType.ToString() + "/" + MgtKey + "?TG=PRINTOLD", CorpNum,
+                    UserID);
 
             return response.url;
         }
@@ -442,6 +454,8 @@ namespace Popbill.Taxinvoice
 
             return response.url;
         }
+
+       
 
 
         //세금계산서 대량 인쇄 URL

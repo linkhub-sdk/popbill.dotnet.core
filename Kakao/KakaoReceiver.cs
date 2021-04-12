@@ -1,4 +1,5 @@
 ﻿using System.Runtime.Serialization;
+using System.Collections.Generic;
 
 namespace Popbill.Kakao
 {
@@ -10,5 +11,6 @@ namespace Popbill.Kakao
         [DataMember] public string msg;
         [DataMember] public string altmsg;
         [DataMember] public string interOPRefKey;
+        [DataMember] public List<KakaoButton> btns;
     }
 }
