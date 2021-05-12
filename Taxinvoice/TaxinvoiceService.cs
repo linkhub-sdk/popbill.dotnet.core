@@ -286,6 +286,21 @@ namespace Popbill.Taxinvoice
                 UserID);
         }
 
+        //초대량 발행 접수
+        public BulkResponse BulkSubmit(string CorpNum, string SubmitID, List<Taxinvoice> taxinvoiceList, bool ForceIssue = false, string UserID = null)
+        {
+            if (string.IsNullOrEmpty(SubmitID)) throw new PopbillException(-99999999, "제출아이디(SubmitID)가 입력되지 않았습니다.");
+            if (taxinvoiceList == null || taxinvoiceList.Count <= 0) throw new PopbillException(-99999999, "세금계산서 정보가 입력되지 않았습니다.");
+
+            BulkTaxinvoiceSubmit tx = new BulkTaxinvoiceSubmit();
+            tx.forceIssue = ForceIssue;
+            tx.invoices = taxinvoiceList;
+            
+            string PostData = toJsonString(tx);
+
+            return httpBulkPost<BulkResponse>("/Taxinvoice/", CorpNum, SubmitID, PostData, UserID, "BULKISSUE");
+        }
+
         #endregion
 
         #region Info API
@@ -317,6 +332,14 @@ namespace Popbill.Taxinvoice
             if (string.IsNullOrEmpty(MgtKey)) throw new PopbillException(-99999999, "문서번호가 입력되지 않았습니다.");
 
             return httpget<Taxinvoice>("/Taxinvoice/" + KeyType.ToString() + "/" + MgtKey + "?Detail", CorpNum, UserID);
+        }
+
+        //초대량 접수결과 확인
+        public BulkTaxinvoiceResult GetBulkResult(string CorpNum, string SubmitID, string UserID =null)
+        {
+            if (string.IsNullOrEmpty(SubmitID)) throw new PopbillException(-99999999, "제출아이디(SubmitID)가 입력되지 않았습니다.");
+
+            return httpget<BulkTaxinvoiceResult>("/Taxinvoice/BULK/" + SubmitID + "/State", CorpNum, UserID);
         }
 
         //목록 조회
@@ -640,6 +663,12 @@ namespace Popbill.Taxinvoice
             string uri = "/Taxinvoice/EmailSendConfig?EmailType=" + EmailType + "&SendYN=" + SendYN;
 
             return httppost<Response>(uri, CorpNum, null, null, null, UserID);
+        }
+
+        //국세청 전송 설정 확인
+        public SendToNTSConfig GetSendToNTSConfig(string CorpNum)
+        {
+            return httpget<SendToNTSConfig>("/Taxinvoice/SendToNTSConfig", CorpNum);
         }
 
         #endregion

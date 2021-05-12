@@ -5,6 +5,8 @@ using System.Net;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.Text;
+using System.Security.Cryptography;
+
 using Linkhub;
 
 namespace Popbill
@@ -225,7 +227,80 @@ namespace Popbill
                 throw new PopbillException(-99999999, we.Message);
             }
         }
+        protected T httpBulkPost<T>(string url, string CorpNum, string SubmitID, string PostData, string UserID, string Action)
+        {
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(ServiceURL + url);
 
+            if (this._ProxyYN == true)
+            {
+                WebProxy proxyRequest = new WebProxy();
+
+                Uri proxyURI = new Uri(this._ProxyAddress);
+                proxyRequest.Address = proxyURI;
+                proxyRequest.Credentials = new NetworkCredential(this._ProxyUserName, this._ProxyPassword);
+                request.Proxy = proxyRequest;
+            }
+
+            request.ContentType = "application/json;";
+
+            if (string.IsNullOrEmpty(CorpNum) == false)
+            {
+                string bearerToken = getSession_Token(CorpNum);
+                request.Headers.Add("Authorization", "Bearer" + " " + bearerToken);
+            }
+
+            request.Headers.Add("x-pb-version", APIVersion);
+
+            request.Headers.Add("Accept-Encoding", "gzip, deflate");
+            request.AutomaticDecompression = DecompressionMethods.GZip;
+
+            request.Headers.Add("x-pb-message-digest", Convert.ToBase64String(SHA1.Create().ComputeHash(Encoding.UTF8.GetBytes(PostData))));
+            request.Headers.Add("x-pb-submit-id", SubmitID);
+
+            if (string.IsNullOrEmpty(UserID) == false)
+            {
+                request.Headers.Add("x-pb-userid", UserID);
+            }
+
+            if (string.IsNullOrEmpty(Action) == false)
+            {
+                request.Headers.Add("X-HTTP-Method-Override", Action);
+            }
+
+            request.Method = "POST";
+
+            if (string.IsNullOrEmpty(PostData)) PostData = "";
+
+            byte[] btPostDAta = Encoding.UTF8.GetBytes(PostData);
+
+            request.ContentLength = btPostDAta.Length;
+
+            request.GetRequestStream().Write(btPostDAta, 0, btPostDAta.Length);
+
+            try
+            {
+                using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+                {
+                    using (Stream stReadData = response.GetResponseStream())
+                    {
+                        return fromJson<T>(stReadData);
+                    }
+                }
+            }
+            catch (Exception we)
+            {
+                if (we is WebException && ((WebException)we).Response != null)
+                {
+                    using (Stream stReadData = ((WebException)we).Response.GetResponseStream())
+                    {
+                        Response t = fromJson<Response>(stReadData);
+                        throw new PopbillException(t.code, t.message);
+                    }
+                }
+
+                throw new PopbillException(-99999999, we.Message);
+            }
+        }
         protected T httppost<T>(string url, string CorpNum, string PostData, string httpMethod = null,
             string contentsType = null, string UserID = null)
         {
