@@ -250,6 +250,17 @@ namespace Popbill.Cashbill
             return response.url;
         }
 
+        //현금영수증 보기 URL [메뉴/버튼 제외]
+        public string GetViewURL(string CorpNum, string MgtKey, string UserID = null)
+        {
+            if (string.IsNullOrEmpty(MgtKey)) throw new PopbillException(-99999999, "문서번호가 입력되지 않았습니다.");
+
+            URLResponse response = httpget<URLResponse>("/Cashbill/" + MgtKey + "?TG=VIEW", CorpNum, UserID);
+
+            return response.url;
+        }
+
+        //현금영수증 PDF 다운로드 URL
         public string GetPDFURL(string CorpNum, string MgtKey, string UserID = null)
         {
             if (string.IsNullOrEmpty(MgtKey)) throw new PopbillException(-99999999, "문서번호가 입력되지 않았습니다.");
