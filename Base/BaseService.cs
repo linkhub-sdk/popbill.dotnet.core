@@ -656,6 +656,21 @@ namespace Popbill
             }
         }
 
+        //담당자 정보확인
+        public Contact GetContactInfo(string CorpNum, string ContactID, string UserID =null)
+        {
+            string postData = "{'id' :" + "'" + ContactID + "'}";
+
+            try
+            {
+                return httppost<Contact>("/Contact", CorpNum, postData, null, null, UserID);
+            }
+            catch (LinkhubException le)
+            {
+                throw new PopbillException(le);
+            }
+        }
+        
         //담당자 목록 확인
         public List<Contact> ListContact(string CorpNum, string UserID = null)
         {
