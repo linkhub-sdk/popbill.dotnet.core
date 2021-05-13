@@ -7,6 +7,7 @@ namespace Popbill
     {
         [DataMember] public string ID;
         [DataMember] public string PWD;
+        [DataMember] public string Password;
         [DataMember] public string LinkID;
         [DataMember] public string CorpNum;
         [DataMember] public string CEOName;

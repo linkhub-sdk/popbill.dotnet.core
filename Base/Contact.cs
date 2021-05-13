@@ -7,6 +7,7 @@ namespace Popbill
     {
         [DataMember] public string id;
         [DataMember] public string pwd;
+        [DataMember] public string Password;
         [DataMember] public string personName;
         [DataMember] public string tel;
         [DataMember] public string hp;
