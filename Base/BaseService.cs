@@ -566,7 +566,38 @@ namespace Popbill
             }
         }
 
-        //연동회원 가입여부 확인
+        //연동회원 포인트 결재내역 URL
+        public string GetPaymentURL(string CorpNum, string UserID =null)
+        {
+            try
+            {
+                URLResponse response = httpget<URLResponse>("/?TG=PAYMENT", CorpNum, UserID);
+
+                return response.url;
+            }
+            catch (LinkhubException le)
+            {
+                throw new PopbillException(le);
+            }
+        }
+
+        //연동회원 포인트 사용내역 URL
+        public string GetUseHistoryURL(string CorpNum, string UserID = null)
+        {
+            try
+            {
+                URLResponse response = httpget<URLResponse>("/?TG=USEHISTORY", CorpNum, UserID);
+
+                return response.url;
+            }
+            catch (LinkhubException le)
+            {
+                throw new PopbillException(le);
+            }
+        }
+
+
+            //연동회원 가입여부 확인
         public Response CheckIsMember(string CorpNum, string LinkID)
         {
             try
