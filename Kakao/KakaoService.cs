@@ -61,6 +61,14 @@ namespace Popbill.Kakao
             return response.url;
         }
 
+        //알림톡 정보 확인
+        public ATSTemplate GetATSTemplate(string CorpNum, string templateCode, string UserID = null)
+        {
+            if (string.IsNullOrEmpty(templateCode)) throw new PopbillException(-99999999, "템플릿코드가 입력되지 않았습니다.");
+
+            return httpget<ATSTemplate>("/KakaoTalk/GetATSTemplate/" + templateCode, CorpNum, UserID);
+        }
+
         //알림톡 템플릿 목록 확인
         public List<ATSTemplate> ListATSTemplate(string CorpNum, string UserID = null)
         {
