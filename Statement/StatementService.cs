@@ -42,7 +42,7 @@ namespace Popbill.Statement
         }
 
         //즉시 발행
-        public Response RegistIssue(string CorpNum, Statement statement, string Memo = null, string UserID = null, string EmailSubject = null)
+        public STMIssueResponse RegistIssue(string CorpNum, Statement statement, string Memo = null, string UserID = null, string EmailSubject = null)
         {
             if (statement == null) throw new PopbillException(-99999999, "명세서 정보가 입력되지 않았습니다.");
 
@@ -52,7 +52,7 @@ namespace Popbill.Statement
 
             string PostData = toJsonString(statement);
 
-            return httppost<Response>("/Statement", CorpNum, PostData, "ISSUE", null, UserID);
+            return httppost<STMIssueResponse>("/Statement", CorpNum, PostData, "ISSUE", null, UserID);
         }
 
         //임시저장
