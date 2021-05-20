@@ -666,9 +666,9 @@ namespace Popbill.Taxinvoice
         }
 
         //국세청 전송 설정 확인
-        public SendToNTSConfig GetSendToNTSConfig(string CorpNum)
+        public bool GetSendToNTSConfig(string CorpNum)
         {
-            return httpget<SendToNTSConfig>("/Taxinvoice/SendToNTSConfig", CorpNum);
+            return httpget<SendToNTSConfig>("/Taxinvoice/SendToNTSConfig", CorpNum).sendToNTS;
         }
 
         #endregion
