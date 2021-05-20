@@ -566,7 +566,7 @@ namespace Popbill
             }
         }
 
-        //연동회원 포인트 결재내역 URL
+        //연동회원 포인트 결제내역 URL
         public string GetPaymentURL(string CorpNum, string UserID =null)
         {
             try

@@ -110,7 +110,7 @@ namespace Popbill.EasyFin
         }
         
         // 종량제 계좌 삭제
-        public Response DeleBankAccount(string CorpNum, EasyFinBankAccountForm info, string UserID = null)
+        public Response DeleteBankAccount(string CorpNum, EasyFinBankAccountForm info, string UserID = null)
         {
             if (info == null) throw new PopbillException(-99999999, "은행 계좌정보가 입력되지 않았습니다.");
             if (info.BankCode == null || info.BankCode == "") throw new PopbillException(-99999999, "은행코드가 입력되지 않았습니다.");

@@ -14,7 +14,7 @@ namespace Popbill
         [DataMember] public string fax;
         [DataMember] public string email;
         [DataMember] public int searchRole;
-        [DataMember] public bool searchAllAllowYN;
+        [DataMember] public bool? searchAllAllowYN;
         [DataMember] public bool mgrYN;
         [DataMember] public string regDT;
         [DataMember] public int state;
