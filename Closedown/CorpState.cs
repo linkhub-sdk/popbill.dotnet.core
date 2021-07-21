@@ -11,5 +11,6 @@ namespace Popbill.Closedown
         [DataMember] public string state;
         [DataMember] public string stateDate;
         [DataMember] public string checkDate;
+        [DataMember] public string taxType;
     }
 }
