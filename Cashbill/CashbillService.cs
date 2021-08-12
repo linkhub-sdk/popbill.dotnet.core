@@ -33,7 +33,7 @@ namespace Popbill.Cashbill
         }
 
         //즉시발행
-        public Response RegistIssue(string CorpNum, Cashbill cashbill, string Memo, string UserID = null, string EmailSubject = null)
+        public CBIssueResponse RegistIssue(string CorpNum, Cashbill cashbill, string Memo, string UserID = null, string EmailSubject = null)
         {
             if (cashbill == null) throw new PopbillException(-99999999, "현금영수증 정보가 입력되지 않았습니다.");
 
@@ -43,7 +43,7 @@ namespace Popbill.Cashbill
 
             string PostData = toJsonString(cashbill);
 
-            return httppost<Response>("/Cashbill", CorpNum, PostData, "ISSUE", null, UserID);
+            return httppost<CBIssueResponse>("/Cashbill", CorpNum, PostData, "ISSUE", null, UserID);
         }
 
         //임시저장
@@ -69,7 +69,7 @@ namespace Popbill.Cashbill
         }
 
         //발행
-        public Response Issue(string CorpNum, string MgtKey, string Memo, string UserID = null)
+        public CBIssueResponse Issue(string CorpNum, string MgtKey, string Memo, string UserID = null)
         {
             if (string.IsNullOrEmpty(MgtKey)) throw new PopbillException(-99999999, "문서번호가 입력되지 않았습니다.");
 
@@ -79,7 +79,7 @@ namespace Popbill.Cashbill
 
             string PostData = toJsonString(request);
 
-            return httppost<Response>("/Cashbill/" + MgtKey, CorpNum, PostData, "ISSUE", null, UserID);
+            return httppost<CBIssueResponse>("/Cashbill/" + MgtKey, CorpNum, PostData, "ISSUE", null, UserID);
         }
 
         //발행취소
@@ -105,7 +105,7 @@ namespace Popbill.Cashbill
         }
 
         //취소현금영수증 즉시발행
-        public Response RevokeRegistIssue(string CorpNum, string mgtKey, string orgConfirmNum, string orgTradeDate,
+        public CBIssueResponse RevokeRegistIssue(string CorpNum, string mgtKey, string orgConfirmNum, string orgTradeDate,
             bool smssendYN = false, string memo = null, bool isPartCancel = false, int? cancelType = null,
             string totalAmount = null, string supplyCost = null, string tax = null, string serviceFee = null,
             string UserID = null)
@@ -125,7 +125,7 @@ namespace Popbill.Cashbill
 
             string PostData = toJsonString(request);
 
-            return httppost<Response>("/Cashbill", CorpNum, PostData, "REVOKEISSUE", null, UserID);
+            return httppost<CBIssueResponse>("/Cashbill", CorpNum, PostData, "REVOKEISSUE", null, UserID);
         }
 
         //취소현금영수증 임시저장
