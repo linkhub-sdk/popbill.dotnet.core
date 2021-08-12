@@ -108,20 +108,19 @@ namespace Popbill.EasyFin
 
             return httppost<Response>(uri, CorpNum, null, null, null, UserID);
         }
-        
-        // 종량제 계좌 삭제
-        public Response DeleteBankAccount(string CorpNum, EasyFinBankAccountForm info, string UserID = null)
-        {
-            if (info == null) throw new PopbillException(-99999999, "은행 계좌정보가 입력되지 않았습니다.");
-            if (info.BankCode == null || info.BankCode == "") throw new PopbillException(-99999999, "은행코드가 입력되지 않았습니다.");
-            if (info.BankCode.Length != 4) throw new PopbillException(-99999999, "은행코드가 올바르지 않습니다.");
-            if (info.AccountNumber == null || info.AccountNumber == "") throw new PopbillException(-99999999, "은행 계좌번호가 입력되지 않았습니다.");
 
-            string PostData = toJsonString(info);
+        // 종량제 계좌 삭제
+        public Response DeleteBankAccount(string CorpNum, string BankCode, string AccountNumber, string UserID = null)
+        {
+            if (BankCode == null || BankCode == "") throw new PopbillException(-99999999, "은행코드가 입력되지 않았습니다.");
+            if (BankCode.Length != 4) throw new PopbillException(-99999999, "은행코드가 올바르지 않습니다.");
+            if (AccountNumber == null || AccountNumber == "") throw new PopbillException(-99999999, "은행 계좌번호가 입력되지 않았습니다.");
+
+            string PostData = "{'BankCode':" + BankCode + ", 'AccountNumber':" + AccountNumber + "}";
 
             string uri = "/EasyFin/Bank/BankAccount/Delete";
-
-            return httppost<Response>(uri, CorpNum, PostData, null, null, UserID);
+            
+           return  httppost<Response>(uri, CorpNum, PostData, null, null, UserID);
         }
 
         public EasyFinBankAccount GetBankAccountInfo(string CorpNum, string BankCode, string AccountNumber)
