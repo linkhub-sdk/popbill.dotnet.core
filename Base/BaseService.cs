@@ -18,6 +18,9 @@ namespace Popbill
         private const string ServiceURL_REAL = "https://popbill.linkhub.co.kr";
         private const string ServiceURL_TEST = "https://popbill-test.linkhub.co.kr";
 
+        private const string ServiceURL_REAL_Static = "https://static-popbill.linkhub.co.kr";
+        private const string ServiceURL_TEST_Static = "https://static-popbill-test.linkhub.co.kr";
+
         private const string ServiceURL_REAL_GA = "https://ga-popbill.linkhub.co.kr";
         private const string ServiceURL_TEST_GA = "https://ga-popbill-test.linkhub.co.kr";
 
@@ -29,6 +32,7 @@ namespace Popbill
         private bool _IsTest;
         private bool _IPRestrictOnOff;
         private bool _UseStaticIP;
+        private bool _UseGAIP;
         private Authority _LinkhubAuth;
         private bool _UseLocalTimeYN;
 
@@ -52,6 +56,12 @@ namespace Popbill
         {
             set { _UseStaticIP = value; }
             get { return _UseStaticIP; }
+        }
+
+        public bool UseGAIP
+        {
+            set { _UseGAIP = value; }
+            get { return _UseGAIP; }
         }
 
         public bool UseLocalTimeYN
@@ -92,9 +102,12 @@ namespace Popbill
         protected string ServiceURL
         {
             get {
-                if (_UseStaticIP)
+                if(UseGAIP)
                 {
                     return _IsTest ? ServiceURL_TEST_GA : ServiceURL_REAL_GA;
+                } else if (UseStaticIP)
+                {
+                    return _IsTest ? ServiceURL_TEST_Static : ServiceURL_REAL_Static;
                 } else
                 {
                     return _IsTest ? ServiceURL_TEST : ServiceURL_REAL;
@@ -131,7 +144,7 @@ namespace Popbill
 
             if (_token != null)
             {
-                DateTime now = DateTime.Parse(_LinkhubAuth.getTime(UseStaticIP, UseLocalTimeYN));
+                DateTime now = DateTime.Parse(_LinkhubAuth.getTime(UseStaticIP, UseLocalTimeYN, UseGAIP));
 
                 DateTime expiration = DateTime.Parse(_token.expiration);
 
@@ -144,11 +157,11 @@ namespace Popbill
                 {
                     if (_IPRestrictOnOff)
                     {
-                        _token = _LinkhubAuth.getToken(ServiceID, CorpNum, _Scopes, null, UseStaticIP, UseLocalTimeYN);
+                        _token = _LinkhubAuth.getToken(ServiceID, CorpNum, _Scopes, null, UseStaticIP, UseLocalTimeYN, UseGAIP);
                     }
                     else
                     {
-                        _token = _LinkhubAuth.getToken(ServiceID, CorpNum, _Scopes,"*", UseStaticIP, UseLocalTimeYN);
+                        _token = _LinkhubAuth.getToken(ServiceID, CorpNum, _Scopes,"*", UseStaticIP, UseLocalTimeYN, UseGAIP);
                     }
                     
 
@@ -532,7 +545,7 @@ namespace Popbill
         {
             try
             {
-                return _LinkhubAuth.getBalance(getSession_Token(CorpNum), ServiceID, UseStaticIP);
+                return _LinkhubAuth.getBalance(getSession_Token(CorpNum), ServiceID, UseStaticIP, UseGAIP);
             }
             catch (LinkhubException le)
             {
@@ -545,7 +558,7 @@ namespace Popbill
         {
             try
             {
-                return _LinkhubAuth.getPartnerBalance(getSession_Token(CorpNum), ServiceID, UseStaticIP);
+                return _LinkhubAuth.getPartnerBalance(getSession_Token(CorpNum), ServiceID, UseStaticIP, UseGAIP);
             }
             catch (LinkhubException le)
             {
@@ -558,7 +571,7 @@ namespace Popbill
         {
             try
             {
-                return _LinkhubAuth.getPartnerURL(getSession_Token(CorpNum), ServiceID, TOGO, UseStaticIP);
+                return _LinkhubAuth.getPartnerURL(getSession_Token(CorpNum), ServiceID, TOGO, UseStaticIP, UseGAIP);
             }
             catch (LinkhubException le)
             {
