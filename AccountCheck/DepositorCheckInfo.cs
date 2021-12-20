@@ -3,7 +3,7 @@
 namespace Popbill.AccountCheck
 {
     [DataContract]
-    public class AccountCheckInfo
+    public class DepositorCheckInfo
     {
         [DataMember]
         public string bankCode;
@@ -14,10 +14,12 @@ namespace Popbill.AccountCheck
         [DataMember]
         public string checkDate;
         [DataMember]
-        public string resultCode;
-        [DataMember]
         public string result;
         [DataMember]
         public string resultMessage;
+        [DataMember]
+        public string identityNumType;
+        [DataMember]
+        public string identityNum;
     }
 }
