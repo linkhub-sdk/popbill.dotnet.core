@@ -19,6 +19,7 @@ namespace Popbill.Cashbill
         [DataMember] public string tax;
         [DataMember] public string serviceFee;
         [DataMember] public string franchiseCorpNum;
+        [DataMember] public string franchiseTaxRegID;
         [DataMember] public string franchiseCorpName;
         [DataMember] public string franchiseCEOName;
         [DataMember] public string franchiseAddr;

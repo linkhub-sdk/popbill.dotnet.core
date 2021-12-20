@@ -185,7 +185,7 @@ namespace Popbill.Cashbill
         public CBSearchResult Search(string CorpNum, string DType, string SDate, string EDate, string[] State = null,
             string[] TradeType = null, string[] TradeUsage = null, string[] TradeOpt = null,
             string[] TaxationType = null, int? Page = null, int? PerPage = null, string Order = null,
-            string QString = null, string UserID = null)
+            string QString = null, string UserID = null, string FranchiseTaxRegID = null)
         {
             if (string.IsNullOrEmpty(DType)) throw new PopbillException(-99999999, "검색일자 유형이 입력되지 않았습니다.");
             if (string.IsNullOrEmpty(SDate)) throw new PopbillException(-99999999, "시작일자가 입력되지 않았습니다.");
@@ -204,6 +204,7 @@ namespace Popbill.Cashbill
             if (PerPage != null) uri += "&PerPage=" + PerPage.ToString();
             if (Order != null) uri += "&Order=" + Order;
             if (QString != null) uri += "&QString=" + QString;
+            if (FranchiseTaxRegID != null) uri += "&FranchiseTaxRegID=" + FranchiseTaxRegID;
 
             return httpget<CBSearchResult>(uri, CorpNum, UserID);
         }
