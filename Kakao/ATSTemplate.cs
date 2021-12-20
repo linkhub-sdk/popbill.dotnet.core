@@ -10,6 +10,8 @@ namespace Popbill.Kakao
         [DataMember] public string templateName;
         [DataMember] public string template;
         [DataMember] public string plusFriendID;
+        [DataMember] public string ads;
+        [DataMember] public string appendix;
         [DataMember] public List<KakaoButton> btns;
     }
 }
