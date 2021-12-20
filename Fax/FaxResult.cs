@@ -11,6 +11,7 @@ namespace Popbill.Fax
         [DataMember] public string senderName;
         [DataMember] public string receiveNum;
         [DataMember] public string receiveName;
+        [DataMember] public string receiveNumType;
         [DataMember] public string title;
         [DataMember] public int? sendPageCnt;
         [DataMember] public int? successPageCnt;
