@@ -267,6 +267,14 @@ namespace Popbill.Statement
 
         #region Add Ons API
 
+        //팝빌 인감 및 첨부문서 등록 URL
+        public string GetSealURL(string CorpNum, string UserID)
+        {
+            URLResponse response = httpget<URLResponse>("/?TG=SEAL", CorpNum, UserID);
+
+            return response.url;
+        }
+
         //첨부파일 추가
         public Response AttachFile(string CorpNum, int itemCode, string mgtKey, string FilePath, string UserID = null)
         {
