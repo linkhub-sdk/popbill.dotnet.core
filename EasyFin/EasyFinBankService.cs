@@ -32,8 +32,8 @@ namespace Popbill.EasyFin
         public Response RegistBankAccount(string CorpNum, EasyFinBankAccountForm info, string UserID)
         {
             if (info == null) throw new PopbillException(-99999999, "은행 계좌정보가 입력되지 않았습니다.");
-            if (info.BankCode == null || info.BankCode == "") throw new PopbillException(-99999999, "은행코드가 입력되지 않았습니다.");
-            if (info.BankCode.Length != 4) throw new PopbillException(-99999999, "은행코드가 올바르지 않습니다.");
+            if (info.BankCode == null || info.BankCode == "") throw new PopbillException(-99999999, "기관코드가 입력되지 않았습니다.");
+            if (info.BankCode.Length != 4) throw new PopbillException(-99999999, "기관코드가 올바르지 않습니다.");
             if (info.AccountNumber == null || info.AccountNumber == "") throw new PopbillException(-99999999, "은행 계좌번호가 입력되지 않았습니다.");
             if (info.AccountPWD == null || info.AccountPWD == "") throw new PopbillException(-99999999, "계좌 비밀번호가 입력되지 않았습니다.");
             if (info.AccountType == null || info.AccountType == "") throw new PopbillException(-99999999, "계좌유형이 입력되지 않았습니다.");
@@ -58,8 +58,8 @@ namespace Popbill.EasyFin
         public Response UpdateBankAccount(string CorpNum, EasyFinBankAccountForm info, string UserID)
         {
             if (info == null) throw new PopbillException(-99999999, "은행 계좌정보가 입력되지 않았습니다.");
-            if (info.BankCode == null || info.BankCode == "") throw new PopbillException(-99999999, "은행코드가 입력되지 않았습니다.");
-            if (info.BankCode.Length != 4) throw new PopbillException(-99999999, "은행코드가 올바르지 않습니다.");
+            if (info.BankCode == null || info.BankCode == "") throw new PopbillException(-99999999, "기관코드가 입력되지 않았습니다.");
+            if (info.BankCode.Length != 4) throw new PopbillException(-99999999, "기관코드가 올바르지 않습니다.");
             if (info.AccountNumber == null || info.AccountNumber == "") throw new PopbillException(-99999999, "은행 계좌번호가 입력되지 않았습니다.");
             if (info.AccountPWD == null || info.AccountPWD == "") throw new PopbillException(-99999999, "계좌 비밀번호가 입력되지 않았습니다.");
 
@@ -77,8 +77,8 @@ namespace Popbill.EasyFin
         }
         public Response RevokeCloseBankAccount(string CorpNum, string BankCode, string AccountNumber, string UserID)
         {
-            if (BankCode == null || BankCode == "") throw new PopbillException(-99999999, "은행코드가 입력되지 않았습니다.");
-            if (BankCode.Length != 4) throw new PopbillException(-99999999, "은행코드가 올바르지 않습니다.");
+            if (BankCode == null || BankCode == "") throw new PopbillException(-99999999, "기관코드가 입력되지 않았습니다.");
+            if (BankCode.Length != 4) throw new PopbillException(-99999999, "기관코드가 올바르지 않습니다.");
             if (AccountNumber == null || AccountNumber == "") throw new PopbillException(-99999999, "은행 계좌번호가 입력되지 않았습니다.");
 
             string uri = "/EasyFin/Bank/BankAccount/RevokeClose";
@@ -95,8 +95,8 @@ namespace Popbill.EasyFin
 
         public Response CloseBankAccount(string CorpNum, string BankCode, string AccountNumber, string CloseType, string UserID)
         {
-            if (BankCode == null || BankCode == "") throw new PopbillException(-99999999, "은행코드가 입력되지 않았습니다.");
-            if (BankCode.Length != 4) throw new PopbillException(-99999999, "은행코드가 올바르지 않습니다.");
+            if (BankCode == null || BankCode == "") throw new PopbillException(-99999999, "기관코드가 입력되지 않았습니다.");
+            if (BankCode.Length != 4) throw new PopbillException(-99999999, "기관코드가 올바르지 않습니다.");
             if (AccountNumber == null || AccountNumber == "") throw new PopbillException(-99999999, "은행 계좌번호가 입력되지 않았습니다.");
             if (CloseType == null || CloseType == "") throw new PopbillException(-99999999, "정액제 해지유형이 입력되지 않았습니다.");
             if (CloseType != "중도" && CloseType != "일반") throw new PopbillException(-99999999, "정액제 해지유형이 올바르지 않습니다.");
@@ -112,8 +112,8 @@ namespace Popbill.EasyFin
         // 종량제 계좌 삭제
         public Response DeleteBankAccount(string CorpNum, string BankCode, string AccountNumber, string UserID = null)
         {
-            if (BankCode == null || BankCode == "") throw new PopbillException(-99999999, "은행코드가 입력되지 않았습니다.");
-            if (BankCode.Length != 4) throw new PopbillException(-99999999, "은행코드가 올바르지 않습니다.");
+            if (BankCode == null || BankCode == "") throw new PopbillException(-99999999, "기관코드가 입력되지 않았습니다.");
+            if (BankCode.Length != 4) throw new PopbillException(-99999999, "기관코드가 올바르지 않습니다.");
             if (AccountNumber == null || AccountNumber == "") throw new PopbillException(-99999999, "은행 계좌번호가 입력되지 않았습니다.");
 
             string PostData = "{'BankCode':" + BankCode + ", 'AccountNumber':" + AccountNumber + "}";
@@ -130,8 +130,8 @@ namespace Popbill.EasyFin
 
         public EasyFinBankAccount GetBankAccountInfo(string CorpNum, string BankCode, string AccountNumber, string UserID)
         {
-            if (BankCode == null || BankCode == "") throw new PopbillException(-99999999, "은행코드가 입력되지 않았습니다.");
-            if (BankCode.Length != 4) throw new PopbillException(-99999999, "은행코드가 올바르지 않습니다.");
+            if (BankCode == null || BankCode == "") throw new PopbillException(-99999999, "기관코드가 입력되지 않았습니다.");
+            if (BankCode.Length != 4) throw new PopbillException(-99999999, "기관코드가 올바르지 않습니다.");
             if (AccountNumber == null || AccountNumber == "") throw new PopbillException(-99999999, "은행 계좌번호가 입력되지 않았습니다.");
 
             string uri = "/EasyFin/Bank/BankAccount/" + BankCode + "/" + AccountNumber;
@@ -168,7 +168,7 @@ namespace Popbill.EasyFin
 
         public string RequestJob(string CorpNum, string BankCode, string AccountNumber, string SDate, string EDate, string UserID)
         {
-            if (BankCode == null || BankCode == "") throw new PopbillException(-99999999, "은행코드가 입력되지 않습니다.");
+            if (BankCode == null || BankCode == "") throw new PopbillException(-99999999, "기관코드가 입력되지 않습니다.");
             if (AccountNumber == null || AccountNumber == "") throw new PopbillException(-99999999, "은행계좌번호가 입력되지 않습니다.");
             if (SDate == null || SDate == "") throw new PopbillException(-99999999, "거래내역 조회 시작일자가 입력되지 않습니다.");
             if (EDate == null || EDate == "") throw new PopbillException(-99999999, "거래내역 조회 종료일자가 입력되 지않습니다.");
@@ -278,7 +278,7 @@ namespace Popbill.EasyFin
 
         public EasyFinBankFlatRate GetFlatRateState(string CorpNum, string BankCode, string AccountNumber, string UserID)
         {
-            if (BankCode == null || BankCode == "") throw new PopbillException(-99999999, "은행코드가 입력되지 않습니다.");
+            if (BankCode == null || BankCode == "") throw new PopbillException(-99999999, "기관코드가 입력되지 않습니다.");
             if (AccountNumber == null || AccountNumber == "") throw new PopbillException(-99999999, "은행계좌번호가 입력되지않습니다.");
 
             string uri = "/EasyFin/Bank/Contract/" + BankCode + "/" + AccountNumber;
