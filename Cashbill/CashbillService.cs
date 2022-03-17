@@ -47,12 +47,12 @@ namespace Popbill.Cashbill
         }
 
         //초대량 발행 접수
-        public BulkResponse BulkSubmit(String CorpNum, String SubmitID, List<Cashbill> cashbillList)
+        public BulkResponse BulkSubmit(string CorpNum, string SubmitID, List<Cashbill> cashbillList)
         {
             return BulkSubmit(CorpNum, SubmitID, cashbillList, null);
         }
 
-        public BulkResponse BulkSubmit(String CorpNum, String SubmitID, List<Cashbill> cashbillList, String UserID)
+        public BulkResponse BulkSubmit(string CorpNum, string SubmitID, List<Cashbill> cashbillList, string UserID)
         {
             if (string.IsNullOrEmpty(SubmitID)) throw new PopbillException(-99999999, "제출아이디(SubmitID)가 입력되지 않았습니다.");
             if (cashbillList == null || cashbillList.Count <= 0) throw new PopbillException(-99999999, "현금영수증 정보가 입력되지 않았습니다.");
@@ -66,11 +66,11 @@ namespace Popbill.Cashbill
 
         }
 
-        public BulkCashbillResult GetBulkResult(String CorpNum, String SubmitID)
+        public BulkCashbillResult GetBulkResult(string CorpNum, string SubmitID)
         {
             return GetBulkResult(CorpNum, SubmitID, null);
         }
-        public BulkCashbillResult GetBulkResult(String CorpNum, String SubmitID, String UserID)
+        public BulkCashbillResult GetBulkResult(string CorpNum, string SubmitID, string UserID)
         {
             if (string.IsNullOrEmpty(SubmitID)) throw new PopbillException(-99999999, "제출아이디(SubmitID)가 입력되지 않았습니다.");
 

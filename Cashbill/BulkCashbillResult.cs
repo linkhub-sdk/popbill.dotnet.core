@@ -10,13 +10,13 @@ namespace Popbill.Cashbill
         [DataMember]
         public long code;
         [DataMember]
-        public String message;
+        public string message;
         [DataMember]
-        public String receiptID;
+        public string receiptID;
         [DataMember]
-        public String receiptDT;
+        public string receiptDT;
         [DataMember]
-        public String submitID;
+        public string submitID;
         [DataMember]
         public long submitCount;
         [DataMember]
@@ -26,9 +26,9 @@ namespace Popbill.Cashbill
         [DataMember]
         public long txState;
         [DataMember]
-        public String txStartDT;
+        public string txStartDT;
         [DataMember]
-        public String txEndDT;
+        public string txEndDT;
         [DataMember]
         public long txResultCode;
         [DataMember]
