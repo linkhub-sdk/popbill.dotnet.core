@@ -335,6 +335,14 @@ namespace Popbill.Taxinvoice
             return httpget<Taxinvoice>("/Taxinvoice/" + KeyType.ToString() + "/" + MgtKey + "?Detail", CorpNum, UserID);
         }
 
+        //상세정보 확인 (XML)
+        public TaxinvoiceXML GetXML(string CorpNum, MgtKeyType KeyType, string MgtKey, string UserID = null)
+        {
+            if (string.IsNullOrEmpty(MgtKey)) throw new PopbillException(-99999999, "문서번호가 입력되지 않았습니다.");
+
+            return httpget<TaxinvoiceXML>("/Taxinvoice/" + KeyType.ToString() + "/" + MgtKey + "?XML", CorpNum, UserID);
+        }
+
         //초대량 접수결과 확인
         public BulkTaxinvoiceResult GetBulkResult(string CorpNum, string SubmitID, string UserID =null)
         {
