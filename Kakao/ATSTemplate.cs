@@ -13,5 +13,8 @@ namespace Popbill.Kakao
         [DataMember] public string ads;
         [DataMember] public string appendix;
         [DataMember] public List<KakaoButton> btns;
+        [DataMember] public bool secureYN;
+        [DataMember] public string state;
+        [DataMember] public string stateDT;
     }
 }
