@@ -3,6 +3,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Web;
 using System.Runtime.Serialization;
 
 namespace Popbill.Fax
@@ -233,7 +234,7 @@ namespace Popbill.Fax
             if (Page != null) uri += "&Page=" + Page.ToString();
             if (PerPage != null) uri += "&PerPage=" + PerPage.ToString();
             if (Order != null) uri += "&Order=" + Order;
-            if (Qstring != null) uri += "&Qstring=" + Qstring;
+            if (Qstring != null) uri += "&Qstring=" + HttpUtility.UrlEncode(Qstring);
 
             return httpget<FAXSearchResult>(uri, CorpNum, UserID);
         }

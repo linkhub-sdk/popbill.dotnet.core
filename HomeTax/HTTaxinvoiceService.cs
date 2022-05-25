@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Web;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 
@@ -64,7 +65,7 @@ namespace Popbill.HomeTax
             if (Page != null) uri += "&Page=" + Page.ToString();
             if (PerPage != null) uri += "&PerPage=" + PerPage.ToString();
             if (Order != null) uri += "&Order=" + Order;
-            if(SearchString != null) uri += "&SearchString=" + SearchString;
+            if(SearchString != null) uri += "&SearchString=" + HttpUtility.UrlEncode(SearchString);
 
             return httpget<HTTaxinvoiceSearch>(uri, CorpNum, UserID);
         }
@@ -84,7 +85,7 @@ namespace Popbill.HomeTax
             if (TaxRegIDType != null) uri += "&TaxRegIDType=" + TaxRegIDType;
             if (TaxRegID != null) uri += "&TaxRegID=" + TaxRegID;
 
-            if (SearchString != null) uri += "&SearchString=" + SearchString;
+            if (SearchString != null) uri += "&SearchString=" + HttpUtility.UrlEncode(SearchString);
 
             return httpget<HTTaxinvoiceSummary>(uri, CorpNum, UserID);
         }

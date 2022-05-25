@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Web;
 using System.Runtime.Serialization;
 
 
@@ -383,7 +384,7 @@ namespace Popbill.Taxinvoice
             if (Page != null) uri += "&Page=" + Page.ToString();
             if (PerPage != null) uri += "&PerPage=" + PerPage.ToString();
             if (Order != null) uri += "&Order=" + Order;
-            if (QString != null) uri += "&QString=" + QString;
+            if (QString != null) uri += "&QString=" + HttpUtility.UrlEncode(QString);
             if (MgtKey != null) uri += "&MgtKey=" + MgtKey;
             if (InterOPYN != null) uri += "&InterOPYN=" + InterOPYN;
 

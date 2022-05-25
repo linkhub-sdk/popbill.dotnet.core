@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Web;
 using System.IO;
 using System.Runtime.Serialization;
 
@@ -217,7 +218,7 @@ namespace Popbill.EasyFin
             string uri = "/EasyFin/Bank/" + JobID;
             uri += "?TrdaeType=" + string.Join(",", TradeType);
 
-            if (SearchString != null && SearchString != "") uri += "&SearchString=" + SearchString;
+            if (SearchString != null && SearchString != "") uri += "&SearchString=" + HttpUtility.UrlEncode(SearchString);
 
             uri += "&Page=" + Page.ToString();
             uri += "&PerPage=" + PerPage.ToString();
@@ -239,7 +240,7 @@ namespace Popbill.EasyFin
             string uri = "/EasyFin/Bank/" + JobID + "/Summary";
             uri += "?TradeType=" + string.Join(",", TradeType);
 
-            if (SearchString != null && SearchString != "") uri += "&SearchString=" + SearchString;
+            if (SearchString != null && SearchString != "") uri += "&SearchString=" + HttpUtility.UrlEncode(SearchString);
 
             return httpget<EasyFinBankSummary>(uri, CorpNum, UserID);
         }
@@ -256,7 +257,7 @@ namespace Popbill.EasyFin
 
             string uri = "/EasyFin/Bank/SaveMemo";
             uri += "?TID=" + TID;
-            uri += "&Memo=" + Memo;
+            uri += "&Memo=" + HttpUtility.UrlEncode(Memo);
 
             return httppost<Response>(uri, CorpNum, null, null, null, UserID);
         }
