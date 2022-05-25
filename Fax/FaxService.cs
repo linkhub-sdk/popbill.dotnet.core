@@ -13,6 +13,7 @@ namespace Popbill.Fax
         public FaxService(string LinkID, string SecretKey) : base(LinkID, SecretKey)
         {
             this.AddScope("160");
+            this.AddScope("161");
         }
 
         #region 발신번호 API
@@ -270,17 +271,17 @@ namespace Popbill.Fax
         #region Point API
 
         //전송단가 확인
-        public Single GetUnitCost(string CorpNum, string UserID = null)
+        public Single GetUnitCost(string CorpNum, string UserID = null, string ReceiveNumType = null)
         {
-            UnitCostResponse response = httpget<UnitCostResponse>("/FAX/UnitCost", CorpNum, UserID);
+            UnitCostResponse response = httpget<UnitCostResponse>("/FAX/UnitCost?receiveNumType=" + ReceiveNumType, CorpNum, UserID);
 
             return response.unitCost;
         }
 
         //과금정보 확인
-        public ChargeInfo GetChargeInfo(string CorpNum, string UserID = null)
+        public ChargeInfo GetChargeInfo(string CorpNum, string UserID = null, string ReceiveNumType = null)
         {
-            ChargeInfo response = httpget<ChargeInfo>("/FAX/ChargeInfo", CorpNum, UserID);
+            ChargeInfo response = httpget<ChargeInfo>("/FAX/ChargeInfo?receiveNumType=" + ReceiveNumType, CorpNum, UserID);
 
             return response;
         }
