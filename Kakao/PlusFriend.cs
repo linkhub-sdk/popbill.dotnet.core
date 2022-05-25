@@ -8,5 +8,7 @@ namespace Popbill.Kakao
         [DataMember] public string plusFriendID;
         [DataMember] public string plusFriendName;
         [DataMember] public string regDT;
+        [DataMember] public string state;
+        [DataMember] public string stateDT;
     }
 }
