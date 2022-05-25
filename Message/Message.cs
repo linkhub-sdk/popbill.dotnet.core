@@ -11,5 +11,6 @@ namespace Popbill.Message
         [DataMember(Name = "rcvnm")] public string receiveName;
         [DataMember(Name = "sjt")] public string subject;
         [DataMember(Name = "msg")] public string content;
+        [DataMember] public string interOPRefKey;
     }
 }

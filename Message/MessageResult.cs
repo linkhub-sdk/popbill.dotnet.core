@@ -21,5 +21,6 @@ namespace Popbill.Message
         [DataMember] public string tranNet;
         [DataMember] public string receiptNum;
         [DataMember] public string requestNum;
+        [DataMember] public string interOPRefKey;
     }
 }

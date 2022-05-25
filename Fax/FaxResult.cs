@@ -16,7 +16,6 @@ namespace Popbill.Fax
         [DataMember] public int? sendPageCnt;
         [DataMember] public int? successPageCnt;
         [DataMember] public int? failPageCnt;
-        [DataMember] public int? refundPageCnt;
         [DataMember] public int? cancelPageCnt;
         [DataMember] public string reserveDT;
         [DataMember] public string receiptDT;
@@ -25,7 +24,9 @@ namespace Popbill.Fax
         [DataMember] public string[] fileNames;
         [DataMember] public string receiptNum;
         [DataMember] public string requestNum;
+        [DataMember] public string interOPRefKey;
         [DataMember] public string chargePageCnt;
+        [DataMember] public int? refundPageCnt;
         [DataMember] public string tiffFileSize;
     }
 }
