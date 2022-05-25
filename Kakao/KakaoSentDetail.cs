@@ -12,6 +12,7 @@ namespace Popbill.Kakao
         [DataMember] public string content;
         [DataMember] public int? result;
         [DataMember] public string resultDT;
+        [DataMember] public string altSubject;
         [DataMember] public string altContent;
         [DataMember] public int? altContentType;
         [DataMember] public string altSendType;

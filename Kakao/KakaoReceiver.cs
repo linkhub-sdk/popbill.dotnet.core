@@ -9,6 +9,7 @@ namespace Popbill.Kakao
         [DataMember] public string rcv;
         [DataMember] public string rcvnm;
         [DataMember] public string msg;
+        [DataMember] public string altsjt;
         [DataMember] public string altmsg;
         [DataMember] public string interOPRefKey;
         [DataMember] public List<KakaoButton> btns;

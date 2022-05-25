@@ -10,6 +10,7 @@ namespace Popbill.Kakao
         [DataMember] public string templateCode;
         [DataMember] public string plusFriendID;
         [DataMember] public string sendNum;
+        [DataMember] public string altSubject;
         [DataMember] public string altContent;
         [DataMember] public string altSendType;
         [DataMember] public string reserveDT;
