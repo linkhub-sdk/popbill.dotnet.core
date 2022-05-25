@@ -40,6 +40,14 @@ namespace Popbill.Kakao
             return httpget<List<PlusFriend>>("/KakaoTalk/ListPlusFriendID", CorpNum, UserID);
         }
 
+        // 발신번호 등록여부 확인
+        public Response CheckSenderNumber(string CorpNum, string SenderNumber, string UserID = null)
+        {
+            if (SenderNumber == "") throw new PopbillException(-99999999, "확인할 발신번호가 입력되지 않았습니다.");
+
+            return httpget<Response>("/KakaoTalk/CheckSenderNumber/" + SenderNumber, CorpNum, UserID);
+        }
+
         //발신번호 관리 팝업 URL
         public string GetSenderNumberMgtURL(string CorpNum, string UserID)
         {
