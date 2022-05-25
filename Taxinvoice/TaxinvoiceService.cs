@@ -698,6 +698,12 @@ namespace Popbill.Taxinvoice
             return httpget<Response>("/Taxinvoice/CertCheck", CorpNum, UserID);
         }
 
+        //인증서 정보 확인
+        public TaxinvoiceCertificate GetTaxCertInfo(String CorpNum, String UserID = null)
+        {
+            return httpget<TaxinvoiceCertificate>("/Taxinvoice/Certificate", CorpNum, UserID);
+        }
+
         #endregion
 
         #region Point API
