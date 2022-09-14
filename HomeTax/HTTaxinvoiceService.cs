@@ -55,8 +55,8 @@ namespace Popbill.HomeTax
         {
             if (JobID.Length != 18) throw new PopbillException(code: -99999999, Message: "작업아이디(jobID)가 올바르지 않습니다.");
 
-            string uri = "/HomeTax/Taxinvoice/" + JobID;
-            if (Type != null) uri += "?Type=" + string.Join(separator: ",", value: Type);
+            string uri = "/HomeTax/Taxinvoice/" + JobID + "?Type=";
+            if (Type != null) uri += string.Join(separator: ",", value: Type);
             if (TaxType != null) uri += "&TaxType=" + string.Join(separator: ",", value: TaxType);
             if (PurposeType != null) uri += "&PurposeType=" + string.Join(separator: ",", value: PurposeType);
             if (TaxRegIDYN != "") uri += "&TaxRegIDYN=" + TaxRegIDYN;
@@ -77,8 +77,8 @@ namespace Popbill.HomeTax
         {
             if (JobID.Length != 18) throw new PopbillException(-99999999, "작업아이디(jobID)가 올바르지 않습니다.");
 
-            string uri = "/HomeTax/Taxinvoice/" + JobID + "/Summary";
-            if (Type != null) uri += "?Type=" + string.Join(",", Type);
+            string uri = "/HomeTax/Taxinvoice/" + JobID + "/Summary?Type=";
+            if (Type != null) uri += string.Join(",", Type);
             if (TaxType != null) uri += "&TaxType=" + string.Join(",", TaxType);
             if (PurposeType != null) uri += "&PurposeType=" + string.Join(",", PurposeType);
             if (TaxRegIDYN != "") uri += "&TaxRegIDYN=" + TaxRegIDYN;

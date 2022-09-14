@@ -216,7 +216,7 @@ namespace Popbill.EasyFin
             if (JobID == null || JobID == "") throw new PopbillException(-99999999, "작업아이디가 입력되지 않습니다.");
 
             string uri = "/EasyFin/Bank/" + JobID;
-            uri += "?TrdaeType=" + string.Join(",", TradeType);
+            uri += "?TradeType=" + string.Join(",", TradeType);
 
             if (SearchString != null && SearchString != "") uri += "&SearchString=" + HttpUtility.UrlEncode(SearchString);
 
