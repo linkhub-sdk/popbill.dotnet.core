@@ -56,7 +56,7 @@ namespace Popbill.HomeTax
             if (JobID.Length != 18) throw new PopbillException(code: -99999999, Message: "작업아이디(jobID)가 올바르지 않습니다.");
 
             string uri = "/HomeTax/Taxinvoice/" + JobID;
-            if (Order != null) uri += "?Type=" + string.Join(separator: ",", value: Type);
+            if (Type != null) uri += "?Type=" + string.Join(separator: ",", value: Type);
             if (TaxType != null) uri += "&TaxType=" + string.Join(separator: ",", value: TaxType);
             if (PurposeType != null) uri += "&PurposeType=" + string.Join(separator: ",", value: PurposeType);
             if (TaxRegIDYN != "") uri += "&TaxRegIDYN=" + TaxRegIDYN;
