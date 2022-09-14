@@ -14,9 +14,9 @@ namespace Popbill
     public class BaseService
     {
         private const string ServiceID_REAL = "POPBILL";
-        private const string ServiceID_TEST = "POPBILL_STAGE";
+        private const string ServiceID_TEST = "POPBILL_TEST";
         private const string ServiceURL_REAL = "https://popbill.linkhub.co.kr";
-        private const string ServiceURL_TEST = "https://dev-pb-api.linkhub.kr";
+        private const string ServiceURL_TEST = "https://popbill-test.linkhub.co.kr";
 
         private const string ServiceURL_REAL_Static = "https://static-popbill.linkhub.co.kr";
         private const string ServiceURL_TEST_Static = "https://static-popbill-test.linkhub.co.kr";
@@ -204,7 +204,6 @@ namespace Popbill
             }
 
             request.Headers.Add("x-lh-version", APIVersion);
-            request.Headers.Add("User-Agent", "POPBILL");
 
             request.Headers.Add("Accept-Encoding", "gzip, deflate");
 
@@ -270,8 +269,6 @@ namespace Popbill
 
             request.Headers.Add("x-pb-message-digest", Convert.ToBase64String(SHA1.Create().ComputeHash(Encoding.UTF8.GetBytes(PostData))));
             request.Headers.Add("x-pb-submit-id", SubmitID);
-
-            request.Headers.Add("User-Agent", "POPBILL");
 
             if (string.IsNullOrEmpty(UserID) == false)
             {
@@ -351,7 +348,6 @@ namespace Popbill
             request.Headers.Add("x-lh-version", APIVersion);
 
             request.Headers.Add("Accept-Encoding", "gzip, deflate");
-            request.Headers.Add("User-Agent", "POPBILL");
 
             request.AutomaticDecompression = DecompressionMethods.GZip;
 

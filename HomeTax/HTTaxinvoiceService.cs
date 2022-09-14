@@ -55,17 +55,17 @@ namespace Popbill.HomeTax
         {
             if (JobID.Length != 18) throw new PopbillException(code: -99999999, Message: "작업아이디(jobID)가 올바르지 않습니다.");
 
-            string uri = "/HomeTax/Taxinvoice/" + JobID + "?Type=";
-            if (Type != null) uri += string.Join(separator: ",", value: Type);
-            if (TaxType != null) uri += "&TaxType=" + string.Join(separator: ",", value: TaxType);
-            if (PurposeType != null) uri += "&PurposeType=" + string.Join(separator: ",", value: PurposeType);
-            if (TaxRegIDYN != "") uri += "&TaxRegIDYN=" + TaxRegIDYN;
-            if (TaxRegIDType != null) uri += "&TaxRegIDType=" + TaxRegIDType;
-            if (TaxRegID != null) uri += "&TaxRegID=" + TaxRegID;
-            if (Page != null) uri += "&Page=" + Page.ToString();
-            if (PerPage != null) uri += "&PerPage=" + PerPage.ToString();
-            if (Order != null) uri += "&Order=" + Order;
-            if(SearchString != null) uri += "&SearchString=" + HttpUtility.UrlEncode(SearchString);
+            string uri = "/HomeTax/Taxinvoice/" + JobID;
+            uri += "?Type="         + Type != null ? string.Join(separator: ",", value: Type) : "";
+            uri += "&TaxType="      + TaxType != null ? string.Join(separator: ",", value: TaxType) : "";
+            uri += "&PurposeType="  + PurposeType != null ? string.Join(separator: ",", value: PurposeType) : "";
+            uri += "&TaxRegIDYN="   + TaxRegIDYN != "" ? TaxRegIDYN : "";
+            uri += "&TaxRegIDType=" + TaxRegIDType != null ? TaxRegIDType : "";
+            uri += "&TaxRegID="     + TaxRegID != null ? TaxRegID : "";
+            uri += "&Page="         + Page != null ? Page.ToString() : "";
+            uri += "&PerPage="      + PerPage != null ? PerPage.ToString() : "";
+            uri += "&Order="        + Order != null ? Order : "";
+            uri += "&SearchString=" + SearchString != null ? HttpUtility.UrlEncode(SearchString) : "";
 
             return httpget<HTTaxinvoiceSearch>(uri, CorpNum, UserID);
         }
@@ -77,15 +77,14 @@ namespace Popbill.HomeTax
         {
             if (JobID.Length != 18) throw new PopbillException(-99999999, "작업아이디(jobID)가 올바르지 않습니다.");
 
-            string uri = "/HomeTax/Taxinvoice/" + JobID + "/Summary?Type=";
-            if (Type != null) uri += string.Join(",", Type);
-            if (TaxType != null) uri += "&TaxType=" + string.Join(",", TaxType);
-            if (PurposeType != null) uri += "&PurposeType=" + string.Join(",", PurposeType);
-            if (TaxRegIDYN != "") uri += "&TaxRegIDYN=" + TaxRegIDYN;
-            if (TaxRegIDType != null) uri += "&TaxRegIDType=" + TaxRegIDType;
-            if (TaxRegID != null) uri += "&TaxRegID=" + TaxRegID;
-
-            if (SearchString != null) uri += "&SearchString=" + HttpUtility.UrlEncode(SearchString);
+            string uri = "/HomeTax/Taxinvoice/" + JobID + "/Summary";
+            uri += "?Type="         + Type != null ? string.Join(",", Type) : "";
+            uri += "&TaxType="      + TaxType != null ? string.Join(",", TaxType) : "";
+            uri += "&PurposeType="  + PurposeType != null ? string.Join(",", PurposeType) : "";
+            uri += "&TaxRegIDYN="   + TaxRegIDYN != "" ? TaxRegIDYN : "";
+            uri += "&TaxRegIDType=" + TaxRegIDType != null ? TaxRegIDType : "";
+            uri += "&TaxRegID="     + TaxRegID != null ? TaxRegID : "";
+            uri += "&SearchString=" + SearchString != null ? HttpUtility.UrlEncode(SearchString) : "";
 
             return httpget<HTTaxinvoiceSummary>(uri, CorpNum, UserID);
         }

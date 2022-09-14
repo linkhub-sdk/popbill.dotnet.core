@@ -52,12 +52,12 @@ namespace Popbill.HomeTax
         {
             if (JobID.Length != 18) throw new PopbillException(-99999999, "작업아이디(jobID)가 올바르지 않습니다.");
 
-            string uri = "/HomeTax/Cashbill/" + JobID + "?TradeType=";
-            if (TradeType != null) uri += string.Join(",", TradeType);
-            if (TradeUsage != null) uri += "&TradeUsage=" + string.Join(",", TradeUsage);
-            if (Page != null) uri += "&Page=" + Page.ToString();
-            if (PerPage != null) uri += "&PerPage=" + PerPage.ToString();
-            if (Order != null) uri += "&Order=" + Order;
+            string uri = "/HomeTax/Cashbill/" + JobID;
+            uri += "?TradeType="    + TradeType != null ? string.Join(",", TradeType) : "";
+            uri += "&TradeUsage="   + TradeUsage != null ? string.Join(",", TradeUsage) : "";
+            uri += "&Page="         + Page != null ? Page.ToString() : "";
+            uri += "&PerPage="      + PerPage != null ? PerPage.ToString() : "";
+            uri += "&Order="        + Order != null ? Order : "";
 
             return httpget<HTCashbillSearch>(uri, CorpNum, UserID);
         }
@@ -68,9 +68,9 @@ namespace Popbill.HomeTax
         {
             if (JobID.Length != 18) throw new PopbillException(-99999999, "작업아이디(jobID)가 올바르지 않습니다.");
 
-            string uri = "/HomeTax/Cashbill/" + JobID + "/Summary" + "?TradeType=";
-            if (TradeType != null) uri += string.Join(",", TradeType);
-            if (TradeUsage != null) uri += "&TradeUsage=" + string.Join(",", TradeUsage);
+            string uri = "/HomeTax/Cashbill/" + JobID + "/Summary";
+            uri += "?TradeType="    + TradeType != null ? string.Join(",", TradeType) : "";
+            uri += "&TradeUsage="   + TradeUsage != null ? string.Join(",", TradeUsage) : "";
 
             return httpget<HTCashbillSummary>(uri, CorpNum, UserID);
         }
