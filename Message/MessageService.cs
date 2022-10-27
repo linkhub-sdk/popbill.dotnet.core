@@ -254,6 +254,31 @@ namespace Popbill.Message
             return httpget<Response>("/Message/Cancel/" + requestNum, CorpNum, UserID);
         }
 
+        //예약전송 취소 - 접수번호, 수신번호
+        public Response CancelReservebyRCV(string CorpNum, string receiptNum, string receiveNum, string UserID = null)
+        {
+            if (string.IsNullOrEmpty(receiptNum))
+                throw new PopbillException(-99999999, "접수번호가 입력되지 않았습니다.");
+            if (string.IsNullOrEmpty(receiveNum))
+                throw new PopbillException(-99999999, "수신번호가 입력되지 않았습니다.");
+
+            string PostData = toJsonString(receiveNum);
+            return httppost<Response>("/Message/" + receiptNum + "/Cancel", CorpNum, PostData, null, null, UserID);
+        }
+
+        //예약전송 취소 - 요청번호, 수신번호
+        public Response CancelReserveRNbyRCV(string CorpNum, string requestNum, string receiveNum, string UserID = null)
+        {
+            if (string.IsNullOrEmpty(requestNum))
+                throw new PopbillException(-99999999, "요청번호(requestNum)가 입력되지 않았습니다.");
+            if (string.IsNullOrEmpty(receiveNum))
+                throw new PopbillException(-99999999, "수신번호가 입력되지 않았습니다.");
+
+            string PostData = toJsonString(receiveNum);
+            return httppost<Response>("/Message/Cancel/" + requestNum, CorpNum, PostData, null, null, UserID);
+        }
+
+
         #endregion
 
         #region Info API
