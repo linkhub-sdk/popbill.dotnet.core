@@ -6,13 +6,15 @@ namespace Popbill.Cashbill
     [DataContract]
     public class BulkCashbillIssueResult
     {
-        [DataMember]
+        [DataMember] 
         public long code;
-        [DataMember]
+        [DataMember] 
         public string mgtKey;
-        [DataMember]
+        [DataMember] 
         public string confirmNum;
-        [DataMember]
+        [DataMember] 
         public string tradeDate;
+        [DataMember] 
+        public string tradeDT;
     }
 }

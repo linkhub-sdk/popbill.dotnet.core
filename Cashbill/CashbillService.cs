@@ -33,13 +33,13 @@ namespace Popbill.Cashbill
         }
 
         //즉시발행
-        public CBIssueResponse RegistIssue(string CorpNum, Cashbill cashbill, string Memo, string UserID = null, string EmailSubject = null)
+        public CBIssueResponse RegistIssue(string CorpNum, Cashbill cashbill, string Memo, string UserID = null, string emailSubject = null)
         {
             if (cashbill == null) throw new PopbillException(-99999999, "현금영수증 정보가 입력되지 않았습니다.");
 
             cashbill.memo = Memo;
 
-            if (EmailSubject != null) cashbill.emailSubject = EmailSubject;
+            if (emailSubject != null) cashbill.emailSubject = emailSubject;
 
             string PostData = toJsonString(cashbill);
 
@@ -139,7 +139,7 @@ namespace Popbill.Cashbill
         public CBIssueResponse RevokeRegistIssue(string CorpNum, string mgtKey, string orgConfirmNum, string orgTradeDate,
             bool smssendYN = false, string memo = null, bool isPartCancel = false, int? cancelType = null,
             string totalAmount = null, string supplyCost = null, string tax = null, string serviceFee = null,
-            string UserID = null)
+            string UserID = null, string emailSubject = null, string tradeDT = null)
         {
             RevokeRequest request = new RevokeRequest();
             request.mgtKey = mgtKey;
@@ -153,6 +153,8 @@ namespace Popbill.Cashbill
             request.supplyCost = supplyCost;
             request.tax = tax;
             request.serviceFee = serviceFee;
+            request.emailSubject = emailSubject;
+            request.tradeDT = tradeDT;
 
             string PostData = toJsonString(request);
 
@@ -461,6 +463,8 @@ namespace Popbill.Cashbill
             [DataMember] public string supplyCost;
             [DataMember] public string tax;
             [DataMember] public string serviceFee;
+            [DataMember] public string emailSubject;
+            [DataMember] public string tradeDT;
         }
     }
 }
