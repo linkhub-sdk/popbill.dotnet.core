@@ -112,7 +112,7 @@ namespace Popbill
                 {
                     return _IsTest ? ServiceURL_TEST : ServiceURL_REAL;
                 }
-                
+
             }
         }
 
@@ -163,7 +163,7 @@ namespace Popbill
                     {
                         _token = _LinkhubAuth.getToken(ServiceID, CorpNum, _Scopes,"*", UseStaticIP, UseLocalTimeYN, UseGAIP);
                     }
-                    
+
 
                     if (_tokenTable.ContainsKey(CorpNum))
                     {
@@ -515,7 +515,7 @@ namespace Popbill
 
         #endregion
 
-        #region Popbill API        
+        #region Popbill API
 
         //팝빌 로그인
         public string GetAccessURL(string CorpNum, string UserID)
@@ -546,8 +546,8 @@ namespace Popbill
                 throw new PopbillException(le);
             }
         }
-        
-        
+
+
         //연동회원 잔여포인트 확인
         public double GetBalance(string CorpNum)
         {
@@ -722,7 +722,7 @@ namespace Popbill
                 throw new PopbillException(le);
             }
         }
-        
+
         //담당자 목록 확인
         public List<Contact> ListContact(string CorpNum, string UserID = null)
         {
@@ -752,6 +752,112 @@ namespace Popbill
                 throw new PopbillException(le);
             }
         }
+
+        // 연동회원 무통장 입금신청
+        public PaymentResponse PaymentRequest(string CorpNum, PaymentForm paymentForm, string UserID = null)
+        {
+            if (paymentForm == null) throw new PopbillException(-99999999, "No PaymentForm form");
+            string PostData = toJsonString(paymentForm);
+            try
+            {
+                return httppost<PaymentResponse>("/Payment", CorpNum, PostData, UserID: UserID);
+            }
+            catch (LinkhubException le)
+            {
+                throw new PopbillException(le);
+            }
+        }
+
+        // 연동회원 무통장 입금신청 정보확인
+        public PaymentHistory GetSettleResult(string CorpNum, string settleCode, string UserID=null)
+        {
+            if (settleCode == null)
+            {
+                throw new PopbillException(-99999999, "settleCode가 입력되지 않았습니다.");
+            }
+
+            try
+            {
+                return httpget<PaymentHistory>("/Payment/" + settleCode, CorpNum, UserID );
+            }
+            catch (LinkhubException le)
+            {
+                throw new PopbillException(le);
+            }
+        }
+
+        // 연동회원 포인트 사용내역 확인
+        public UseHistoryResult GetUseHistory(string CorpNum, string SDate = null, string EDate = null, int Page = 1,
+            int PerPage = 500, string Order = null, string UserID = null)
+        {
+            string url = "/UseHisotry";
+            url += "?SDate=" +SDate;
+            url += "&EDate=" +EDate;
+            url += "&Page=" +Page;
+            url += "&PerPage=" +PerPage;
+            url += "&Order=" +Order;
+
+            try
+            {
+                return httpget<UseHistoryResult>(url, CorpNum, UserID);
+            }
+            catch (LinkhubException le)
+            {
+                throw new PopbillException(le);
+            }
+        }
+
+        // 연동회원 포인트 결제내역 확인
+        public PaymentHistoryResult GetPaymentHistory(string CorpNum, string SDate=null, string EDate=null, int Page=1, int PerPage=500, string UserID=null)
+        {
+            string url = "/PaymentHistory";
+
+            url += "?SDate" + SDate;
+            url += "&EDate" + EDate;
+            url += "&Page" + Page;
+            url += "&PerPage" + PerPage;
+
+            try
+            {
+                return httpget<PaymentHistoryResult>(url, CorpNum, UserID);
+            }
+            catch (LinkhubException le)
+            {
+                throw new PopbillException(le);
+            }
+        }
+
+        public RefundResponse Refund(string CorpNum, RefundForm refundForm, string UserID=null)
+        {
+            if (refundForm == null) throw new PopbillException(-99999999, "No RefundForm form");
+            string PostData = toJsonString(refundForm);
+            try
+            {
+                return httppost<RefundResponse>("/Refund", CorpNum, PostData, UserID: UserID);
+            }
+            catch (LinkhubException le)
+            {
+                throw new PopbillException(le);
+            }
+        }
+
+        public RefundHistoryResult GetRefundHistory(string CorpNum, int Page=1, int PerPage=500, string UserID=null)
+        {
+            String url = "/RefundHistory";
+
+            url += "?Page"+Page;
+            url += "&PerPage"+PerPage;
+
+            try
+            {
+                return httpget<RefundHistoryResult>(url, CorpNum, UserID);
+            }
+            catch (LinkhubException le)
+            {
+                throw new PopbillException(le);
+            }
+        }
+
 
         #endregion
 
