@@ -16,5 +16,7 @@ namespace Popbill.Cashbill
         public string tradeDate;
         [DataMember] 
         public string tradeDT;
+        [DataMember]
+        public string message;
     }
 }
