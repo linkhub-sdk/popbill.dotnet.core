@@ -203,6 +203,8 @@ namespace Popbill
                 request.Headers.Add("Authorization", "Bearer" + " " + bearerToken);
             }
 
+            request.Headers.Add("User-Agent", "DOTNETCORE POPBILL SDK");
+
             request.Headers.Add("x-lh-version", APIVersion);
 
             request.Headers.Add("Accept-Encoding", "gzip, deflate");
@@ -261,6 +263,8 @@ namespace Popbill
                 string bearerToken = getSession_Token(CorpNum);
                 request.Headers.Add("Authorization", "Bearer" + " " + bearerToken);
             }
+
+            request.Headers.Add("User-Agent", "DOTNETCORE POPBILL SDK");
 
             request.Headers.Add("x-pb-version", APIVersion);
 
@@ -345,6 +349,8 @@ namespace Popbill
                 request.Headers.Add("Authorization", "Bearer" + " " + bearerToken);
             }
 
+            request.Headers.Add("User-Agent", "DOTNETCORE POPBILL SDK");
+
             request.Headers.Add("x-lh-version", APIVersion);
 
             request.Headers.Add("Accept-Encoding", "gzip, deflate");
@@ -422,6 +428,8 @@ namespace Popbill
                 string bearerToken = getSession_Token(CorpNum);
                 request.Headers.Add("Authorization", "Bearer" + " " + bearerToken);
             }
+
+            request.Headers.Add("User-Agent", "DOTNETCORE POPBILL SDK");
 
             request.Headers.Add("x-lh-version", APIVersion);
 
