@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Web;
 using System.Runtime.Serialization;
+using Linkhub;
 
 namespace Popbill.Kakao
 {
@@ -299,6 +300,28 @@ namespace Popbill.Kakao
             return httpget<Response>("/KakaoTalk/" + receiptNum + "/Cancel", CorpNum, UserID);
         }
 
+        //예약전송 부분 취소 (접수번호)
+        public Response CancelReservebyRCV(string CorpNum, string receiptNum, string receiveNum, string UserID = null)
+        {
+            if(string.IsNullOrEmpty(receiptNum))
+                throw new PopbillException(-99999999, "접수번호(receiptNum)가 입력되지 않았습니다.");
+
+            if(string.IsNullOrEmpty(receiveNum))
+                throw new PopbillException(-99999999, "수신번호(receiveNum)가 입력되지 않았습니다.");
+
+            string PostData = toJsonString(receiveNum);
+
+            try
+            {
+                return httppost<Response>("/KakaoTalk/" + receiptNum + "/Cancel", CorpNum, PostData, UserID);
+            }
+            catch (LinkhubException le)
+            {
+                throw new PopbillException(le);
+            }
+
+        }
+
         //예약전송 취소 - 요청번호 할당
         public Response CancelReserveRN(string CorpNum, string requestNum, string UserID = null)
         {
@@ -306,6 +329,29 @@ namespace Popbill.Kakao
                 throw new PopbillException(-99999999, "요청번호(requestNum)가 입력되지 않았습니다.");
 
             return httpget<Response>("/KakaoTalk//Cancel/" + requestNum, CorpNum, UserID);
+        }
+
+        //예약전송 부분 취소 (전송 요청번호)
+        public Response CancelReserveRNbyRCV(string CorpNum, string requestNum, string receiveNum, string UserID = null)
+        {
+            if(string.IsNullOrEmpty(requestNum))
+                throw new PopbillException(-99999999, "요청번호(requestNum)가 입력되지 않았습니다.");
+
+            if(string.IsNullOrEmpty(receiveNum))
+                throw new PopbillException(-99999999, "수신번호(receiveNum)가 입력되지 않았습니다.");
+
+            // TODO 2023-09-12, 화, 0:25 : 테스트 필요
+            string PostData = toJsonString(receiveNum);
+
+            try
+            {
+                return httppost<Response>("/KakaoTalk/Cancel/" + requestNum, CorpNum, PostData, UserID);
+            }
+            catch (LinkhubException le)
+            {
+                throw new PopbillException(le);
+            }
+
         }
 
         #region Info API
