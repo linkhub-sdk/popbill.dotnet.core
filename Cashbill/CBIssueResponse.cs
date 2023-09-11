@@ -13,7 +13,5 @@ namespace Popbill.Cashbill
         public string confirmNum;
         [DataMember] 
         public string tradeDate;
-        [DataMember] 
-        public string tradeDT;
     }
 }
