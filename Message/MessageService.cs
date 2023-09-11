@@ -47,6 +47,12 @@ namespace Popbill.Message
             return httpget<List<SenderNumber>>("/Message/SenderNumber", CorpNum, UserID);
         }
 
+        //080 번호 확인
+        public AutoDenyNumberInfo CheckAutoDenyNumber(string CorpNum, string UserID = null)
+        {
+            return httpget<AutoDenyNumberInfo>("/Message/AutoDenyNumberInfo", CorpNum, UserID);
+        }
+
         #endregion
 
         #region Send API
