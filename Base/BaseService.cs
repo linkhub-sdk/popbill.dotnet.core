@@ -827,6 +827,7 @@ namespace Popbill
             }
         }
 
+        // 연동회원 포인트 환불신청
         public RefundResponse Refund(string CorpNum, RefundForm refundForm, string UserID=null)
         {
             if (refundForm == null) throw new PopbillException(-99999999, "No RefundForm form");
@@ -841,6 +842,7 @@ namespace Popbill
             }
         }
 
+        // 연동회원 포인트 환불내역 확인
         public RefundHistoryResult GetRefundHistory(string CorpNum, int Page=1, int PerPage=500, string UserID=null)
         {
             String url = "/RefundHistory";
