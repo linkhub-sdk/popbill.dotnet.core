@@ -537,19 +537,21 @@ namespace Popbill.Taxinvoice
 
         //첨부파일 추가
         public Response AttachFile(string CorpNum, MgtKeyType KeyType, string MgtKey, string FilePath,
-            string UserID = null)
+            string UserID = null, string DisplayName = null)
         {
             if (string.IsNullOrEmpty(value: MgtKey))
                 throw new PopbillException(code: -99999999, Message: "문서번호가 입력되지 않았습니다.");
             if (string.IsNullOrEmpty(value: FilePath))
                 throw new PopbillException(code: -99999999, Message: "파일경로가 입력되지 않았습니다.");
+            if(string.IsNullOrEmpty(value:DisplayName))
+                throw new PopbillException(code: -99999999, Message: "첨부파일명이 입력되지 않았습니다.");
 
             List<UploadFile> files = new List<UploadFile>();
 
             UploadFile file = new UploadFile
             {
                 FieldName = "Filedata",
-                FileName = System.IO.Path.GetFileName(path: FilePath),
+                FileName = DisplayName,
                 FileData = new FileStream(path: FilePath, mode: FileMode.Open, access: FileAccess.Read)
             };
 
