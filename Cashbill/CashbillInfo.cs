@@ -57,5 +57,7 @@ namespace Popbill.Cashbill
         public string ntsresultMessage;
         [DataMember]
         public bool? printYN;
+        [DataMember]
+        public bool? interOPYN;
     }
 }
