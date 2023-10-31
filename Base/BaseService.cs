@@ -860,6 +860,7 @@ namespace Popbill
             }
         }
 
+        // 환불 가능 포인트 조회
         public double GetRefundableBalance(string CorpNum, string UserID=null)
         {
             try
@@ -871,6 +872,7 @@ namespace Popbill
             }
         }
 
+        // 환불 신청 상태 조회
         public RefundHistory GetRefundInfo(string CorpNum, string RefundCode, string UserID = null)
         {
             try
@@ -882,6 +884,7 @@ namespace Popbill
             }
         }
 
+        // 회원 탈퇴
         public Response QuitMember(string CorpNum, string QuitReason, String UserID = null)
         {
             string url = "/QuitRequest";
