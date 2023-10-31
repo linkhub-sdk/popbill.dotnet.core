@@ -8,6 +8,7 @@ using System.Text;
 using System.Security.Cryptography;
 
 using Linkhub;
+using static Linkhub.Authority;
 
 namespace Popbill
 {
@@ -899,6 +900,18 @@ namespace Popbill
             }
         }
 
+        // 통합 포인트 조회
+        public MemberPointDetail GetPointInfo(string CorpNum)
+        {
+            try
+            {
+                return _LinkhubAuth.getBalanceDetail(getSession_Token(CorpNum), ServiceID, UseStaticIP, UseGAIP);
+            }
+            catch (LinkhubException le)
+            {
+                throw new PopbillException(le);
+            }
+        }
 
         #endregion
 
