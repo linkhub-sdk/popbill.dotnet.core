@@ -5,14 +5,14 @@ namespace Popbill
     [DataContract]
     public class PaymentForm
     {
-        [DataMember] string settlerName;
+        [DataMember] public string settlerName;
 
-        [DataMember] string settlerEmail;
+        [DataMember] public string settlerEmail;
 
-        [DataMember] string notifyHP;
+        [DataMember] public string notifyHP;
 
-        [DataMember] string paymentName;
+        [DataMember] public string paymentName;
 
-        [DataMember] string settleCost;
+        [DataMember] public string settleCost;
     }
 }

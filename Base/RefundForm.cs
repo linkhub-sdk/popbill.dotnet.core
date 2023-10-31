@@ -4,12 +4,12 @@ namespace Popbill
     [DataContract]
     public class RefundForm
     {
-        [DataMember] string contactName;
-        [DataMember] string tel;
-        [DataMember] string requestPoint;
-        [DataMember] string accountBank;
-        [DataMember] string accountNum;
-        [DataMember] string accountName;
-        [DataMember] string reason;
+        [DataMember] public string contactName;
+        [DataMember] public string tel;
+        [DataMember] public string requestPoint;
+        [DataMember] public string accountBank;
+        [DataMember] public string accountNum;
+        [DataMember] public string accountName;
+        [DataMember] public string reason;
     }
 }

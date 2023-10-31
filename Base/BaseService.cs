@@ -845,7 +845,7 @@ namespace Popbill
         // 연동회원 포인트 환불내역 확인
         public RefundHistoryResult GetRefundHistory(string CorpNum, int Page=1, int PerPage=500, string UserID=null)
         {
-            String url = "/RefundHistory";
+            string url = "/RefundHistory";
 
             url += "?Page"+Page;
             url += "&PerPage"+PerPage;
@@ -855,6 +855,42 @@ namespace Popbill
                 return httpget<RefundHistoryResult>(url, CorpNum, UserID);
             }
             catch (LinkhubException le)
+            {
+                throw new PopbillException(le);
+            }
+        }
+
+        public double GetRefundableBalance(string CorpNum, string UserID=null)
+        {
+            try
+            {
+                return httpget<double>("/RefundPoint", CorpNum, UserID);
+            }catch(LinkhubException le)
+            {
+                throw new PopbillException(le);
+            }
+        }
+
+        public RefundHistory GetRefundInfo(string CorpNum, string RefundCode, string UserID = null)
+        {
+            try
+            {
+                return httpget<RefundHistory>("/Refund/" + RefundCode, CorpNum, UserID);
+            }catch(LinkhubException le)
+            {
+                throw new PopbillException(le);
+            }
+        }
+
+        public Response QuitMember(string CorpNum, string QuitReason, String UserID = null)
+        {
+            string url = "/QuitRequest";
+
+            string PostData = toJsonString("{'quitReason' :" + "'" + QuitReason + "'}");
+            try
+            {
+                return httppost<Response>(url, CorpNum, PostData, UserID: UserID);
+            }catch(LinkhubException le)
             {
                 throw new PopbillException(le);
             }
@@ -882,5 +918,6 @@ namespace Popbill
         {
             [DataMember] public Single unitCost;
         }
+
     }
 }
