@@ -272,7 +272,7 @@ namespace Popbill.Statement
         //팝빌 인감 및 첨부문서 등록 URL
         public string GetSealURL(string CorpNum, string UserID)
         {
-            URLResponse response = httpget<URLResponse>("/?TG=SEAL", CorpNum, UserID);
+            URLResponse response = httpget<URLResponse>("/Member?TG=SEAL", CorpNum, UserID);
 
             return response.url;
         }

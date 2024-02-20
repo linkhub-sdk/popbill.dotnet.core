@@ -530,7 +530,7 @@ namespace Popbill.Taxinvoice
         //팝빌 인감 및 첨부문서 등록 URL
         public string GetSealURL(string CorpNum, string UserID)
         {
-            URLResponse response = httpget<URLResponse>("/?TG=SEAL", CorpNum, UserID);
+            URLResponse response = httpget<URLResponse>("/Member?TG=SEAL", CorpNum, UserID);
 
             return response.url;
         }
@@ -698,7 +698,7 @@ namespace Popbill.Taxinvoice
         //공인인증서 등록 URL
         public string GetTaxCertURL(string CorpNum, string UserID)
         {
-            URLResponse response = httpget<URLResponse>("/?TG=CERT", CorpNum, UserID);
+            URLResponse response = httpget<URLResponse>("/Member?TG=CERT", CorpNum, UserID);
 
             return response.url;
         }

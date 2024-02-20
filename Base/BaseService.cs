@@ -523,7 +523,7 @@ namespace Popbill
         {
             try
             {
-                URLResponse response = httpget<URLResponse>("/?TG=LOGIN", CorpNum, UserID);
+                URLResponse response = httpget<URLResponse>("/Member?TG=LOGIN", CorpNum, UserID);
 
                 return response.url;
             }
@@ -538,7 +538,7 @@ namespace Popbill
         {
             try
             {
-                URLResponse response = httpget<URLResponse>("/?TG=CHRG", CorpNum, UserID);
+                URLResponse response = httpget<URLResponse>("/Member?TG=CHRG", CorpNum, UserID);
 
                 return response.url;
             }
@@ -593,7 +593,7 @@ namespace Popbill
         {
             try
             {
-                URLResponse response = httpget<URLResponse>("/?TG=PAYMENT", CorpNum, UserID);
+                URLResponse response = httpget<URLResponse>("/Member?TG=PAYMENT", CorpNum, UserID);
 
                 return response.url;
             }
@@ -608,7 +608,7 @@ namespace Popbill
         {
             try
             {
-                URLResponse response = httpget<URLResponse>("/?TG=USEHISTORY", CorpNum, UserID);
+                URLResponse response = httpget<URLResponse>("/Member?TG=USEHISTORY", CorpNum, UserID);
 
                 return response.url;
             }
