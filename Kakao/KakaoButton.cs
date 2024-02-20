@@ -9,5 +9,6 @@ namespace Popbill.Kakao
         [DataMember] public string t;
         [DataMember] public string u1;
         [DataMember] public string u2;
+        [DataMember] public string tg;
     }
 }
