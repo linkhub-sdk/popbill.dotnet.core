@@ -770,7 +770,7 @@ namespace Popbill
         }
 
         // 연동회원 무통장 입금신청 정보확인
-        public PaymentHistory GetSettleResult(string CorpNum, string settleCode, string UserID=null)
+        public PaymentHistory GetSettleResult(string CorpNum, string settleCode, string UserID = null)
         {
             if (settleCode == null)
             {
@@ -788,8 +788,7 @@ namespace Popbill
         }
 
         // 연동회원 포인트 사용내역 확인
-        public UseHistoryResult GetUseHistory(string CorpNum, string SDate = null, string EDate = null, int Page = 1,
-            int PerPage = 500, string Order = null, string UserID = null)
+        public UseHistoryResult GetUseHistory(string CorpNum, string SDate, string EDate, int? Page = null, int? PerPage = null, string Order = null, string UserID = null)
         {
             string url = "/UseHisotry";
             url += "?SDate=" +SDate;
@@ -809,7 +808,7 @@ namespace Popbill
         }
 
         // 연동회원 포인트 결제내역 확인
-        public PaymentHistoryResult GetPaymentHistory(string CorpNum, string SDate=null, string EDate=null, int Page=1, int PerPage=500, string UserID=null)
+        public PaymentHistoryResult GetPaymentHistory(string CorpNum, string SDate, string EDate, int? Page = null, int? PerPage = null, string UserID = null)
         {
             string url = "/PaymentHistory";
 
@@ -829,7 +828,7 @@ namespace Popbill
         }
 
         // 연동회원 포인트 환불신청
-        public RefundResponse Refund(string CorpNum, RefundForm refundForm, string UserID=null)
+        public RefundResponse Refund(string CorpNum, RefundForm refundForm, string UserID = null)
         {
             if (refundForm == null) throw new PopbillException(-99999999, "No RefundForm form");
             string PostData = toJsonString(refundForm);
@@ -844,7 +843,7 @@ namespace Popbill
         }
 
         // 연동회원 포인트 환불내역 확인
-        public RefundHistoryResult GetRefundHistory(string CorpNum, int Page=1, int PerPage=500, string UserID=null)
+        public RefundHistoryResult GetRefundHistory(string CorpNum, int? Page = null, int? PerPage = null, string UserID = null)
         {
             string url = "/RefundHistory";
 
@@ -862,7 +861,7 @@ namespace Popbill
         }
 
         // 환불 가능 포인트 조회
-        public double GetRefundableBalance(string CorpNum, string UserID=null)
+        public double GetRefundableBalance(string CorpNum, string UserID = null)
         {
             try
             {

@@ -91,7 +91,7 @@ namespace Popbill.Kakao
 
         //알림톡 단건전송
         public string SendATS(string CorpNum, string templateCode, string snd, string receiveNum, string receiveName,
-            string msg, string altmsg, string altSendType, DateTime? sndDT, string requestNum = null,
+            string msg, string altmsg = null, string altSendType = null, DateTime? sndDT = null, string requestNum = null,
             string UserID = null, List<KakaoButton> buttons = null, string altSubject = null)
         {
             if (string.IsNullOrEmpty(receiveNum)) throw new PopbillException(-99999999, "수신번호가 입력되지 않았습니다.");
@@ -112,14 +112,14 @@ namespace Popbill.Kakao
 
         //알림톡 대량전송
         public string SendATS(string CorpNum, string templateCode, string snd, List<KakaoReceiver> receivers,
-            string altSendType, DateTime? sndDT, string requestNum = null, string UserID = null, List<KakaoButton> buttons = null)
+            string altSendType = null, DateTime? sndDT = null, string requestNum = null, string UserID = null, List<KakaoButton> buttons = null)
         {
             return SendATS(CorpNum, templateCode, snd, null, null, receivers, altSendType, sndDT, requestNum, UserID, buttons, null);
         }
 
         //알림톡 동보전송
         public string SendATS(string CorpNum, string templateCode, string snd, string content, string altContent,
-            List<KakaoReceiver> receivers, string altSendType, DateTime? sndDT, string requestNum = null,
+            List<KakaoReceiver> receivers, string altSendType = null, DateTime? sndDT = null, string requestNum = null,
             string UserID = null, List<KakaoButton> buttons = null, string altSubject = null)
         {
             if (string.IsNullOrEmpty(templateCode)) throw new PopbillException(-99999999, "알림톡 템플릿 코드가 입력되지 않았습니다.");
@@ -150,8 +150,8 @@ namespace Popbill.Kakao
 
         //친구톡 텍스트 단건전송
         public string SendFTS(string CorpNum, string plusFriendID, string snd, string receiverNum, string receiverName,
-            string content, string altContent, List<KakaoButton> buttons, string altSendType, bool adsYN,
-            DateTime? sndDT, string requestNum = null, string UserID = null, string altSubject = null)
+            string content, string altContent, List<KakaoButton> buttons, string altSendType = null, bool? adsYN = null,
+            DateTime? sndDT = null, string requestNum = null, string UserID = null, string altSubject = null)
         {
             List<KakaoReceiver> receivers = new List<KakaoReceiver>();
 
@@ -170,7 +170,7 @@ namespace Popbill.Kakao
 
         //친구톡 텍스트 대량전송
         public string SendFTS(string CorpNum, string plusFriendID, string snd, List<KakaoReceiver> receivers,
-            List<KakaoButton> buttons, string altSendType, bool adsYN, DateTime? sndDT, string requestNum = null,
+            List<KakaoButton> buttons, string altSendType = null, bool? adsYN = null, DateTime? sndDT = null, string requestNum = null,
             string UserID = null)
         {
             return SendFTS(CorpNum, plusFriendID, snd, null, null, receivers, buttons, altSendType, adsYN,
@@ -179,7 +179,7 @@ namespace Popbill.Kakao
 
         //친구톡 텍스트 동보전송
         public string SendFTS(string CorpNum, string plusFriendID, string snd, string content, string altContent,
-            List<KakaoReceiver> receivers, List<KakaoButton> buttons, string altSendType, bool adsYN, DateTime? sndDT,
+            List<KakaoReceiver> receivers, List<KakaoButton> buttons, string altSendType = null, bool? adsYN = null, DateTime? sndDT = null,
             string requestNum = null, string UserID = null, string altSubject = null)
         {
             if (string.IsNullOrEmpty(plusFriendID)) throw new PopbillException(-99999999, "검색용 아이디가 입력되지 않았습니다.");
@@ -212,7 +212,7 @@ namespace Popbill.Kakao
 
         //친구톡 이미지 단건전송
         public string SendFMS(string CorpNum, string plusFriendID, string snd, string receiverNum, string receiverName,
-            string content, string altContent, List<KakaoButton> buttons, string altSendType, bool adsYN,
+            string content, string altContent, List<KakaoButton> buttons, string altSendType, bool? adsYN,
             DateTime? sndDT, string imageURL, string fmsfilepath, string requestNum = null, string UserID = null, string altSubject = null)
         {
             List<KakaoReceiver> receivers = new List<KakaoReceiver>();
@@ -232,7 +232,7 @@ namespace Popbill.Kakao
 
         //친구톡 이미지 대량전송
         public string SendFMS(string CorpNum, string plusFriendID, string snd, List<KakaoReceiver> receivers,
-            List<KakaoButton> buttons, string altSendType, bool adsYN, DateTime? sndDT, string imageURL,
+            List<KakaoButton> buttons, string altSendType, bool? adsYN, DateTime? sndDT, string imageURL,
             string fmsfilepath, string requestNum = null, string UserID = null)
         {
             return SendFMS(CorpNum, plusFriendID, snd, null, null, receivers, buttons, altSendType, adsYN,
@@ -241,7 +241,7 @@ namespace Popbill.Kakao
 
         //친구톡 이미지 동보전송
         public string SendFMS(string CorpNum, string plusFriendID, string snd, string content, string altContent,
-            List<KakaoReceiver> receivers, List<KakaoButton> buttons, string altSendType, bool adsYN, DateTime? sndDT,
+            List<KakaoReceiver> receivers, List<KakaoButton> buttons, string altSendType, bool? adsYN, DateTime? sndDT,
             string imageURL, string fmsfilepath, string requestNum = null, string UserID = null, string altSubject = null)
         {
             if (string.IsNullOrEmpty(value: plusFriendID))

@@ -59,7 +59,7 @@ namespace Popbill.Message
 
         //단문 단건 전송
         public string SendSMS(string CorpNum, string snd, string sndnm, string rcv, string rcvnm, string content,
-            DateTime? sndDT = null, bool adsYN = false, string requestNum = null, string UserID = null)
+            DateTime? sndDT = null, bool? adsYN = false, string requestNum = null, string UserID = null)
         {
             List<Message> messages = new List<Message>();
             Message msg = new Message();
@@ -73,7 +73,7 @@ namespace Popbill.Message
 
         //단문 대량 전송
         public string SendSMS(string CorpNum, string snd, List<Message> messages,
-            DateTime? sndDT = null, bool adsYN = false, string requestNum = null, string UserID = null)
+            DateTime? sndDT = null, bool? adsYN = false, string requestNum = null, string UserID = null)
         {
             return sendMessage(MessageType.SMS, CorpNum, snd, null, null, null, messages, sndDT, adsYN, requestNum,
                 UserID);
@@ -81,7 +81,7 @@ namespace Popbill.Message
 
         //단문 동보 전송
         public string SendSMS(string CorpNum, string snd, string content, List<Message> messages,
-            DateTime? sndDT = null, bool adsYN = false, string requestNum = null, string UserID = null)
+            DateTime? sndDT = null, bool? adsYN = false, string requestNum = null, string UserID = null)
         {
             return sendMessage(MessageType.SMS, CorpNum, snd, null, null, content, messages, sndDT, adsYN, requestNum,
                 UserID);
@@ -89,7 +89,7 @@ namespace Popbill.Message
 
         //장문 단건 전송
         public string SendLMS(string CorpNum, string snd, string sndnm, string rcv, string rcvnm, string subject,
-            string content, DateTime? sndDT = null, bool adsYN = false, string requestNum = null, string UserID = null)
+            string content, DateTime? sndDT = null, bool? adsYN = false, string requestNum = null, string UserID = null)
         {
             List<Message> messages = new List<Message>();
             Message msg = new Message();
@@ -103,7 +103,7 @@ namespace Popbill.Message
 
         //장문 대량 전송
         public string SendLMS(string CorpNum, string snd, List<Message> messages, DateTime? sndDT = null,
-            bool adsYN = false, string requestNum = null, string UserID = null)
+            bool? adsYN = false, string requestNum = null, string UserID = null)
         {
             return sendMessage(MessageType.LMS, CorpNum, snd, null, null, null, messages, sndDT, adsYN,
                 requestNum, UserID);
@@ -111,7 +111,7 @@ namespace Popbill.Message
 
         //장문 동보 전송
         public string SendLMS(string CorpNum, string snd, string subject, string content, List<Message> messages,
-            DateTime? sndDT = null, bool adsYN = false, string requestNum = null, string UserID = null)
+            DateTime? sndDT = null, bool? adsYN = false, string requestNum = null, string UserID = null)
         {
             return sendMessage(MessageType.LMS, CorpNum, snd, null, subject, content, messages, sndDT, adsYN,
                 requestNum, UserID);
@@ -119,7 +119,7 @@ namespace Popbill.Message
 
         //단문/장문 자동인식 단건 전송
         public string SendXMS(string CorpNum, string snd, string sndnm, string rcv, string rcvnm, string subject,
-            string content, DateTime? sndDT = null, bool adsYN = false, string requestNum = null, string UserID = null)
+            string content, DateTime? sndDT = null, bool? adsYN = false, string requestNum = null, string UserID = null)
         {
             List<Message> messages = new List<Message>();
             Message msg = new Message();
@@ -133,7 +133,7 @@ namespace Popbill.Message
 
         //단문/장문 자동인식 대량 전송
         public string SendXMS(string CorpNum, string snd, List<Message> messages,
-            DateTime? sndDT = null, bool adsYN = false, string requestNum = null, string UserID = null)
+            DateTime? sndDT = null, bool? adsYN = false, string requestNum = null, string UserID = null)
         {
             return sendMessage(MessageType.XMS, CorpNum, snd, null, null, null, messages, sndDT, adsYN,
                 requestNum, UserID);
@@ -141,7 +141,7 @@ namespace Popbill.Message
 
         //단문/장문 자동인식 동보 전송
         public string SendXMS(string CorpNum, string snd, string subject, string content, List<Message> messages,
-            DateTime? sndDT = null, bool adsYN = false, string requestNum = null, string UserID = null)
+            DateTime? sndDT = null, bool? adsYN = false, string requestNum = null, string UserID = null)
         {
             return sendMessage(MessageType.XMS, CorpNum, snd, null, subject, content, messages, sndDT, adsYN,
                 requestNum, UserID);
@@ -149,7 +149,7 @@ namespace Popbill.Message
 
         //sendMessage (SMS / LMS / XMS)
         private string sendMessage(MessageType msgType, string CorpNum, string snd, string sndnm,
-            string subject, string content, List<Message> messages, DateTime? sndDT, bool adsYN,
+            string subject, string content, List<Message> messages, DateTime? sndDT, bool? adsYN,
             string requestNum, string UserID)
         {
             if (messages == null || messages.Count == 0)
@@ -176,7 +176,7 @@ namespace Popbill.Message
 
         //포토 단건 전송
         public string SendMMS(string CorpNum, string snd, string sndnm, string rcv, string rcvnm,
-            string subject, string content, string mmsfilepath, DateTime? sndDT = null, bool adsYN = false,
+            string subject, string content, string mmsfilepath, DateTime? sndDT = null, bool? adsYN = false,
             string requestNum = null, string UserID = null)
         {
             List<Message> messages = new List<Message>();
@@ -191,14 +191,14 @@ namespace Popbill.Message
 
         //포토 대량 전송
         public string SendMMS(string CorpNum, string snd, List<Message> messages, string mmsfilepath,
-            DateTime? sndDT = null, bool adsYN = false, string requestNum = null, string UserID = null)
+            DateTime? sndDT = null, bool? adsYN = false, string requestNum = null, string UserID = null)
         {
             return SendMMS(CorpNum, snd, null, null, null, messages, mmsfilepath, sndDT, adsYN, requestNum, UserID);
         }
 
         //포토 동보 전송
         public string SendMMS(string CorpNum, string snd, string subject, string content, List<Message> messages,
-            string mmsfilepath, DateTime? sndDT = null, bool adsYN = false, string requestNum = null,
+            string mmsfilepath, DateTime? sndDT = null, bool? adsYN = false, string requestNum = null,
             string UserID = null)
         {
             return SendMMS(CorpNum, snd, null, subject, content, messages, mmsfilepath, sndDT, adsYN, requestNum,
@@ -207,7 +207,7 @@ namespace Popbill.Message
 
         //sendMessage (MMS)
         public string SendMMS(string CorpNum, string snd, string sndnm, string subject, string content,
-            List<Message> messages, string mmsfilepath, DateTime? sndDT = null, bool adsYN = false,
+            List<Message> messages, string mmsfilepath, DateTime? sndDT = null, bool? adsYN = false,
             string requestNum = null, string UserID = null)
         {
             if (messages == null || messages.Count == 0)
@@ -387,7 +387,7 @@ namespace Popbill.Message
             [DataMember] public string sndDT = null;
             [DataMember] public string requestNum = null;
             [DataMember] public List<Message> msgs;
-            [DataMember] public bool adsYN = false;
+            [DataMember] public bool? adsYN = false;
         }
 
         [DataContract]

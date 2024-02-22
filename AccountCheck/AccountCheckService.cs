@@ -18,7 +18,7 @@ namespace Popbill.AccountCheck
             return GetChargeInfo(CorpNum, null, null);
         }
 
-        public ChargeInfo GetChargeInfo(string CorpNum, string UserID, string ServiceType = null)
+        public ChargeInfo GetChargeInfo(string CorpNum, string UserID = null, string ServiceType = null)
         {
             string url = "/EasyFin/AccountCheck/ChargeInfo?serviceType=" + ServiceType;
 

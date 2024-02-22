@@ -33,7 +33,7 @@ namespace Popbill.Cashbill
         }
 
         //즉시발행
-        public CBIssueResponse RegistIssue(string CorpNum, Cashbill cashbill, string Memo, string UserID = null, string emailSubject = null)
+        public CBIssueResponse RegistIssue(string CorpNum, Cashbill cashbill, string Memo = null, string UserID = null, string emailSubject = null)
         {
             if (cashbill == null) throw new PopbillException(-99999999, "현금영수증 정보가 입력되지 않았습니다.");
 
@@ -47,12 +47,7 @@ namespace Popbill.Cashbill
         }
 
         //초대량 발행 접수
-        public BulkResponse BulkSubmit(string CorpNum, string SubmitID, List<Cashbill> cashbillList)
-        {
-            return BulkSubmit(CorpNum, SubmitID, cashbillList, null);
-        }
-
-        public BulkResponse BulkSubmit(string CorpNum, string SubmitID, List<Cashbill> cashbillList, string UserID)
+        public BulkResponse BulkSubmit(string CorpNum, string SubmitID, List<Cashbill> cashbillList, string UserID = null)
         {
             if (string.IsNullOrEmpty(SubmitID)) throw new PopbillException(-99999999, "제출아이디(SubmitID)가 입력되지 않았습니다.");
             if (cashbillList == null || cashbillList.Count <= 0) throw new PopbillException(-99999999, "현금영수증 정보가 입력되지 않았습니다.");
@@ -66,7 +61,8 @@ namespace Popbill.Cashbill
 
         }
 
-        public BulkCashbillResult GetBulkResult(string CorpNum, string SubmitID)
+        //초대량 상태 확인
+        public BulkCashbillResult GetBulkResult(string CorpNum, string SubmitID, string UserID = null)
         {
             return GetBulkResult(CorpNum, SubmitID, null);
         }
@@ -137,7 +133,7 @@ namespace Popbill.Cashbill
 
         //취소현금영수증 즉시발행
         public CBIssueResponse RevokeRegistIssue(string CorpNum, string mgtKey, string orgConfirmNum, string orgTradeDate,
-            bool smssendYN = false, string memo = null, bool isPartCancel = false, int? cancelType = null,
+            bool? smssendYN = null, string memo = null, bool? isPartCancel = null, int? cancelType = null,
             string totalAmount = null, string supplyCost = null, string tax = null, string serviceFee = null,
             string UserID = null, string emailSubject = null, string tradeDT = null)
         {
@@ -242,8 +238,7 @@ namespace Popbill.Cashbill
             return httpget<CBSearchResult>(uri, CorpNum, UserID);
         }
 
-        public Response AssignMgtKey(string CorpNum, string ItemKey, string MgtKey,
-            string UserID = null)
+        public Response AssignMgtKey(string CorpNum, string ItemKey, string MgtKey, string UserID = null)
         {
             if (string.IsNullOrEmpty(ItemKey)) throw new PopbillException(-99999999, "아이템키(itemKey)가 입력되지 않았습니다.");
             if (string.IsNullOrEmpty(MgtKey)) throw new PopbillException(-99999999, "할당할 문서번호가 입력되지 않았습니다.");

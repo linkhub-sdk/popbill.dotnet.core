@@ -46,7 +46,7 @@ namespace Popbill.Fax
 
         //팩스 단건 전송
         public string SendFAX(string CorpNum, string snd, string sndnm, string rcv, string rcvnm,
-            List<string> filePaths, string title = null, DateTime? reserveDT = null, bool adsYN = false,
+            List<string> filePaths, string title = null, DateTime? reserveDT = null, bool? adsYN = false,
             string requestNum = null, string UserID = null)
         {
             List<FaxReceiver> receivers = new List<FaxReceiver>();

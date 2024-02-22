@@ -15,7 +15,7 @@ namespace Popbill.HomeTax
         #region Job API
 
         //수집요청
-        public string RequestJob(string CorpNum, KeyType tiType, string DType, string SDate, string EDate,
+        public string RequestJob(string CorpNum, KeyType tiType, string DType, string SDate, string EDate, string UserID = null)
             string UserID = null)
         {
             string uri = "/HomeTax/Taxinvoice/" + tiType.ToString();

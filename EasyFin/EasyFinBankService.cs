@@ -15,22 +15,12 @@ namespace Popbill.EasyFin
             this.AddScope("180");
         }
 
-        public ChargeInfo GetChargeInfo(string CorpNum)
-        {
-            return GetChargeInfo(CorpNum, null);
-        }
-
-        public ChargeInfo GetChargeInfo(string CorpNum, string UserID)
+        public ChargeInfo GetChargeInfo(string CorpNum, string UserID = null)
         {
             return httpget<ChargeInfo>("/EasyFin/Bank/ChargeInfo", CorpNum, UserID);
         }
 
-        public Response RegistBankAccount(string CorpNum, EasyFinBankAccountForm info)
-        {
-            return RegistBankAccount(CorpNum, info, null);
-        }
-
-        public Response RegistBankAccount(string CorpNum, EasyFinBankAccountForm info, string UserID)
+        public Response RegistBankAccount(string CorpNum, EasyFinBankAccountForm info, string UserID = null)
         {
             if (info == null) throw new PopbillException(-99999999, "은행 계좌정보가 입력되지 않았습니다.");
             if (info.BankCode == null || info.BankCode == "") throw new PopbillException(-99999999, "기관코드가 입력되지 않았습니다.");
@@ -81,11 +71,7 @@ namespace Popbill.EasyFin
             return httppost<Response>(uri, CorpNum, PostData, null, null, UserID);
         }
 
-        public Response RevokeCloseBankAccount(string CorpNum, string BankCode, string AccountNumber)
-        {
-            return RevokeCloseBankAccount(CorpNum, BankCode, AccountNumber, null);
-        }
-        public Response RevokeCloseBankAccount(string CorpNum, string BankCode, string AccountNumber, string UserID)
+        public Response RevokeCloseBankAccount(string CorpNum, string BankCode, string AccountNumber, string UserID = null)
         {
             if (BankCode == null || BankCode == "") throw new PopbillException(-99999999, "기관코드가 입력되지 않았습니다.");
             if (BankCode.Length != 4) throw new PopbillException(-99999999, "기관코드가 올바르지 않습니다.");
@@ -98,12 +84,7 @@ namespace Popbill.EasyFin
             return httppost<Response>(uri, CorpNum, null, null, null, UserID);
         }
 
-        public Response CloseBankAccount(string CorpNum, string BankCode, string AccountNumber, string CloseType)
-        {
-            return CloseBankAccount(CorpNum, BankCode, AccountNumber, CloseType, null);
-        }
-
-        public Response CloseBankAccount(string CorpNum, string BankCode, string AccountNumber, string CloseType, string UserID)
+        public Response CloseBankAccount(string CorpNum, string BankCode, string AccountNumber, string CloseType, string UserID = null)
         {
             if (BankCode == null || BankCode == "") throw new PopbillException(-99999999, "기관코드가 입력되지 않았습니다.");
             if (BankCode.Length != 4) throw new PopbillException(-99999999, "기관코드가 올바르지 않습니다.");
@@ -133,12 +114,7 @@ namespace Popbill.EasyFin
            return  httppost<Response>(uri, CorpNum, PostData, null, null, UserID);
         }
 
-        public EasyFinBankAccount GetBankAccountInfo(string CorpNum, string BankCode, string AccountNumber)
-        {
-            return GetBankAccountInfo(CorpNum, BankCode, AccountNumber, null);
-        }
-
-        public EasyFinBankAccount GetBankAccountInfo(string CorpNum, string BankCode, string AccountNumber, string UserID)
+        public EasyFinBankAccount GetBankAccountInfo(string CorpNum, string BankCode, string AccountNumber, string UserID = null)
         {
             if (BankCode == null || BankCode == "") throw new PopbillException(-99999999, "기관코드가 입력되지 않았습니다.");
             if (BankCode.Length != 4) throw new PopbillException(-99999999, "기관코드가 올바르지 않습니다.");
@@ -149,34 +125,19 @@ namespace Popbill.EasyFin
             return httpget<EasyFinBankAccount>(uri, CorpNum, UserID);
         }
 
-        public string GetBankAccountMgtURL(string CorpNum)
-        {
-            return GetBankAccountMgtURL(CorpNum, null);
-        }
-
-        public string GetBankAccountMgtURL(string CorpNum, string UserID)
+        public string GetBankAccountMgtURL(string CorpNum, string UserID = null)
         {
             URLResponse response = httpget<URLResponse>("/EasyFin/Bank?TG=BankAccount", CorpNum, UserID);
 
             return response.url;
         }
 
-        public List<EasyFinBankAccount> ListBankAccount(string CorpNum)
-        {
-            return ListBankAccount(CorpNum, null);
-        }
-
-        public List<EasyFinBankAccount> ListBankAccount(string CorpNum, string UserID)
+        public List<EasyFinBankAccount> ListBankAccount(string CorpNum, string UserID = null)
         {
             return httpget<List<EasyFinBankAccount>>("/EasyFin/Bank/ListBankAccount", CorpNum, UserID);
         }
 
-        public string RequestJob(string CorpNum, string BankCode, string AccountNumber, string SDate, string EDate)
-        {
-            return RequestJob(CorpNum, BankCode, AccountNumber, SDate, EDate, null);
-        }
-
-        public string RequestJob(string CorpNum, string BankCode, string AccountNumber, string SDate, string EDate, string UserID)
+        public string RequestJob(string CorpNum, string BankCode, string AccountNumber, string SDate, string EDate, string UserID = null)
         {
             if (BankCode == null || BankCode == "") throw new PopbillException(-99999999, "기관코드가 입력되지 않습니다.");
             if (AccountNumber == null || AccountNumber == "") throw new PopbillException(-99999999, "은행계좌번호가 입력되지 않습니다.");
@@ -193,34 +154,19 @@ namespace Popbill.EasyFin
             return httppost<JobIDResponse>(uri, CorpNum, null, null, null, UserID).jobID;
         }
 
-        public EasyFinBankJobState GetJobState(string CorpNum, string JobID)
-        {
-            return GetJobState(CorpNum, JobID, null);
-        }
-
-        public EasyFinBankJobState GetJobState(string CorpNum, string JobID, string UserID)
+        public EasyFinBankJobState GetJobState(string CorpNum, string JobID, string UserID = null)
         {
             if (JobID == null || JobID == "") throw new PopbillException(-99999999, "작업아이디가 입력되지 않습니다.");
 
             return httpget<EasyFinBankJobState>("/EasyFin/Bank/" + JobID + "/State", CorpNum, UserID);
         }
 
-        public List<EasyFinBankJobState> ListACtiveJob(string CorpNum)
-        {
-            return ListActiveJob(CorpNum, null);
-        }
-
-        public List<EasyFinBankJobState> ListActiveJob(string CorpNum, string UserID)
+        public List<EasyFinBankJobState> ListActiveJob(string CorpNum, string UserID = null)
         {
             return httpget<List<EasyFinBankJobState>>("/EasyFin/Bank/JobList", CorpNum, UserID);
         }
 
-        public EasyFinBankSearchResult Search(string CorpNum, string JobID, string[] TradeType, string SearchString, int Page, int PerPage, string Order)
-        {
-            return Search(CorpNum, JobID, TradeType, SearchString, Page, PerPage, Order, null);
-        }
-
-        public EasyFinBankSearchResult Search(string CorpNum, string JobID, string[] TradeType, string SearchString, int Page, int PerPage, string Order, string UserID)
+        public EasyFinBankSearchResult Search(string CorpNum, string JobID, string[] TradeType = null, string SearchString = null, int? Page = null, int? PerPage = null, string Order = null, string UserID = null)
         {
             if (JobID == null || JobID == "") throw new PopbillException(-99999999, "작업아이디가 입력되지 않습니다.");
 
@@ -237,12 +183,7 @@ namespace Popbill.EasyFin
 
         }
 
-        public EasyFinBankSummary Summary(string CorpNum, string JobID, string[] TradeType, string SearchString)
-        {
-            return Summary(CorpNum, JobID, TradeType, SearchString, null);
-        }
-
-        public EasyFinBankSummary Summary(string CorpNum, string JobID, string[] TradeType, string SearchString, string UserID)
+        public EasyFinBankSummary Summary(string CorpNum, string JobID, string[] TradeType = null, string SearchString = null, string UserID = null)
         {
             if (JobID == null || JobID == "") throw new PopbillException(-99999999, "작업아이디가 입력되지 않습니다.");
 
@@ -254,12 +195,7 @@ namespace Popbill.EasyFin
             return httpget<EasyFinBankSummary>(uri, CorpNum, UserID);
         }
 
-        public Response SaveMemo(string CorpNum, string TID, string Memo)
-        {
-            return SaveMemo(CorpNum, TID, Memo, null);
-        }
-
-        public Response SaveMemo(string CorpNum, string TID, string Memo, string UserID)
+        public Response SaveMemo(string CorpNum, string TID, string Memo, string UserID = null)
         {
             if (TID == null || TID == "") throw new PopbillException(-99999999, "거래내역 아이디가 입력되지 않습니다.");
 
@@ -271,22 +207,12 @@ namespace Popbill.EasyFin
             return httppost<Response>(uri, CorpNum, null, null, null, UserID);
         }
 
-        public string GetFlatRatePopUpURL(string CorpNum)
-        {
-            return GetFlatRatePopUpURL(CorpNum, null);
-        }
-
-        public string GetFlatRatePopUpURL(string CorpNum, string UserID)
+        public string GetFlatRatePopUpURL(string CorpNum, string UserID = null)
         {
             return httpget<URLResponse>("/EasyFin/Bank?TG=CHRG", CorpNum, UserID).url;
         }
 
-        public EasyFinBankFlatRate GetFlatRateState(string CorpNum, string BankCode, string AccountNumber)
-        {
-            return GetFlatRateState(CorpNum, BankCode, AccountNumber, null);
-        }
-
-        public EasyFinBankFlatRate GetFlatRateState(string CorpNum, string BankCode, string AccountNumber, string UserID)
+        public EasyFinBankFlatRate GetFlatRateState(string CorpNum, string BankCode, string AccountNumber, string UserID = null)
         {
             if (BankCode == null || BankCode == "") throw new PopbillException(-99999999, "기관코드가 입력되지 않습니다.");
             if (AccountNumber == null || AccountNumber == "") throw new PopbillException(-99999999, "은행계좌번호가 입력되지않습니다.");
