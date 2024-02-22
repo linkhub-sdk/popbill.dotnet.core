@@ -51,18 +51,13 @@ namespace Popbill.EasyFin
             
         }
 
-        public Response UpdateBankAccount(string CorpNum, EasyFinBankAccountForm info)
-        {
-            return UpdateBankAccount(CorpNum, info, null);
-        }
-
-        public Response UpdateBankAccount(string CorpNum, EasyFinBankAccountForm info, string UserID)
+        public Response UpdateBankAccount(string CorpNum, EasyFinBankAccountForm info, string UserID = null)
         {
             if (info == null) throw new PopbillException(-99999999, "은행 계좌정보가 입력되지 않았습니다.");
-            if (info.BankCode == null || info.BankCode == "") throw new PopbillException(-99999999, "기관코드가 입력되지 않았습니다.");
+            if (string.IsNullOrEmpty(info.BankCode)) throw new PopbillException(-99999999, "기관코드가 입력되지 않았습니다.");
             if (info.BankCode.Length != 4) throw new PopbillException(-99999999, "기관코드가 올바르지 않습니다.");
-            if (info.AccountNumber == null || info.AccountNumber == "") throw new PopbillException(-99999999, "은행 계좌번호가 입력되지 않았습니다.");
-            if (info.AccountPWD == null || info.AccountPWD == "") throw new PopbillException(-99999999, "계좌 비밀번호가 입력되지 않았습니다.");
+            if (string.IsNullOrEmpty(info.AccountNumber)) throw new PopbillException(-99999999, "은행 계좌번호가 입력되지 않았습니다.");
+            if (string.IsNullOrEmpty(info.AccountPWD)) throw new PopbillException(-99999999, "계좌 비밀번호가 입력되지 않았습니다.");
 
             string uri = "/EasyFin/Bank/BankAccount/" + info.BankCode + "/" + info.AccountNumber + "/Update";
 
@@ -71,6 +66,20 @@ namespace Popbill.EasyFin
             return httppost<Response>(uri, CorpNum, PostData, null, null, UserID);
         }
 
+        public Response UpdateBankAccount(string CorpNum, string BankCode, string AccountNumber, UpdateEasyFinBankAccountForm info, string UserID = null)
+        {
+            if (info == null) throw new PopbillException(-99999999, "은행 계좌정보가 입력되지 않았습니다.");
+            if (string.IsNullOrEmpty(BankCode)) throw new PopbillException(-99999999, "기관코드가 입력되지 않았습니다.");
+            if (BankCode.Length != 4) throw new PopbillException(-99999999, "기관코드가 올바르지 않습니다.");
+            if (string.IsNullOrEmpty(AccountNumber)) throw new PopbillException(-99999999, "은행 계좌번호가 입력되지 않았습니다.");
+            if (string.IsNullOrEmpty(info.AccountPWD)) throw new PopbillException(-99999999, "계좌 비밀번호가 입력되지 않았습니다.");
+
+            string uri = "/EasyFin/Bank/BankAccount/" + BankCode + "/" + AccountNumber + "/Update";
+
+            string PostData = toJsonString(info);
+
+            return httppost<Response>(uri, CorpNum, PostData, null, null, UserID);
+        }
 
         public Response RevokeCloseBankAccount(string CorpNum, string BankCode, string AccountNumber)
         {
