@@ -282,14 +282,18 @@ namespace Popbill.Statement
         {
             if (string.IsNullOrEmpty(mgtKey)) throw new PopbillException(-99999999, "문서번호가 입력되지 않았습니다.");
             if (string.IsNullOrEmpty(FilePath)) throw new PopbillException(-99999999, "파일경로가 입력되지 않았습니다.");
-            if(string.IsNullOrEmpty(value:DisplayName)) throw new PopbillException(code: -99999999, Message: "첨부파일명이 입력되지 않았습니다.");
 
             List<UploadFile> files = new List<UploadFile>();
 
             UploadFile file = new UploadFile();
 
             file.FieldName = "Filedata";
+            if (string.IsNullOrEmpty(DisplayName)) {
+                file.FileName = System.IO.Path.GetFileName(FilePath);
+            }
+            else {
             file.FileName = DisplayName;
+            }
             file.FileData = new FileStream(FilePath, FileMode.Open, FileAccess.Read);
 
             files.Add(file);
