@@ -13,12 +13,12 @@ namespace Popbill.AccountCheck
             this.AddScope("183");
         }
 
-        public ChargeInfo GetChargeInfo(String CorpNum)
+        public ChargeInfo GetChargeInfo(string CorpNum)
         {
             return GetChargeInfo(CorpNum, null, null);
         }
 
-        public ChargeInfo GetChargeInfo(String CorpNum, String UserID, String ServiceType = null)
+        public ChargeInfo GetChargeInfo(string CorpNum, string UserID, string ServiceType = null)
         {
             string url = "/EasyFin/AccountCheck/ChargeInfo?serviceType=" + ServiceType;
 
@@ -27,7 +27,7 @@ namespace Popbill.AccountCheck
             return response;
         }
 
-        public Single GetUnitCost(String CorpNum, String ServiceType = null, String UserID = null)
+        public Single GetUnitCost(string CorpNum, string ServiceType = null, string UserID = null)
         {
             string url = "/EasyFin/AccountCheck/UnitCost?serviceType=" + ServiceType;
 
@@ -36,7 +36,7 @@ namespace Popbill.AccountCheck
             return response.unitCost;
         }
 
-        public AccountCheckInfo CheckAccountInfo(String MemberCorpNum, String BankCode, String AccountNumber, String UserID = null)
+        public AccountCheckInfo CheckAccountInfo(string MemberCorpNum, string BankCode, string AccountNumber, string UserID = null)
         {
             if (BankCode == null || BankCode == "")
             {
@@ -48,14 +48,14 @@ namespace Popbill.AccountCheck
                 throw new PopbillException(-99999999, "조회할 계좌번호가 입력되지 않았습니다");
             }
 
-            String url = "/EasyFin/AccountCheck";
+            string url = "/EasyFin/AccountCheck";
             url += "?c=" + BankCode;
             url += "&n=" + AccountNumber;
 
             return httppost<AccountCheckInfo>(url, MemberCorpNum, null, null, null, UserID);
         }
 
-        public DepositorCheckInfo CheckDepositorInfo(String MemberCorpNum, String BankCode, String AccountNumber, String IdentityNumType, String IdentityNum, String UserID = null)
+        public DepositorCheckInfo CheckDepositorInfo(string MemberCorpNum, string BankCode, string AccountNumber, string IdentityNumType, string IdentityNum, string UserID = null)
         {
             if (BankCode == null || BankCode == "")
             {
@@ -89,7 +89,7 @@ namespace Popbill.AccountCheck
                 throw new PopbillException(-99999999, "등록번호는 숫자만 입력할 수 있습니다.");
             }
 
-            String url = "/EasyFin/DepositorCheck";
+            string url = "/EasyFin/DepositorCheck";
             url += "?c=" + BankCode;
             url += "&n=" + AccountNumber;
             url += "&t=" + IdentityNumType;

@@ -24,13 +24,13 @@ namespace Popbill.EasyFin
         public int? pageCount;
 
         [DataMember]
-        public String message;
+        public string message;
 
         [DataMember]
-        public String lastScrapDT;
+        public string lastScrapDT;
 
         [DataMember]
-        public String balance;
+        public string balance;
 
         [DataMember]
         public List<EasyFinBankSearchDetail> list;

@@ -38,9 +38,9 @@ namespace Popbill
         private bool _UseLocalTimeYN;
 
         private bool _ProxyYN;
-        private String _ProxyAddress;
-        private String _ProxyUserName;
-        private String _ProxyPassword;
+        private string _ProxyAddress;
+        private string _ProxyUserName;
+        private string _ProxyPassword;
 
         public bool IsTest
         {
@@ -886,7 +886,7 @@ namespace Popbill
         }
 
         // 회원 탈퇴
-        public Response QuitMember(string CorpNum, string QuitReason, String UserID = null)
+        public Response QuitMember(string CorpNum, string QuitReason, string UserID = null)
         {
             string url = "/QuitRequest";
 

@@ -11,8 +11,8 @@ namespace Popbill.Taxinvoice
         [DataMember]
         public int code;
         [DataMember]
-        public String message;
+        public string message;
         [DataMember]
-        public String retObject;
+        public string retObject;
     }
 }

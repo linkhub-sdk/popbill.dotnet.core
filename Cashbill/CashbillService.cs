@@ -60,7 +60,7 @@ namespace Popbill.Cashbill
             BulkCashbillSubmit cb = new BulkCashbillSubmit();
             cb.cashbills = cashbillList;
 
-            String PostData = toJsonString(cb);
+            string PostData = toJsonString(cb);
 
             return httpBulkPost<BulkResponse>("/Cashbill/", CorpNum, SubmitID, PostData, UserID, "BULKISSUE");
 

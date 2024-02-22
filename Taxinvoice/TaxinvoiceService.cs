@@ -99,7 +99,7 @@ namespace Popbill.Taxinvoice
             return httppost<Response>("/Taxinvoice", CorpNum, PostData, null, null, UserID);
         }
 
-        //수정 - String JSON
+        //수정 - string JSON
         public Response Update(string CorpNum, MgtKeyType KeyType, string MgtKey, string taxinvoice,
             string UserID = null)
         {
@@ -338,7 +338,7 @@ namespace Popbill.Taxinvoice
         //상세정보 확인 From ItemKey
         public Taxinvoice GetDetailInfoFromItemKey(string CorpNum, string ItemKey, string UserID =null)
         {
-            if (String.IsNullOrEmpty(ItemKey)) throw new PopbillException(-99999999, "아이템키가 입력되지 않았습니다.");
+            if (string.IsNullOrEmpty(ItemKey)) throw new PopbillException(-99999999, "아이템키가 입력되지 않았습니다.");
 
             return httpget<Taxinvoice>("/Taxinvoice/" + ItemKey + "?Detail", CorpNum, UserID);
         }
@@ -718,7 +718,7 @@ namespace Popbill.Taxinvoice
         }
 
         //인증서 정보 확인
-        public TaxinvoiceCertificate GetTaxCertInfo(String CorpNum, String UserID = null)
+        public TaxinvoiceCertificate GetTaxCertInfo(string CorpNum, string UserID = null)
         {
             return httpget<TaxinvoiceCertificate>("/Taxinvoice/Certificate", CorpNum, UserID);
         }

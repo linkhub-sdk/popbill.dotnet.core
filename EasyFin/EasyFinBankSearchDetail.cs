@@ -11,43 +11,43 @@ namespace Popbill.EasyFin
     public class EasyFinBankSearchDetail
     {
         [DataMember]
-        public String tid;
+        public string tid;
 
         [DataMember]
-        public String trdate;
+        public string trdate;
 
         [DataMember]
         public long? trserial;
 
         [DataMember]
-        public String trdt;
+        public string trdt;
 
         [DataMember]
-        public String accIn;
+        public string accIn;
 
         [DataMember]
-        public String accOut;
+        public string accOut;
 
         [DataMember]
-        public String balance;
+        public string balance;
 
         [DataMember]
-        public String remark1;
+        public string remark1;
 
         [DataMember]
-        public String remark2;
+        public string remark2;
 
         [DataMember]
-        public String remark3;
+        public string remark3;
 
         [DataMember]
-        public String remark4;
+        public string remark4;
 
         [DataMember]
-        public String regDT;
+        public string regDT;
 
         [DataMember]
-        public String memo;
+        public string memo;
 
     }
 }

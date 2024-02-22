@@ -12,7 +12,7 @@ namespace Popbill.Message
         [DataMember] public int perPage;
         [DataMember] public int pageNum;
         [DataMember] public int pageCount;
-        [DataMember] public String message;
+        [DataMember] public string message;
         [DataMember] public List<MessageResult> list;
     }
 }

@@ -9,11 +9,11 @@ namespace Popbill.EasyFin
     public class EasyFinBankFlatRate
     {
         [DataMember]
-        public String referenceID;
+        public string referenceID;
         [DataMember]
-        public String contractDT;
+        public string contractDT;
         [DataMember]
-        public String useEndDate;
+        public string useEndDate;
         [DataMember]
         public int? baseDate;
         [DataMember]

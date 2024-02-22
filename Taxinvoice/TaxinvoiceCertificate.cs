@@ -9,20 +9,20 @@ namespace Popbill.Taxinvoice
     public class TaxinvoiceCertificate
     {
         [DataMember]
-        public String regDT;
+        public string regDT;
         [DataMember]
-        public String expireDT;
+        public string expireDT;
         [DataMember]
-        public String issuerDN;
+        public string issuerDN;
         [DataMember]
-        public String subjectDN;
+        public string subjectDN;
         [DataMember]
-        public String issuerName;
+        public string issuerName;
         [DataMember]
-        public String oid;
+        public string oid;
         [DataMember]
-        public String regContactName;
+        public string regContactName;
         [DataMember]
-        public String regContactID;
+        public string regContactID;
     }
 }
