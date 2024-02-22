@@ -187,7 +187,7 @@ namespace Popbill
         protected T httpget<T>(string url, string CorpNum, string UserID = null)
         {
             HttpWebRequest request = (HttpWebRequest) WebRequest.Create(ServiceURL + url);
-
+            
             if (this._ProxyYN == true)
             {
                 WebProxy proxyRequest = new WebProxy();
@@ -772,10 +772,7 @@ namespace Popbill
         // 연동회원 무통장 입금신청 정보확인
         public PaymentHistory GetSettleResult(string CorpNum, string settleCode, string UserID = null)
         {
-            if (settleCode == null)
-            {
-                throw new PopbillException(-99999999, "settleCode가 입력되지 않았습니다.");
-            }
+            if (string.IsNullOrEmpty(settleCode)) throw new PopbillException(-99999999, "settleCode가 입력되지 않았습니다.");
 
             try
             {
@@ -790,12 +787,16 @@ namespace Popbill
         // 연동회원 포인트 사용내역 확인
         public UseHistoryResult GetUseHistory(string CorpNum, string SDate, string EDate, int? Page = null, int? PerPage = null, string Order = null, string UserID = null)
         {
+            if (string.IsNullOrEmpty(SDate)) throw new PopbillException(-99999999, "시작일자가 입력되지 않았습니다.");
+            if (string.IsNullOrEmpty(EDate)) throw new PopbillException(-99999999, "종료일자가 입력되지 않았습니다.");
+
             string url = "/UseHisotry";
+
             url += "?SDate=" +SDate;
             url += "&EDate=" +EDate;
-            url += "&Page=" +Page;
-            url += "&PerPage=" +PerPage;
-            url += "&Order=" +Order;
+            if(Page != null) url += "&Page=" + Page;
+            if(PerPage != null) url += "&PerPage=" + PerPage;
+            if (Order == "D" || Order == "A") url += "&Order=" + Order;
 
             try
             {
@@ -810,12 +811,15 @@ namespace Popbill
         // 연동회원 포인트 결제내역 확인
         public PaymentHistoryResult GetPaymentHistory(string CorpNum, string SDate, string EDate, int? Page = null, int? PerPage = null, string UserID = null)
         {
+            if (string.IsNullOrEmpty(SDate)) throw new PopbillException(-99999999, "시작일자가 입력되지 않았습니다.");
+            if (string.IsNullOrEmpty(EDate)) throw new PopbillException(-99999999, "종료일자가 입력되지 않았습니다.");
+
             string url = "/PaymentHistory";
 
             url += "?SDate" + SDate;
             url += "&EDate" + EDate;
-            url += "&Page" + Page;
-            url += "&PerPage" + PerPage;
+            if(Page != null) url += "&Page" + Page.ToString();
+            if(PerPage != null) url += "&PerPage" + PerPage.ToString();
 
             try
             {
@@ -847,8 +851,8 @@ namespace Popbill
         {
             string url = "/RefundHistory";
 
-            url += "?Page"+Page;
-            url += "&PerPage"+PerPage;
+            if (Page != null) url += "?Page" + Page.ToString();
+            if (PerPage != null) url += "&PerPage" + PerPage.ToString();
 
             try
             {
@@ -875,6 +879,8 @@ namespace Popbill
         // 환불 신청 상태 조회
         public RefundHistory GetRefundInfo(string CorpNum, string RefundCode, string UserID = null)
         {
+            if (string.IsNullOrEmpty(RefundCode)) throw new PopbillException(-99999999, "환불코드가 입력되지 않았습니다.");
+
             try
             {
                 return httpget<RefundHistory>("/Refund/" + RefundCode, CorpNum, UserID);
@@ -887,6 +893,8 @@ namespace Popbill
         // 회원 탈퇴
         public Response QuitMember(string CorpNum, string QuitReason, string UserID = null)
         {
+            if(string.IsNullOrEmpty(QuitReason)) throw new PopbillException(-99999999, "회원 탈퇴 사유가 입력되지 않았습니다.");
+
             string url = "/QuitRequest";
 
             string PostData = toJsonString("{'quitReason' :" + "'" + QuitReason + "'}");

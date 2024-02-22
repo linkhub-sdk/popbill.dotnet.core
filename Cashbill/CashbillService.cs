@@ -37,7 +37,7 @@ namespace Popbill.Cashbill
         {
             if (cashbill == null) throw new PopbillException(-99999999, "현금영수증 정보가 입력되지 않았습니다.");
 
-            cashbill.memo = Memo;
+            if(Memo != null) cashbill.memo = Memo;
 
             if (emailSubject != null) cashbill.emailSubject = emailSubject;
 
@@ -63,10 +63,6 @@ namespace Popbill.Cashbill
 
         //초대량 상태 확인
         public BulkCashbillResult GetBulkResult(string CorpNum, string SubmitID, string UserID = null)
-        {
-            return GetBulkResult(CorpNum, SubmitID, null);
-        }
-        public BulkCashbillResult GetBulkResult(string CorpNum, string SubmitID, string UserID)
         {
             if (string.IsNullOrEmpty(SubmitID)) throw new PopbillException(-99999999, "제출아이디(SubmitID)가 입력되지 않았습니다.");
 
@@ -231,9 +227,9 @@ namespace Popbill.Cashbill
             if (TaxationType != null) uri += "&TaxationType=" + string.Join(",", TaxationType);
             if (Page != null) uri += "&Page=" + Page.ToString();
             if (PerPage != null) uri += "&PerPage=" + PerPage.ToString();
-            if (Order != null) uri += "&Order=" + Order;
-            if (QString != null) uri += "&QString=" + QString;
-            if (FranchiseTaxRegID != null) uri += "&FranchiseTaxRegID=" + FranchiseTaxRegID;
+            if (Order == "D" || Order == "A") uri += "&Order=" + Order;
+            if (string.IsNullOrEmpty(QString)) uri += "&QString=" + QString;
+            if (string.IsNullOrEmpty(FranchiseTaxRegID)) uri += "&FranchiseTaxRegID=" + FranchiseTaxRegID;
 
             return httpget<CBSearchResult>(uri, CorpNum, UserID);
         }

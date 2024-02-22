@@ -28,7 +28,7 @@ namespace Popbill.Message
         //발신번호 등록여부 확인
         public Response CheckSenderNumber(string CorpNum, string SenderNumber, string UserID = null)
         {
-            if (SenderNumber == "") throw new PopbillException(-99999999, "확인할 발신번호가 입력되지 않았습니다.");
+            if (string.IsNullOrEmpty(SenderNumber)) throw new PopbillException(-99999999, "확인할 발신번호가 입력되지 않았습니다.");
 
             return httpget<Response>("/Message/CheckSenderNumber/" + SenderNumber, CorpNum, UserID);
         }
@@ -162,8 +162,8 @@ namespace Popbill.Message
             request.subject = subject;
             request.content = content;
             request.msgs = messages;
-            request.sndDT = sndDT == null ? null : sndDT.Value.ToString("yyyyMMddHHmmss");
-            request.adsYN = adsYN;
+            if(sndDT != null) request.sndDT = sndDT.Value.ToString("yyyyMMddHHmmss");
+            if(adsYN == true) request.adsYN = adsYN;
             request.requestNum = requestNum;
 
             string PostData = toJsonString(request);
@@ -220,8 +220,8 @@ namespace Popbill.Message
             request.subject = subject;
             request.content = content;
             request.msgs = messages;
-            request.sndDT = sndDT == null ? null : sndDT.Value.ToString("yyyyMMddHHmmss");
-            request.adsYN = adsYN;
+            if(sndDT != null) request.sndDT = sndDT.Value.ToString("yyyyMMddHHmmss");
+            if(adsYN == true) request.adsYN = adsYN;
             request.requestNum = requestNum;
 
             string PostData = toJsonString(request);
@@ -245,8 +245,7 @@ namespace Popbill.Message
         //예약전송 취소
         public Response CancelReserve(string CorpNum, string receiptNum, string UserID = null)
         {
-            if (string.IsNullOrEmpty(receiptNum))
-                throw new PopbillException(-99999999, "접수번호가 입력되지 않았습니다.");
+            if (string.IsNullOrEmpty(receiptNum)) throw new PopbillException(-99999999, "접수번호가 입력되지 않았습니다.");
 
             return httpget<Response>("/Message/" + receiptNum + "/Cancel", CorpNum, UserID);
         }
@@ -254,8 +253,7 @@ namespace Popbill.Message
         //예약전송 취소 - 요청번호 할당
         public Response CancelReserveRN(string CorpNum, string requestNum, string UserID = null)
         {
-            if (string.IsNullOrEmpty(requestNum))
-                throw new PopbillException(-99999999, "요청번호(requestNum)가 입력되지 않았습니다.");
+            if (string.IsNullOrEmpty(requestNum)) throw new PopbillException(-99999999, "요청번호(requestNum)가 입력되지 않았습니다.");
 
             return httpget<Response>("/Message/Cancel/" + requestNum, CorpNum, UserID);
         }
@@ -263,10 +261,8 @@ namespace Popbill.Message
         //예약전송 취소 - 접수번호, 수신번호
         public Response CancelReservebyRCV(string CorpNum, string receiptNum, string receiveNum, string UserID = null)
         {
-            if (string.IsNullOrEmpty(receiptNum))
-                throw new PopbillException(-99999999, "접수번호가 입력되지 않았습니다.");
-            if (string.IsNullOrEmpty(receiveNum))
-                throw new PopbillException(-99999999, "수신번호가 입력되지 않았습니다.");
+            if (string.IsNullOrEmpty(receiptNum)) throw new PopbillException(-99999999, "접수번호가 입력되지 않았습니다.");
+            if (string.IsNullOrEmpty(receiveNum)) throw new PopbillException(-99999999, "수신번호가 입력되지 않았습니다.");
 
             string PostData = toJsonString(receiveNum);
             return httppost<Response>("/Message/" + receiptNum + "/Cancel", CorpNum, PostData, null, null, UserID);
@@ -275,10 +271,8 @@ namespace Popbill.Message
         //예약전송 취소 - 요청번호, 수신번호
         public Response CancelReserveRNbyRCV(string CorpNum, string requestNum, string receiveNum, string UserID = null)
         {
-            if (string.IsNullOrEmpty(requestNum))
-                throw new PopbillException(-99999999, "요청번호(requestNum)가 입력되지 않았습니다.");
-            if (string.IsNullOrEmpty(receiveNum))
-                throw new PopbillException(-99999999, "수신번호가 입력되지 않았습니다.");
+            if (string.IsNullOrEmpty(requestNum)) throw new PopbillException(-99999999, "요청번호(requestNum)가 입력되지 않았습니다.");
+            if (string.IsNullOrEmpty(receiveNum)) throw new PopbillException(-99999999, "수신번호가 입력되지 않았습니다.");
 
             string PostData = toJsonString(receiveNum);
             return httppost<Response>("/Message/Cancel/" + requestNum, CorpNum, PostData, null, null, UserID);
@@ -292,8 +286,7 @@ namespace Popbill.Message
         //전송내역 확인
         public List<MessageResult> GetMessages(string CorpNum, string receiptNum, string UserID = null)
         {
-            if (string.IsNullOrEmpty(receiptNum))
-                throw new PopbillException(-99999999, "접수번호가 입력되지 않았습니다.");
+            if (string.IsNullOrEmpty(receiptNum)) throw new PopbillException(-99999999, "접수번호가 입력되지 않았습니다.");
 
             return httpget<List<MessageResult>>("/Message/" + receiptNum, CorpNum, UserID);
         }
@@ -301,8 +294,7 @@ namespace Popbill.Message
         //전송내역 확인 - 요청번호 할당
         public List<MessageResult> GetMessagesRN(string CorpNum, string requestNum, string UserID = null)
         {
-            if (string.IsNullOrEmpty(requestNum))
-                throw new PopbillException(-99999999, "요청번호(requestNum)가 입력되지 않았습니다.");
+            if (string.IsNullOrEmpty(requestNum)) throw new PopbillException(-99999999, "요청번호(requestNum)가 입력되지 않았습니다.");
 
             return httpget<List<MessageResult>>("/Message/Get/" + requestNum, CorpNum, UserID);
         }
@@ -310,8 +302,7 @@ namespace Popbill.Message
         //전송내역 요약정보 확인
         public List<MessageState> GetStates(string CorpNum, List<string> ReciptNumList, string UserID = null)
         {
-            if (ReciptNumList == null || ReciptNumList.Count == 0)
-                throw new PopbillException(-99999999, "문자전송 접수번호가 입력되지 않았습니다.");
+            if (ReciptNumList == null || ReciptNumList.Count == 0) throw new PopbillException(-99999999, "문자전송 접수번호가 입력되지 않았습니다.");
 
             string PostData = toJsonString(ReciptNumList);
             return httppost<List<MessageState>>("/Message/States", CorpNum, PostData, null, null, UserID);
@@ -334,8 +325,8 @@ namespace Popbill.Message
             if (SenderYN != null && (bool) SenderYN) uri += "&SenderYN=1";
             if (Page != null) uri += "&Page=" + Page.ToString();
             if (PerPage != null) uri += "&PerPage=" + PerPage.ToString();
-            if (Order != null) uri += "&Order=" + Order;
-            if (QString != null) uri += "&QString=" + HttpUtility.UrlEncode(QString);
+            if (Order == "D" || Order == "A") uri += "&Order=" + Order;
+            if (string.IsNullOrEmpty(QString)) uri += "&QString=" + HttpUtility.UrlEncode(QString);
 
             return httpget<MSGSearchResult>(uri, CorpNum, UserID);
         }

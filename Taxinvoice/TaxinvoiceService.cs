@@ -63,9 +63,9 @@ namespace Popbill.Taxinvoice
         {
             if (taxinvoice == null) throw new PopbillException(-99999999, "세금계산서 정보가 입력되지 않았습니다.");
 
-            taxinvoice.writeSpecification = WriteSpecification;
-            taxinvoice.forceIssue = ForceIssue;
-            taxinvoice.dealInvoiceMgtKey = DealinvoiceMgtKey;
+            if (ForceIssue == true) taxinvoice.forceIssue = ForceIssue;
+            if (WriteSpecification == true) taxinvoice.writeSpecification = WriteSpecification;
+            if (WriteSpecification == true && string.IsNullOrEmpty(DealinvoiceMgtKey)) taxinvoice.dealInvoiceMgtKey = DealinvoiceMgtKey;
             taxinvoice.memo = Memo;
             taxinvoice.emailSubject = EmailSubject;
 
@@ -89,12 +89,11 @@ namespace Popbill.Taxinvoice
         {
             if (taxinvoice == null) throw new PopbillException(-99999999, "세금계산서 정보가 입력되지 않았습니다.");
 
-            string PostData = toJsonString(taxinvoice);
 
-            if (WriteSpecification)
-            {
-                PostData = "{\"writeSpecification\":true," + PostData.Substring(1);
-            }
+            if (WriteSpecification == true) taxinvoice.writeSpecification = WriteSpecification;
+            if (WriteSpecification == true && string.IsNullOrEmpty(DealinvoiceMgtKey)) taxinvoice.dealInvoiceMgtKey = DealinvoiceMgtKey;
+
+            string PostData = toJsonString(taxinvoice);
 
             return httppost<Response>("/Taxinvoice", CorpNum, PostData, null, null, UserID);
         }
@@ -129,7 +128,10 @@ namespace Popbill.Taxinvoice
         {
             if (string.IsNullOrEmpty(MgtKey)) throw new PopbillException(-99999999, "문서번호가 입력되지 않았습니다.");
 
-            IssueRequest request = new IssueRequest {memo = Memo, emailSubject = EmailSubject, forceIssue = ForceIssue};
+            IssueRequest request = new IssueRequest();
+            request.memo = Memo;
+            request.emailSubject = EmailSubject;
+            if(ForceIssue == true) request.forceIssue = ForceIssue;
 
             string PostData = toJsonString(request);
 
@@ -294,7 +296,7 @@ namespace Popbill.Taxinvoice
             if (taxinvoiceList == null || taxinvoiceList.Count <= 0) throw new PopbillException(-99999999, "세금계산서 정보가 입력되지 않았습니다.");
 
             BulkTaxinvoiceSubmit tx = new BulkTaxinvoiceSubmit();
-            tx.forceIssue = ForceIssue;
+            if(ForceIssue == true) tx.forceIssue = ForceIssue;
             tx.invoices = taxinvoiceList;
             
             string PostData = toJsonString(tx);
@@ -379,9 +381,7 @@ namespace Popbill.Taxinvoice
             if (Type != null) uri += "&Type=" + string.Join(",", Type);
             if (TaxType != null) uri += "&TaxType=" + string.Join(",", TaxType);
             if (IssueType != null) uri += "&IssueType=" + string.Join(",", IssueType);
-            if (RegType != null) uri += "&RegType=" + string.Join(",", RegType);
-            if (CloseDownState != null) uri += "&CloseDownState=" + string.Join(",", CloseDownState);
-
+            
             if (LateOnly != null)
             {
                 if ((bool) LateOnly)
@@ -394,15 +394,17 @@ namespace Popbill.Taxinvoice
                 }
             }
 
-            if (TaxRegIDYN != null) uri += "&TaxRegIDYN=" + TaxRegIDYN;
-            if (TaxRegIDType != null) uri += "&TaxRegIDType=" + TaxRegIDType;
-            if (TaxRegID != null) uri += "&TaxRegID=" + TaxRegID;
+            if (TaxRegIDYN == "0" || TaxRegIDYN == "1") uri += "&TaxRegIDYN=" + TaxRegIDYN;
+            if (TaxRegIDType == "S" || TaxRegIDType == "B" || TaxRegIDType == "T") uri += "&TaxRegIDType=" + TaxRegIDType;
+            if (!string.IsNullOrEmpty(TaxRegID)) uri += "&TaxRegID=" + TaxRegID;
             if (Page != null) uri += "&Page=" + Page.ToString();
             if (PerPage != null) uri += "&PerPage=" + PerPage.ToString();
-            if (Order != null) uri += "&Order=" + Order;
-            if (QString != null) uri += "&QString=" + HttpUtility.UrlEncode(QString);
-            if (MgtKey != null) uri += "&MgtKey=" + MgtKey;
-            if (InterOPYN != null) uri += "&InterOPYN=" + InterOPYN;
+            if (Order == "D" || Order == "A") uri += "&Order=" + Order;
+            if (string.IsNullOrEmpty(QString)) uri += "&QString=" + HttpUtility.UrlEncode(QString);
+            if (InterOPYN == "0" || InterOPYN == "1") uri += "&InterOPYN=" + InterOPYN;
+            if (RegType != null) uri += "&RegType=" + string.Join(",", RegType);
+            if (CloseDownState != null) uri += "&CloseDownState=" + string.Join(",", CloseDownState);
+            if (string.IsNullOrEmpty(MgtKey)) uri += "&MgtKey=" + MgtKey;
 
             return httpget<TISearchResult>(uri, CorpNum, UserID);
         }
@@ -541,7 +543,7 @@ namespace Popbill.Taxinvoice
         {
             if (string.IsNullOrEmpty(value: MgtKey)) throw new PopbillException(-99999999, "문서번호가 입력되지 않았습니다.");
             if (string.IsNullOrEmpty(value: FilePath)) throw new PopbillException(-99999999, "파일경로가 입력되지 않았습니다.");
-            
+
             List<UploadFile> files = new List<UploadFile>();
 
             UploadFile file = new UploadFile();
@@ -626,6 +628,7 @@ namespace Popbill.Taxinvoice
         public Response AttachStatement(string CorpNum, MgtKeyType KeyType, string MgtKey, int DocItemCode,
             string DocMgtKey, string UserID = null)
         {
+            if (string.IsNullOrEmpty(MgtKey)) throw new PopbillException(-99999999, "문서번호가 입력되지 않았습니다.");
             string uri = "/Taxinvoice/" + KeyType + "/" + MgtKey + "/AttachStmt";
 
             DocRequest request = new DocRequest {ItemCode = DocItemCode, MgtKey = DocMgtKey};
@@ -639,6 +642,7 @@ namespace Popbill.Taxinvoice
         public Response DetachStatement(string CorpNum, MgtKeyType KeyType, string MgtKey, int DocItemCode,
             string DocMgtKey, string UserID = null)
         {
+            if (string.IsNullOrEmpty(MgtKey)) throw new PopbillException(-99999999, "문서번호가 입력되지 않았습니다.");
             string uri = "/Taxinvoice/" + KeyType + "/" + MgtKey + "/DetachStmt";
 
             DocRequest request = new DocRequest {ItemCode = DocItemCode, MgtKey = DocMgtKey};

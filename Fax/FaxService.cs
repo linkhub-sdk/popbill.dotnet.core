@@ -60,7 +60,7 @@ namespace Popbill.Fax
 
         //팩스 동보 전송
         public string SendFAX(string CorpNum, string snd, string sndnm, List<FaxReceiver> receivers,
-            List<string> filePaths, string title = null, DateTime? reserveDT = null, bool adsYN = false,
+            List<string> filePaths, string title = null, DateTime? reserveDT = null, bool? adsYN = false,
             string requestNum = null, string UserID = null)
         {
             if (filePaths == null || filePaths.Count == 0)
@@ -123,7 +123,7 @@ namespace Popbill.Fax
             List<FaxReceiver> receivers, string title = null, DateTime? reserveDT = null, string requestNum = null,
             string UserID = null)
         {
-            if (receiptNum == "") throw new PopbillException(-99999999, "팩스접수번호(receiptNum)가 입력되지 않았습니다.");
+            if (string.IsNullOrEmpty(receiptNum)) throw new PopbillException(-99999999, "팩스접수번호(receiptNum)가 입력되지 않았습니다.");
 
             sendRequest request = new sendRequest();
 
@@ -149,7 +149,7 @@ namespace Popbill.Fax
         {
             List<FaxReceiver> receivers = null;
 
-            if ((rcv.Length != 0) && (rcvnm.Length != 0))
+            if (!(string.IsNullOrEmpty(rcv)) && (rcvnm.Length != 0))
             {
                 receivers = new List<FaxReceiver>();
                 FaxReceiver receiver = new FaxReceiver();
@@ -167,13 +167,13 @@ namespace Popbill.Fax
             List<FaxReceiver> receivers, string title = null, DateTime? reserveDT = null,
             string assignRequestNum = null, string UserID = null)
         {
-            if (orgRequestNum == "") throw new PopbillException(-99999999, "원본 팩스요청번호(requestNum)가 입력되지 않았습니다.");
+            if (string.IsNullOrEmpty(orgRequestNum)) throw new PopbillException(-99999999, "원본 팩스요청번호(requestNum)가 입력되지 않았습니다.");
 
             sendRequest request = new sendRequest();
 
             if (snd != "") request.snd = snd;
             if (sndnm != "") request.sndnm = sndnm;
-            if (receivers != null) request.rcvs = receivers;
+            if (receivers != null && receivers.Count != 0) request.rcvs = receivers;
             if (assignRequestNum != "") request.requestNum = assignRequestNum;
             if (title != null) request.title = title;
             if (reserveDT != null) reserveDT.Value.ToString("yyyyMMddHHmmss");
@@ -198,8 +198,7 @@ namespace Popbill.Fax
         //예약전송 취소 - 요청번호 할당
         public Response CancelReserveRN(string CorpNum, string requestNum, string UserID = null)
         {
-            if (string.IsNullOrEmpty(requestNum))
-                throw new PopbillException(-99999999, "요청번호(requestNum)가 입력되지 않았습니다.");
+            if (string.IsNullOrEmpty(requestNum)) throw new PopbillException(-99999999, "요청번호(requestNum)가 입력되지 않았습니다.");
 
             return httpget<Response>("/FAX/Cancel/" + requestNum, CorpNum, UserID);
         }
@@ -211,8 +210,7 @@ namespace Popbill.Fax
         //전송내역 및 전송상태 확인
         public List<FaxResult> GetFaxDetail(string CorpNum, string receiptNum, string UserID = null)
         {
-            if (string.IsNullOrEmpty(receiptNum))
-                throw new PopbillException(-99999999, "접수번호가 입력되지 않았습니다.");
+            if (string.IsNullOrEmpty(receiptNum)) throw new PopbillException(-99999999, "접수번호가 입력되지 않았습니다.");
 
             return httpget<List<FaxResult>>("/FAX/" + receiptNum, CorpNum, UserID);
         }
@@ -220,8 +218,7 @@ namespace Popbill.Fax
         //전송내역 및 전송상태 확인 - 요청번호 할당
         public List<FaxResult> GetFaxDetailRN(string CorpNum, string requestNum, string UserID = null)
         {
-            if (string.IsNullOrEmpty(requestNum))
-                throw new PopbillException(-99999999, "요청번호(requestNum)가 입력되지 않았습니다.");
+            if (string.IsNullOrEmpty(requestNum)) throw new PopbillException(-99999999, "요청번호(requestNum)가 입력되지 않았습니다.");
 
             return httpget<List<FaxResult>>("/FAX/Get/" + requestNum, CorpNum, UserID);
         }
@@ -237,12 +234,13 @@ namespace Popbill.Fax
             string uri = "/FAX/Search";
             uri += "?SDate=" + SDate;
             uri += "&EDate=" + EDate;
-            if (State != null) uri += "&State=" + string.Join(",", State);
+
+            if (State != null && State.Length != 0) uri += "&State=" + string.Join(",", State);
             if (ReserveYN != null && (bool) ReserveYN) uri += "&ReserveYN=1";
             if (SenderOnly != null && (bool) SenderOnly) uri += "&SenderOnly=1";
             if (Page != null) uri += "&Page=" + Page.ToString();
             if (PerPage != null) uri += "&PerPage=" + PerPage.ToString();
-            if (Order != null) uri += "&Order=" + Order;
+            if (Order == "D" || Order == "A") uri += "&Order=" + Order;
             if (Qstring != null) uri += "&Qstring=" + HttpUtility.UrlEncode(Qstring);
 
             return httpget<FAXSearchResult>(uri, CorpNum, UserID);
@@ -273,6 +271,7 @@ namespace Popbill.Fax
         //전송단가 확인
         public Single GetUnitCost(string CorpNum, string UserID = null, string ReceiveNumType = null)
         {
+            if(ReceiveNumType != null && ReceiveNumType != "일반" && ReceiveNumType != "지능") throw new PopbillException(-99999999, "수신번호 유형이 유효하지 않습니다.");
             UnitCostResponse response = httpget<UnitCostResponse>("/FAX/UnitCost?receiveNumType=" + ReceiveNumType, CorpNum, UserID);
 
             return response.unitCost;
@@ -281,6 +280,7 @@ namespace Popbill.Fax
         //과금정보 확인
         public ChargeInfo GetChargeInfo(string CorpNum, string UserID = null, string ReceiveNumType = null)
         {
+            if (ReceiveNumType != null && ReceiveNumType != "일반" && ReceiveNumType != "지능") throw new PopbillException(-99999999, "수신번호 유형이 유효하지 않습니다.");
             ChargeInfo response = httpget<ChargeInfo>("/FAX/ChargeInfo?receiveNumType=" + ReceiveNumType, CorpNum, UserID);
 
             return response;

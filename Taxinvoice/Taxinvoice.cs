@@ -54,7 +54,7 @@ namespace Popbill.Taxinvoice
         [DataMember] public string invoiceeAddr;
         [DataMember] public string invoiceeBizType;
         [DataMember] public string invoiceeBizClass;
-        [DataMember] public int closeDownState;
+        [DataMember] public int? closeDownState;
         [DataMember] public string closeDownStateDate;
         [DataMember] public string invoiceeContactName1;
         [DataMember] public string invoiceeDeptName1;

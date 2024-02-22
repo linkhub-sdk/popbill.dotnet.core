@@ -47,8 +47,7 @@ namespace Popbill.Statement
         {
             if (statement == null) throw new PopbillException(-99999999, "명세서 정보가 입력되지 않았습니다.");
 
-            statement.memo = Memo;
-
+            if (Memo != null) statement.memo = Memo;
             if (EmailSubject != null) statement.emailSubject = EmailSubject;
 
             string PostData = toJsonString(statement);
@@ -83,14 +82,14 @@ namespace Popbill.Statement
         }
 
         //발행
-        public Response Issue(string CorpNum, int itemCode, string mgtKey, string Memo = null, string UserID = null, string EamilSubject = null)
+        public Response Issue(string CorpNum, int itemCode, string mgtKey, string Memo = null, string UserID = null, string EmailSubject = null)
         {
             if (string.IsNullOrEmpty(mgtKey)) throw new PopbillException(-99999999, "문서번호가 입력되지 않았습니다.");
 
             MemoRequest request = new MemoRequest();
 
             request.memo = Memo;
-            request.emailSubject = EamilSubject;
+            request.emailSubject = EmailSubject;
 
             string PostData = toJsonString(request);
 
@@ -171,8 +170,8 @@ namespace Popbill.Statement
             if (ItemCode != null) uri += "&ItemCode=" + string.Join(",", ItemCodeArr);
             if (Page != null) uri += "&Page=" + Page.ToString();
             if (PerPage != null) uri += "&PerPage=" + PerPage.ToString();
-            if (Order != null) uri += "&Order=" + Order;
-            if (QString != null) uri += "&QString=" + HttpUtility.UrlEncode(QString);
+            if (Order == "D" || Order == "A") uri += "&Order=" + Order;
+            if (!string.IsNullOrEmpty(QString)) uri += "&QString=" + HttpUtility.UrlEncode(QString);
 
             return httpget<DocSearchResult>(uri, CorpNum, UserID);
         }
@@ -292,7 +291,7 @@ namespace Popbill.Statement
                 file.FileName = System.IO.Path.GetFileName(FilePath);
             }
             else {
-            file.FileName = DisplayName;
+                file.FileName = DisplayName;
             }
             file.FileData = new FileStream(FilePath, FileMode.Open, FileAccess.Read);
 
@@ -394,6 +393,8 @@ namespace Popbill.Statement
         public Response AttachStatement(string CorpNum, int itemCode, string mgtKey, int SubItemCode, string SubMgtKey,
             string UserID = null)
         {
+            if (string.IsNullOrEmpty(mgtKey)) throw new PopbillException(-99999999, "문서번호가 입력되지 않았습니다.");
+
             string uri = "/Statement/" + itemCode.ToString() + "/" + mgtKey + "/AttachStmt";
 
             DocRequest request = new DocRequest();
@@ -409,6 +410,8 @@ namespace Popbill.Statement
         public Response DetachStatement(string CorpNum, int itemCode, string mgtKey, int SubItemCode, string SubMgtKey,
             string UserID = null)
         {
+            if (string.IsNullOrEmpty(mgtKey)) throw new PopbillException(-99999999, "문서번호가 입력되지 않았습니다.");
+
             string uri = "/Statement/" + itemCode.ToString() + "/" + mgtKey + "/DetachStmt";
 
             DocRequest request = new DocRequest();

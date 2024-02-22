@@ -15,10 +15,7 @@ namespace Popbill.Closedown
         //단건조회
         public CorpState checkCorpNum(string MemberCorpNum, string CheckCorpNum, string UserID = null)
         {
-            if (CheckCorpNum == null || CheckCorpNum == "")
-            {
-                throw new PopbillException(-99999999, "조회할 사업자번호가 입력되지 않았습니다");
-            }
+            if (string.IsNullOrEmpty(CheckCorpNum)) throw new PopbillException(-99999999, "조회할 사업자번호가 입력되지 않았습니다");
 
             return httpget<CorpState>("/CloseDown?CN=" + CheckCorpNum, MemberCorpNum, UserID);
         }
