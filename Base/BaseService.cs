@@ -187,7 +187,8 @@ namespace Popbill
         protected T httpget<T>(string url, string CorpNum, string UserID = null)
         {
             HttpWebRequest request = (HttpWebRequest) WebRequest.Create(ServiceURL + url);
-            
+            request.Timeout = 180000;
+
             if (this._ProxyYN == true)
             {
                 WebProxy proxyRequest = new WebProxy();
@@ -246,6 +247,7 @@ namespace Popbill
         protected T httpBulkPost<T>(string url, string CorpNum, string SubmitID, string PostData, string UserID, string Action)
         {
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(ServiceURL + url);
+            request.Timeout = 180000;
 
             if (this._ProxyYN == true)
             {
@@ -323,6 +325,7 @@ namespace Popbill
             string contentsType = null, string UserID = null)
         {
             HttpWebRequest request = (HttpWebRequest) WebRequest.Create(ServiceURL + url);
+            request.Timeout = 180000;
 
             if (this._ProxyYN == true)
             {
@@ -407,6 +410,7 @@ namespace Popbill
             string httpMethod, string UserID = null)
         {
             HttpWebRequest request = (HttpWebRequest) WebRequest.Create(ServiceURL + url);
+            request.Timeout = 180000;
 
             if (this._ProxyYN == true)
             {
