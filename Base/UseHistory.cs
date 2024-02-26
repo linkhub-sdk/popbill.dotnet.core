@@ -10,7 +10,6 @@ namespace Popbill
         [DataMember] public string txPoint;
         [DataMember] public string balance;
         [DataMember] public string txDT;
-        [DataMember] public string serviceUserID;
         [DataMember] public string userID;
         [DataMember] public string userName;
     }
