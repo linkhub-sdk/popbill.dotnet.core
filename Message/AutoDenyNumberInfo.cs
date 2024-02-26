@@ -5,7 +5,7 @@ namespace Popbill.Message
     [DataContract]
     public class AutoDenyNumberInfo
     {
-        [DataMember] string smsdenyNumber;
-        [DataMember] string regDT;
+        [DataMember] public string smsdenyNumber;
+        [DataMember] public string regDT;
     }
 }
