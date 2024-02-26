@@ -652,7 +652,7 @@ namespace Popbill
         //연동회원 신규가입
         public Response JoinMember(JoinForm joinInfo)
         {
-            if (joinInfo == null) throw new PopbillException(-99999999, "No JoinForm");
+            if (joinInfo == null) throw new PopbillException(-99999999, "회원 정보가 입력되지 않았습니다.");
 
             string postData = toJsonString(joinInfo);
 
@@ -682,7 +682,7 @@ namespace Popbill
         //회사정보 수정
         public Response UpdateCorpInfo(string CorpNum, CorpInfo corpInfo, string UserID = null)
         {
-            if (corpInfo == null) throw new PopbillException(-99999999, "No CorpInfo data");
+            if (corpInfo == null) throw new PopbillException(-99999999, "회사 정보가 입력되지 않았습니다.");
 
             string PostData = toJsonString(corpInfo);
 
@@ -699,7 +699,7 @@ namespace Popbill
         //담당자 등록
         public Response RegistContact(string CorpNum, Contact contactInfo, string UserID = null)
         {
-            if (contactInfo == null) throw new PopbillException(-99999999, "No ContactInfo form");
+            if (contactInfo == null) throw new PopbillException(-99999999, "담당자 정보가 입력되지 않았습니다.");
 
             string postData = toJsonString(contactInfo);
 
@@ -744,7 +744,7 @@ namespace Popbill
         //담당자 정보 수정
         public Response UpdateContact(string CorpNum, Contact contactInfo, string UserID = null)
         {
-            if (contactInfo == null) throw new PopbillException(-99999999, "No ContactInfo form");
+            if (contactInfo == null) throw new PopbillException(-99999999, "담당자 정보가 입력되지 않았습니다.");
 
             string PostData = toJsonString(contactInfo);
 
@@ -761,7 +761,7 @@ namespace Popbill
         // 연동회원 무통장 입금신청
         public PaymentResponse PaymentRequest(string CorpNum, PaymentForm paymentForm, string UserID = null)
         {
-            if (paymentForm == null) throw new PopbillException(-99999999, "No PaymentForm form");
+            if (paymentForm == null) throw new PopbillException(-99999999, "무통장 입금신청 정보가 입력되지 않았습니다.");
             string PostData = toJsonString(paymentForm);
             try
             {
@@ -776,7 +776,7 @@ namespace Popbill
         // 연동회원 무통장 입금신청 정보확인
         public PaymentHistory GetSettleResult(string CorpNum, string settleCode, string UserID = null)
         {
-            if (string.IsNullOrEmpty(settleCode)) throw new PopbillException(-99999999, "settleCode가 입력되지 않았습니다.");
+            if (string.IsNullOrEmpty(settleCode)) throw new PopbillException(-99999999, "정산코드가 입력되지 않았습니다.");
 
             try
             {
@@ -838,7 +838,7 @@ namespace Popbill
         // 연동회원 포인트 환불신청
         public RefundResponse Refund(string CorpNum, RefundForm refundForm, string UserID = null)
         {
-            if (refundForm == null) throw new PopbillException(-99999999, "No RefundForm form");
+            if (refundForm == null) throw new PopbillException(-99999999, "환불신청 정보가 입력되지 않았습니다.");
             string PostData = toJsonString(refundForm);
             try
             {
