@@ -6,11 +6,11 @@ namespace Popbill
     [DataContract]
     public class RefundHistoryResult
     {
-        long code;
-        long total;
-        long perPage;
-        long pageNum;
-        long pageCount;
-        List<RefundHistory> list;
+        [DataMember] public long code;
+        [DataMember] public long total;
+        [DataMember] public long perPage;
+        [DataMember] public long pageNum;
+        [DataMember] public long pageCount;
+        [DataMember] public List<RefundHistory> list;
     }
 }

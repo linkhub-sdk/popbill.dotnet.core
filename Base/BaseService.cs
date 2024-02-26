@@ -794,7 +794,7 @@ namespace Popbill
             if (string.IsNullOrEmpty(SDate)) throw new PopbillException(-99999999, "시작일자가 입력되지 않았습니다.");
             if (string.IsNullOrEmpty(EDate)) throw new PopbillException(-99999999, "종료일자가 입력되지 않았습니다.");
 
-            string url = "/UseHisotry";
+            string url = "/UseHistory";
 
             url += "?SDate=" +SDate;
             url += "&EDate=" +EDate;
@@ -820,10 +820,10 @@ namespace Popbill
 
             string url = "/PaymentHistory";
 
-            url += "?SDate" + SDate;
-            url += "&EDate" + EDate;
-            if(Page != null) url += "&Page" + Page.ToString();
-            if(PerPage != null) url += "&PerPage" + PerPage.ToString();
+            url += "?SDate=" + SDate;
+            url += "&EDate=" + EDate;
+            if(Page != null) url += "&Page=" + Page.ToString();
+            if(PerPage != null) url += "&PerPage=" + PerPage.ToString();
 
             try
             {
@@ -842,7 +842,7 @@ namespace Popbill
             string PostData = toJsonString(refundForm);
             try
             {
-                return httppost<RefundResponse>("/Refund", CorpNum, PostData, UserID: UserID);
+                return httppost<RefundResponse>("/Refund", CorpNum, PostData, UserID);
             }
             catch (LinkhubException le)
             {
@@ -855,8 +855,8 @@ namespace Popbill
         {
             string url = "/RefundHistory";
 
-            if (Page != null) url += "?Page" + Page.ToString();
-            if (PerPage != null) url += "&PerPage" + PerPage.ToString();
+            if (Page != null) url += "?Page=" + Page.ToString();
+            if (PerPage != null) url += "&PerPage=" + PerPage.ToString();
 
             try
             {
@@ -873,7 +873,8 @@ namespace Popbill
         {
             try
             {
-                return httpget<double>("/RefundPoint", CorpNum, UserID);
+                RefundableBalance balance = httpget<RefundableBalance>("/RefundPoint", CorpNum, UserID);
+                return balance.refundableBalance;
             }catch(LinkhubException le)
             {
                 throw new PopbillException(le);
@@ -944,6 +945,12 @@ namespace Popbill
         public class UnitCostResponse
         {
             [DataMember] public Single unitCost;
+        }
+
+        [DataContract]
+        public class RefundableBalance
+        {
+            [DataMember] public double refundableBalance;
         }
 
     }

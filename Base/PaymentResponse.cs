@@ -5,8 +5,8 @@ namespace Popbill
     [DataContract]
     public class PaymentResponse
     {
-        [DataMember] string code;
-        [DataMember] string message;
-        [DataMember] string settleCode;
+        [DataMember] public string code;
+        [DataMember] public string message;
+        [DataMember] public string settleCode;
     }
 }

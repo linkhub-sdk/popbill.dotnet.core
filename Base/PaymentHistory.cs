@@ -1,3 +1,4 @@
+using System;
 using System.Runtime.Serialization;
 
 namespace Popbill
@@ -5,8 +6,15 @@ namespace Popbill
     [DataContract]
     public class PaymentHistory
     {
-        [DataMember] string code;
-        [DataMember] string message;
-        [DataMember] string settleCode;
+        [DataMember] public string productType;
+        [DataMember] public string productName;
+        [DataMember] public string settleType;
+        [DataMember] public string settlerName;
+        [DataMember] public string settlerEmail;
+        [DataMember] public string settleCost;
+        [DataMember] public string settlePoint;
+        [DataMember] public int settleState;
+        [DataMember] public string regDT;
+        [DataMember] public string stateDT;
     }
 }

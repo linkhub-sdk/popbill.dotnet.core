@@ -5,12 +5,12 @@ namespace Popbill
     [DataContract]
     public class RefundHistory
     {
-        [DataMember] string reqDT;
-        [DataMember] string requestPoint;
-        [DataMember] string accountBank;
-        [DataMember] string accountNum;
-        [DataMember] string accountName;
-        [DataMember] int state;
-        [DataMember] string reason;
+        [DataMember] public string reqDT;
+        [DataMember] public string requestPoint;
+        [DataMember] public string accountBank;
+        [DataMember] public string accountNum;
+        [DataMember] public string accountName;
+        [DataMember] public int state;
+        [DataMember] public string reason;
     }
 }

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Runtime.Serialization;
 
 namespace Popbill
@@ -5,10 +6,11 @@ namespace Popbill
     [DataContract]
     public class UseHistoryResult
     {
-        [DataMember] long code;
-        [DataMember] long total;
-        [DataMember] long perPage;
-        [DataMember] long pageNum;
-        [DataMember] long pageCount;
+        [DataMember] public long code;
+        [DataMember] public long total;
+        [DataMember] public long perPage;
+        [DataMember] public long pageNum;
+        [DataMember] public long pageCount;
+        [DataMember] public List<UseHistory> list;
     }
 }
