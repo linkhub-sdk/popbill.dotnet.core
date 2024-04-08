@@ -254,7 +254,7 @@ namespace Popbill.Fax
             return response.url;
         }
 
-        //팩스 미리보기 팝업 URL
+        //팩스 변환결과 확인 팝업 URL
         public string GetPreviewURL(string corpNum, string receiptNum, string UserID = null)
         {
             if (string.IsNullOrEmpty(receiptNum)) throw new PopbillException(-99999999, "접수번호가 입력되지 않았습니다.");
