@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <PackageId>Popbill</PackageId>
-        <Version>1.57.1</Version>
+        <Version>1.57.2</Version>
         <Authors>Linkhub</Authors>
         <Company>Linkhub</Company>        
         <TargetFramework>netcoreapp2.0</TargetFramework>

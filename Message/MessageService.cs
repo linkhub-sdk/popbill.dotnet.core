@@ -326,7 +326,7 @@ namespace Popbill.Message
             if (Page != null) uri += "&Page=" + Page.ToString();
             if (PerPage != null) uri += "&PerPage=" + PerPage.ToString();
             if (Order == "D" || Order == "A") uri += "&Order=" + Order;
-            if (string.IsNullOrEmpty(QString)) uri += "&QString=" + HttpUtility.UrlEncode(QString);
+            if (!string.IsNullOrEmpty(QString)) uri += "&QString=" + HttpUtility.UrlEncode(QString);
 
             return httpget<MSGSearchResult>(uri, CorpNum, UserID);
         }

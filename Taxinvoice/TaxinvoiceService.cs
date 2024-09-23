@@ -65,7 +65,7 @@ namespace Popbill.Taxinvoice
 
             if (ForceIssue == true) taxinvoice.forceIssue = ForceIssue;
             if (WriteSpecification == true) taxinvoice.writeSpecification = WriteSpecification;
-            if (WriteSpecification == true && string.IsNullOrEmpty(DealinvoiceMgtKey)) taxinvoice.dealInvoiceMgtKey = DealinvoiceMgtKey;
+            if (WriteSpecification == true && !string.IsNullOrEmpty(DealinvoiceMgtKey)) taxinvoice.dealInvoiceMgtKey = DealinvoiceMgtKey;
             taxinvoice.memo = Memo;
             taxinvoice.emailSubject = EmailSubject;
 
@@ -91,7 +91,7 @@ namespace Popbill.Taxinvoice
 
 
             if (WriteSpecification == true) taxinvoice.writeSpecification = WriteSpecification;
-            if (WriteSpecification == true && string.IsNullOrEmpty(DealinvoiceMgtKey)) taxinvoice.dealInvoiceMgtKey = DealinvoiceMgtKey;
+            if (WriteSpecification == true && !string.IsNullOrEmpty(DealinvoiceMgtKey)) taxinvoice.dealInvoiceMgtKey = DealinvoiceMgtKey;
 
             string PostData = toJsonString(taxinvoice);
 
@@ -400,11 +400,11 @@ namespace Popbill.Taxinvoice
             if (Page != null) uri += "&Page=" + Page.ToString();
             if (PerPage != null) uri += "&PerPage=" + PerPage.ToString();
             if (Order == "D" || Order == "A") uri += "&Order=" + Order;
-            if (string.IsNullOrEmpty(QString)) uri += "&QString=" + HttpUtility.UrlEncode(QString);
+            if (!string.IsNullOrEmpty(QString)) uri += "&QString=" + HttpUtility.UrlEncode(QString);
             if (InterOPYN == "0" || InterOPYN == "1") uri += "&InterOPYN=" + InterOPYN;
             if (RegType != null) uri += "&RegType=" + string.Join(",", RegType);
             if (CloseDownState != null) uri += "&CloseDownState=" + string.Join(",", CloseDownState);
-            if (string.IsNullOrEmpty(MgtKey)) uri += "&MgtKey=" + MgtKey;
+            if (!string.IsNullOrEmpty(MgtKey)) uri += "&MgtKey=" + MgtKey;
 
             return httpget<TISearchResult>(uri, CorpNum, UserID);
         }
