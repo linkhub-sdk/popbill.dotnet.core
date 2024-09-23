@@ -228,8 +228,8 @@ namespace Popbill.Cashbill
             if (Page != null) uri += "&Page=" + Page.ToString();
             if (PerPage != null) uri += "&PerPage=" + PerPage.ToString();
             if (Order == "D" || Order == "A") uri += "&Order=" + Order;
-            if (string.IsNullOrEmpty(QString)) uri += "&QString=" + QString;
-            if (string.IsNullOrEmpty(FranchiseTaxRegID)) uri += "&FranchiseTaxRegID=" + FranchiseTaxRegID;
+            if (!string.IsNullOrEmpty(QString)) uri += "&QString=" + QString;
+            if (!string.IsNullOrEmpty(FranchiseTaxRegID)) uri += "&FranchiseTaxRegID=" + FranchiseTaxRegID;
 
             return httpget<CBSearchResult>(uri, CorpNum, UserID);
         }
