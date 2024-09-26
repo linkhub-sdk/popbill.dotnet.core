@@ -137,7 +137,7 @@ namespace Popbill.Cashbill
             request.mgtKey = mgtKey;
             request.orgConfirmNum = orgConfirmNum;
             request.orgTradeDate = orgTradeDate;
-            request.smssenYN = smssendYN;
+            request.smssendYN = smssendYN;
             request.memo = memo;
             request.isPartCancel = isPartCancel;
             request.cancelType = cancelType;
@@ -446,7 +446,7 @@ namespace Popbill.Cashbill
             [DataMember] public string mgtKey;
             [DataMember] public string orgTradeDate;
             [DataMember] public string orgConfirmNum;
-            [DataMember] public bool? smssenYN = false;
+            [DataMember] public bool? smssendYN = false;
             [DataMember] public string memo;
             [DataMember] public bool? isPartCancel = false;
             [DataMember] public int? cancelType;
