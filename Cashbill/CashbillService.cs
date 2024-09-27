@@ -162,7 +162,7 @@ namespace Popbill.Cashbill
             request.mgtKey = mgtKey;
             request.orgConfirmNum = orgConfirmNum;
             request.orgTradeDate = orgTradeDate;
-            request.smssenYN = smssendYN;
+            request.smssendYN = smssendYN;
             request.isPartCancel = isPartCancel;
             request.cancelType = cancelType;
             request.totalAmount = totalAmount;
