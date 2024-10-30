@@ -39,7 +39,11 @@ namespace Popbill.Cashbill
         public string itemName;
         [DataMember]
         public string customerName;
-        [DataMember]
+		[DataMember]
+		public string hp;
+		[DataMember]
+		public string email;
+		[DataMember]
         public string confirmNum;
         [DataMember]
         public string orgConfirmNum;
@@ -59,5 +63,13 @@ namespace Popbill.Cashbill
         public bool? printYN;
         [DataMember]
         public bool? interOPYN;
-    }
+		[DataMember]
+		public string supplyCost;
+		[DataMember]
+		public string tax;
+		[DataMember]
+		public string serviceFee;
+		[DataMember]
+		public string orderNumber;
+	}
 }
