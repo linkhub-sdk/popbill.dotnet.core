@@ -83,7 +83,7 @@ namespace Popbill.HomeTax
 
         #region Certificate API
 
-        //홈택스연동 인증 관리 팝업 URL
+        //홈택스수집 인증 관리 팝업 URL
         public string GetCertificatePopUpURL(string CorpNum, string UserID = null)
         {
             URLResponse response = httpget<URLResponse>("/HomeTax/Cashbill?TG=CERT", CorpNum, UserID);
@@ -91,7 +91,7 @@ namespace Popbill.HomeTax
             return response.url;
         }
 
-        //홈택스 연동 공인인증서 만료일자 확인
+        //홈택스수집 공인인증서 만료일자 확인
         public DateTime GetCertificateExpireDate(string CorpNum, string UserID = null)
         {
             CertResponse response = httpget<CertResponse>("/HomeTax/Cashbill/CertInfo", CorpNum, UserID);
