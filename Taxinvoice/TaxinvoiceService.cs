@@ -381,7 +381,6 @@ namespace Popbill.Taxinvoice
             if (Type != null) uri += "&Type=" + string.Join(",", Type);
             if (TaxType != null) uri += "&TaxType=" + string.Join(",", TaxType);
             if (IssueType != null) uri += "&IssueType=" + string.Join(",", IssueType);
-            
             if (LateOnly != null)
             {
                 if ((bool) LateOnly)
@@ -393,18 +392,17 @@ namespace Popbill.Taxinvoice
                     uri += "&LateOnly=0";
                 }
             }
-
-            if (TaxRegIDYN == "0" || TaxRegIDYN == "1") uri += "&TaxRegIDYN=" + TaxRegIDYN;
-            if (TaxRegIDType == "S" || TaxRegIDType == "B" || TaxRegIDType == "T") uri += "&TaxRegIDType=" + TaxRegIDType;
-            if (!string.IsNullOrEmpty(TaxRegID)) uri += "&TaxRegID=" + TaxRegID;
-            if (Page != null) uri += "&Page=" + Page.ToString();
-            if (PerPage != null) uri += "&PerPage=" + PerPage.ToString();
-            if (Order == "D" || Order == "A") uri += "&Order=" + Order;
-            if (!string.IsNullOrEmpty(QString)) uri += "&QString=" + HttpUtility.UrlEncode(QString);
-            if (InterOPYN == "0" || InterOPYN == "1") uri += "&InterOPYN=" + InterOPYN;
+            if (TaxRegIDYN != null && TaxRegIDYN != "") uri += "&TaxRegIDYN=" + TaxRegIDYN;
+            if (TaxRegIDType != null && TaxRegIDType != "") uri += "&TaxRegIDType=" + TaxRegIDType;
+            if (TaxRegID != null && TaxRegID != "") uri += "&TaxRegID=" + TaxRegID;
+            if (Page > 0) uri += "&Page=" + Page.ToString();
+            if (PerPage > 0 && PerPage <= 1000) uri += "&PerPage=" + PerPage.ToString();
+            if (Order != null && Order != "") uri += "&Order=" + Order;
+            if (QString != null && QString != "") uri += "&QString=" + HttpUtility.UrlEncode(QString);
+            if (InterOPYN != null && InterOPYN != "") uri += "&InterOPYN=" + InterOPYN;
             if (RegType != null) uri += "&RegType=" + string.Join(",", RegType);
             if (CloseDownState != null) uri += "&CloseDownState=" + string.Join(",", CloseDownState);
-            if (!string.IsNullOrEmpty(MgtKey)) uri += "&MgtKey=" + MgtKey;
+            if (MgtKey != null && MgtKey != "") uri += "&MgtKey=" + MgtKey;
 
             return httpget<TISearchResult>(uri, CorpNum, UserID);
         }

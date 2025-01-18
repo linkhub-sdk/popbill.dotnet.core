@@ -235,13 +235,21 @@ namespace Popbill.Fax
             uri += "?SDate=" + SDate;
             uri += "&EDate=" + EDate;
 
-            if (State != null && State.Length != 0) uri += "&State=" + string.Join(",", State);
-            if (ReserveYN != null && (bool) ReserveYN) uri += "&ReserveYN=1";
-            if (SenderOnly != null && (bool) SenderOnly) uri += "&SenderOnly=1";
-            if (Page != null) uri += "&Page=" + Page.ToString();
-            if (PerPage != null) uri += "&PerPage=" + PerPage.ToString();
-            if (Order == "D" || Order == "A") uri += "&Order=" + Order;
-            if (Qstring != null) uri += "&Qstring=" + HttpUtility.UrlEncode(Qstring);
+            if (State != null) uri += "&State=" + string.Join(",", State);
+            if (ReserveYN != null)
+            {
+                if ((bool)ReserveYN) uri += "&ReserveYN=1";
+                else uri += "&ReserveYN=0";
+            }
+            if (SenderOnly != null)
+            {
+                if ((bool)SenderOnly) uri += "&SenderOnly=1";
+                else uri += "&SenderOnly=0";
+            }
+            if (Page > 0) uri += "&Page=" + Page.ToString();
+            if (PerPage > 0 && PerPage <= 1000) uri += "&PerPage=" + PerPage.ToString();
+            if (Order != null && Order != "") uri += "&Order=" + Order;
+            if (Qstring != null && Qstring != "") uri += "&QString=" + HttpUtility.UrlEncode(Qstring);
 
             return httpget<FAXSearchResult>(uri, CorpNum, UserID);
         }

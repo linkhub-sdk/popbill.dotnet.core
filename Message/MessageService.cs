@@ -315,18 +315,28 @@ namespace Popbill.Message
         {
             if (string.IsNullOrEmpty(SDate)) throw new PopbillException(-99999999, "시작일자가 입력되지 않았습니다.");
             if (string.IsNullOrEmpty(EDate)) throw new PopbillException(-99999999, "종료일자가 입력되지 않았습니다.");
+            if (State == null || State.Length < 1) throw new PopbillException(-99999999, "전송상태가 입력되지 않았습니다.");
 
             string uri = "/Message/Search";
             uri += "?SDate=" + SDate;
             uri += "&EDate=" + EDate;
-            if (State != null) uri += "&State=" + string.Join(",", State);
+            uri += "&State=" + string.Join(",", State);
+            
             if (Item != null) uri += "&Item=" + string.Join(",", Item);
-            if (ReserveYN != null && (bool) ReserveYN) uri += "&ReserveYN=1";
-            if (SenderYN != null && (bool) SenderYN) uri += "&SenderYN=1";
-            if (Page != null) uri += "&Page=" + Page.ToString();
-            if (PerPage != null) uri += "&PerPage=" + PerPage.ToString();
-            if (Order == "D" || Order == "A") uri += "&Order=" + Order;
-            if (!string.IsNullOrEmpty(QString)) uri += "&QString=" + HttpUtility.UrlEncode(QString);
+            if (ReserveYN != null)
+            {
+                if ((bool)ReserveYN) uri += "&ReserveYN=1";
+                else uri += "&ReserveYN=0";
+            }
+            if (SenderYN != null)
+            {
+                if ((bool)SenderYN) uri += "&SenderOnly=1";
+                else uri += "&SenderOnly=0";
+            }
+            if (Page > 0) uri += "&Page=" + Page.ToString();
+            if (PerPage > 0 && PerPage <= 1000) uri += "&PerPage=" + PerPage.ToString();
+            if (Order != null && Order != "") uri += "&Order=" + Order;
+            if (QString != null && QString != "") uri += "&QString=" + HttpUtility.UrlEncode(QString);
 
             return httpget<MSGSearchResult>(uri, CorpNum, UserID);
         }

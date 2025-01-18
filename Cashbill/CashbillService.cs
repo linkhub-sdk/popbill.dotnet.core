@@ -225,11 +225,11 @@ namespace Popbill.Cashbill
             if (TradeUsage != null) uri += "&TradeUsage=" + string.Join(",", TradeUsage);
             if (TradeOpt != null) uri += "&TradeOpt=" + string.Join(",", TradeOpt);
             if (TaxationType != null) uri += "&TaxationType=" + string.Join(",", TaxationType);
-            if (Page != null) uri += "&Page=" + Page.ToString();
-            if (PerPage != null) uri += "&PerPage=" + PerPage.ToString();
-            if (Order == "D" || Order == "A") uri += "&Order=" + Order;
-            if (!string.IsNullOrEmpty(QString)) uri += "&QString=" + QString;
-            if (!string.IsNullOrEmpty(FranchiseTaxRegID)) uri += "&FranchiseTaxRegID=" + FranchiseTaxRegID;
+            if (Page > 0) uri += "&Page=" + Page.ToString();
+            if (PerPage > 0 && PerPage <= 1000) uri += "&PerPage=" + PerPage.ToString();
+            if (Order != null && Order != "") uri += "&Order=" + Order;
+            if (QString != null && QString != "") uri += "&QString=" + QString;
+            if (FranchiseTaxRegID != null && FranchiseTaxRegID != "") uri += "&FranchiseTaxRegID=" + FranchiseTaxRegID;
 
             return httpget<CBSearchResult>(uri, CorpNum, UserID);
         }

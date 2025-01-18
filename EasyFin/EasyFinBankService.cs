@@ -170,27 +170,24 @@ namespace Popbill.EasyFin
         {
             if (string.IsNullOrEmpty(JobID)) throw new PopbillException(-99999999, "작업아이디가 입력되지 않았습니다.");
 
-            string uri = "/EasyFin/Bank/" + JobID;
-            uri += "?TradeType=" + string.Join(",", TradeType);
-
-            if (!string.IsNullOrEmpty(SearchString)) uri += "&SearchString=" + HttpUtility.UrlEncode(SearchString);
-
-            if (Page != null) uri += "&Page=" + Page;
-            if (PerPage != null) uri += "&PerPage=" + PerPage;
-            if (Order == "D" || Order == "A") uri += "&Order=" + Order;
+            string uri = "/EasyFin/Bank/" + JobID + "?TradeType=";
+            
+            if (TradeType != null) uri += string.Join(",", TradeType);
+            if (SearchString != null && SearchString != "") uri += "&SearchString=" + HttpUtility.UrlEncode(SearchString);
+            if (Page > 0) uri += "&Page=" + Page.ToString();
+            if (PerPage > 0 && PerPage <= 1000) uri += "&PerPage=" + PerPage.ToString();
+            if (Order != null && Order != "") uri += "&Order=" + Order;
 
             return httpget<EasyFinBankSearchResult>(uri, CorpNum, UserID);
-
         }
 
         public EasyFinBankSummary Summary(string CorpNum, string JobID, string[] TradeType = null, string SearchString = null, string UserID = null)
         {
             if (string.IsNullOrEmpty(JobID)) throw new PopbillException(-99999999, "작업아이디가 입력되지 않았습니다.");
 
-            string uri = "/EasyFin/Bank/" + JobID + "/Summary";
-            uri += "?TradeType=" + string.Join(",", TradeType);
-
-            if (!string.IsNullOrEmpty(SearchString)) uri += "&SearchString=" + HttpUtility.UrlEncode(SearchString);
+            string uri = "/EasyFin/Bank/" + JobID + "/Summary" + "?TradeType=";
+            if (TradeType != null) uri += string.Join(",", TradeType);
+            if (SearchString != null && SearchString != "") uri += "&SearchString=" + HttpUtility.UrlEncode(SearchString);
 
             return httpget<EasyFinBankSummary>(uri, CorpNum, UserID);
         }

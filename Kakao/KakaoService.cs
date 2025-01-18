@@ -331,7 +331,6 @@ namespace Popbill.Kakao
 
             if(string.IsNullOrEmpty(receiveNum)) throw new PopbillException(-99999999, "수신번호(receiveNum)가 입력되지 않았습니다.");
 
-            // TODO 2023-09-12, 화, 0:25 : 테스트 필요
             string PostData = toJsonString(receiveNum);
 
             try
@@ -370,18 +369,24 @@ namespace Popbill.Kakao
         {
             if (string.IsNullOrEmpty(SDate)) throw new PopbillException(-99999999, "시작일자가 입력되지 않았습니다.");
             if (string.IsNullOrEmpty(EDate)) throw new PopbillException(-99999999, "종료일자가 입력되지 않았습니다.");
+            if (State == null || State.Length < 1) throw new PopbillException(-99999999, "전송상태가 입력되지 않았습니다.");
 
             string uri = "/KakaoTalk/Search";
             uri += "?SDate=" + SDate;
             uri += "&EDate=" + EDate;
-            if (State != null) uri += "&State=" + string.Join(",", State);
+            uri += "&State=" + string.Join(",", State);
+            
             if (Item != null) uri += "&Item=" + string.Join(",", Item);
-            if (ReserveYN == "1" || ReserveYN == "0") uri += "&ReserveYN=" + ReserveYN;
-            if (SenderYN != null && (bool) SenderYN) uri += "&SenderYN=1";
-            if (Page != null) uri += "&Page=" + Page.ToString();
-            if (PerPage != null) uri += "&PerPage=" + PerPage.ToString();
-            if (Order == "D" || Order == "A") uri += "&Order=" + Order;
-            if (!string.IsNullOrEmpty(Qstring)) uri += "&Qstring=" + HttpUtility.UrlEncode(Qstring);
+            if (ReserveYN != null && ReserveYN != "") uri += "&ReserveYN=" + ReserveYN;
+            if (SenderYN != null)
+            {
+                if ((bool)SenderYN) uri += "&SenderOnly=1";
+                else uri += "&SenderOnly=0";
+            }
+            if (Page > 0) uri += "&Page=" + Page.ToString();
+            if (PerPage > 0 && PerPage <= 1000) uri += "&PerPage=" + PerPage.ToString();
+            if (Order != null && Order != "") uri += "&Order=" + Order;
+            if (Qstring != null && Qstring != "") uri += "&QString=" + HttpUtility.UrlEncode(Qstring);
 
             return httpget<KakaoSearchResult>(uri, CorpNum, UserID);
         }
