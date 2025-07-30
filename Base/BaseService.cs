@@ -758,6 +758,21 @@ namespace Popbill
             }
         }
 
+        // 담당자 삭제
+        public Response DeleteContact(string CorpNum, string contactID, string UserID)
+        {
+            if (contactID == null) throw new PopbillException(-99999999, "삭제할 담당자 아이디가 입력되지 않았습니다.");
+
+            try
+            {
+                return httppost<Response>("/Contact/Delete?ContactID="+contactID, CorpNum, null, null, null, UserID);
+            }
+            catch (LinkhubException le)
+            {
+                throw new PopbillException(le);
+            }
+        }
+
         // 연동회원 무통장 입금신청
         public PaymentResponse PaymentRequest(string CorpNum, PaymentForm paymentForm, string UserID = null)
         {
@@ -905,7 +920,16 @@ namespace Popbill
             string PostData = toJsonString("{'quitReason' :" + "'" + QuitReason + "'}");
             try
             {
-                return httppost<Response>(url, CorpNum, PostData, UserID: UserID);
+                Response rst = httppost<Response>(url, CorpNum, PostData, UserID: UserID);
+
+                if(rst.code == 1)
+                {
+                    if (_tokenTable.ContainsKey(CorpNum))
+                    {
+                        _tokenTable.Remove(CorpNum);
+                    }
+                }
+                return rst;
             }catch(LinkhubException le)
             {
                 throw new PopbillException(le);

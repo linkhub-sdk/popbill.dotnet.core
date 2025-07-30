@@ -14,6 +14,8 @@ namespace Popbill.AccountCheck
         [DataMember]
         public string checkDate;
         [DataMember]
+        public string checkDT;
+        [DataMember]
         public string resultCode;
         [DataMember]
         public string result;
