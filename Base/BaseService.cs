@@ -137,6 +137,9 @@ namespace Popbill
         //session_token
         private string getSession_Token(string CorpNum)
         {
+
+            if (String.IsNullOrEmpty(CorpNum)) throw new PopbillException(-99999999, "팝빌회원 사업자번호가 입력되지 않았습니다.");
+
             Token _token = null;
 
             if (_tokenTable.ContainsKey(CorpNum)) _token = _tokenTable[CorpNum];
