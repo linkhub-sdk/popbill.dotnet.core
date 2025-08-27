@@ -108,7 +108,7 @@ namespace Popbill.HomeTax
         }
 
         //부서사용자 계정등록
-        public Response RegistDeptUser(string CorpNum, string deptUserID, string deptUserPWD, string UserID = null)
+        public Response RegistDeptUser(string CorpNum, string deptUserID, string deptUserPWD, string identityNum = null, string UserID = null)
         {
             if (string.IsNullOrEmpty(CorpNum)) throw new PopbillException(-99999999, "연동회원 사업자번호가 입력되지 않았습니다.");
             if (string.IsNullOrEmpty(deptUserID)) throw new PopbillException(-99999999, "홈택스 부서사용자 계정 아이디가 입력되지 않았습니다.");
@@ -118,8 +118,9 @@ namespace Popbill.HomeTax
 
             request.id = deptUserID;
             request.pwd = deptUserPWD;
+            request.secAuth = identityNum;
 
-            string PostData = toJsonString(request);
+			string PostData = toJsonString(request);
 
 
             return httppost<Response>("/HomeTax/Cashbill/DeptUser", CorpNum, PostData, null, null, UserID);
@@ -194,6 +195,7 @@ namespace Popbill.HomeTax
         {
             [DataMember] public string id;
             [DataMember] public string pwd;
-        }
+			[DataMember] public string secAuth;
+		}
     }
 }
